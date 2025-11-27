@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 184bf9ea633f941248646239ce5ab70d
+timeCreated: 1513688213
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Missions/Obsolete/Spinner/03_Spin20_Targ3No.prefab
+  uploadId: 793312

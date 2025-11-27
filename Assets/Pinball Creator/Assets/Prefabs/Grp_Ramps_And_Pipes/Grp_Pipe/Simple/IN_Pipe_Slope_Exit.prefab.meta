@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 85a6e4aaaca7e44f8a24788a2d85bdb5
+timeCreated: 1470646881
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Pipe/Simple/IN_Pipe_Slope_Exit.prefab
+  uploadId: 793312

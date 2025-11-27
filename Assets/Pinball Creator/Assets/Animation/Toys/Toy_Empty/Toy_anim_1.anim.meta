@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d3a8cd08f04604e0e909aa3aa5b1ea88
+timeCreated: 1464365324
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Animation/Toys/Toy_Empty/Toy_anim_1.anim
+  uploadId: 793312

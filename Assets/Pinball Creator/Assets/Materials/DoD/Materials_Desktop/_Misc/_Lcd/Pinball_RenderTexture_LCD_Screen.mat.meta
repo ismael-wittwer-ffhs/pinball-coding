@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ac9ce01b726a9894ebf801de4b7b6506
+timeCreated: 1455176150
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/DoD/Materials_Desktop/_Misc/_Lcd/Pinball_RenderTexture_LCD_Screen.mat
+  uploadId: 793312

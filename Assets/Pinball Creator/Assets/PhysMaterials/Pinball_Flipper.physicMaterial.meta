@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 25eeb495d71454cc5b07fadcfb8a45dc
+timeCreated: 1457105569
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/PhysMaterials/Pinball_Flipper.physicMaterial
+  uploadId: 793312

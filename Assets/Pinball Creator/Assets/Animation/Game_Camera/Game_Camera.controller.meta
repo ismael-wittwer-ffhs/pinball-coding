@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d44a743cafa6a45f7a8d79168f259d2b
+timeCreated: 1456390138
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Animation/Game_Camera/Game_Camera.controller
+  uploadId: 793312

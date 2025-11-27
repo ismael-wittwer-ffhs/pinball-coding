@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 3122d9d6dd9e34bd5b51e83da98d047a
+timeCreated: 1512978979
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/Mechanics/Flippers/Flippers.cs
+  uploadId: 793312

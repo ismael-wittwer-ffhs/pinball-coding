@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 88239c14ab3444446b5b9685f2b5abc2
+timeCreated: 1471599254
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Ramps/Classic/Simple/IN_RampN_C_30Deg_Inv.prefab
+  uploadId: 793312

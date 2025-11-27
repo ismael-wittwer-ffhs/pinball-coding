@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 90f5841f2564e43f4934d15e53e55139
+timeCreated: 1513683474
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Basics/Edges/Edge_Straight_01_zl.prefab
+  uploadId: 793312

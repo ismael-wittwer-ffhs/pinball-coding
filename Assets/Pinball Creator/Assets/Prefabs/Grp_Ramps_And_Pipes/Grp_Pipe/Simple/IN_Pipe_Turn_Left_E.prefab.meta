@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6ca8419d4e2ed40108f8220adaae14d9
+timeCreated: 1470646839
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Pipe/Simple/IN_Pipe_Turn_Left_E.prefab
+  uploadId: 793312

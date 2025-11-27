@@ -1,0 +1,29 @@
+fileFormatVersion: 2
+guid: 2b630c33302d041afbfe13b648092981
+timeCreated: 1463156884
+licenseType: Store
+AudioImporter:
+  serializedVersion: 6
+  defaultSettings:
+    loadType: 0
+    sampleRateSetting: 0
+    sampleRateOverride: 44100
+    compressionFormat: 1
+    quality: 1
+    conversionMode: 0
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 1
+  preloadAudioData: 1
+  loadInBackground: 0
+  3D: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Sounds/Pinball_Sfx_Mechanics/Sfx_Load_the_ball_in_the_plunger_real/Sfx_Load_the_ball_in_the_plunger_real_06.wav
+  uploadId: 793312

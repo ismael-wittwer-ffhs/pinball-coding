@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d100ec94bfccb4a509ad10b173cd88f9
+timeCreated: 1513688816
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Missions/Obsolete/_Tuto1_p_Demo_Mission.prefab
+  uploadId: 793312

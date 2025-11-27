@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f94a7e8cdcfc9442ea316996fc90929a
+timeCreated: 1457338547
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/PhysMaterials/Pinball_Mid_Bounce.physicMaterial
+  uploadId: 793312

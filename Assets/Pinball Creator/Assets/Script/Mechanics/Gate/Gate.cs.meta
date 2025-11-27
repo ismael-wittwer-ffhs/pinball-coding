@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: fe8d75d5c0b294309bc48d9b589b1e8a
+timeCreated: 1513006857
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/Mechanics/Gate/Gate.cs
+  uploadId: 793312

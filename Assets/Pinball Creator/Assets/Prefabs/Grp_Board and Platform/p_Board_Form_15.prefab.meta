@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 1b2d19e129176434694a96a27928e143
+timeCreated: 1513684298
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Board and Platform/p_Board_Form_15.prefab
+  uploadId: 793312

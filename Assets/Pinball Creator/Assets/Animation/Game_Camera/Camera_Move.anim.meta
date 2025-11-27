@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 595df8c2921474f23b41b6d4ab6a6450
+timeCreated: 1456820808
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Animation/Game_Camera/Camera_Move.anim
+  uploadId: 793312

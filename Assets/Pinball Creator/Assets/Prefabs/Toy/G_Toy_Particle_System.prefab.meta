@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 64fbe2284b937448d83f61803f96e214
+timeCreated: 1513689107
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Toy/G_Toy_Particle_System.prefab
+  uploadId: 793312

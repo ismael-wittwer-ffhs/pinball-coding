@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: b541002090d824c0d98066301bea5b33
+timeCreated: 1513683695
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Basics/Leds/Bulb/p_Led_Small_Bulb_02.prefab
+  uploadId: 793312

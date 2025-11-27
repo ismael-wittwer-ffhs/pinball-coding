@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 66eb6d32d07cdd547958ec37192ba1e7
+timeCreated: 1482144937
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/Optimize/Obsolete/MeshDesktopToMobileEditor.cs
+  uploadId: 793312

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d634e7feba14f4150837cd8e72cffd75
+timeCreated: 1513684234
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Camera/G_Game_Camera2D.prefab
+  uploadId: 793312

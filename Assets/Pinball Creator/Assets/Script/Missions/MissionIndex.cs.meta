@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 142770361ca1c46e6a5fda033603d59e
+timeCreated: 1512995990
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/Missions/MissionIndex.cs
+  uploadId: 793312

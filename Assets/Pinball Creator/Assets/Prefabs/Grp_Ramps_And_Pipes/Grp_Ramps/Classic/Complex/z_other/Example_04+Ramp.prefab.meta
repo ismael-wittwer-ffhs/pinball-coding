@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: af19cbbb0cd844f4bb337ae2597b5cba
+timeCreated: 1471617827
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Ramps/Classic/Complex/z_other/Example_04+Ramp.prefab
+  uploadId: 793312

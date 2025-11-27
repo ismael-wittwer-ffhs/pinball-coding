@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 725557c05fbb04752bea48fde8f35166
+timeCreated: 1513683602
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Basics/Hole/Ball_Catch_Hole.prefab
+  uploadId: 793312

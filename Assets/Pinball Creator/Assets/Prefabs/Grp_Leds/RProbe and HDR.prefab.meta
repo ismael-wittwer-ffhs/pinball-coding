@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 2b3415b97a8e246739bf3988662e2806
+timeCreated: 1513684473
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Leds/RProbe and HDR.prefab
+  uploadId: 793312

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 6900ce75d6f0d47e3b76028dd76cde1d
+timeCreated: 1513689135
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/UI/Obsolete/UI_Game_Interface_v2_Lightweight_LCD_.prefab
+  uploadId: 793312

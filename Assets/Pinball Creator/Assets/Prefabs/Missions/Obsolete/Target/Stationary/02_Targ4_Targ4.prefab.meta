@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: addcdc2e676524052924e2e3c5d7b58b
+timeCreated: 1513688286
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Missions/Obsolete/Target/Stationary/02_Targ4_Targ4.prefab
+  uploadId: 793312

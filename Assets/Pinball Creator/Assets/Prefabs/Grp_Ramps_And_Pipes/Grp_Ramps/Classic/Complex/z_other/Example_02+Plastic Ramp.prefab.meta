@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f28fcc1f706c44ee48fe1f10604e3fe1
+timeCreated: 1471616675
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Ramps/Classic/Complex/z_other/Example_02+Plastic
+    Ramp.prefab
+  uploadId: 793312

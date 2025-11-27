@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9c7b89b2313ad4c4fba7aef076a57ea4
+timeCreated: 1471610888
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Ramps/Plastic/Simple/IN_Plastic_Pipe_Exit.prefab
+  uploadId: 793312

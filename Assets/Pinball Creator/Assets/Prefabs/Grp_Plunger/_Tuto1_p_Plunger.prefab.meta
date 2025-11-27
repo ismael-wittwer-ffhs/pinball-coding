@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 7be94c8d7a0364ad69ae0dd1d373daa5
+timeCreated: 1513684492
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Plunger/_Tuto1_p_Plunger.prefab
+  uploadId: 793312

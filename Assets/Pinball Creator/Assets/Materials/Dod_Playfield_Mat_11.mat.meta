@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 40b896665deea06438a6f72e986f9146
+timeCreated: 1457521937
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/Dod_Playfield_Mat_11.mat
+  uploadId: 793312

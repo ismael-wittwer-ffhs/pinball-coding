@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7eac4cf62038f8540a89f22a3df974ff
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Scenes/Lights_Settings/Start_Pinball_Desktop_WideSettings.lighting
+  uploadId: 793312

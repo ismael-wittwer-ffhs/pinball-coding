@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8acadce324039403ea589b522825942b
+timeCreated: 1459874434
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Animation/Game_Camera/Camera_Shake_Right.anim
+  uploadId: 793312

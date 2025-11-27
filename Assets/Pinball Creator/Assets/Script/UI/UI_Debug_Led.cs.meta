@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 0b497ba3a3fec40e3bbc2468dc516c5b
+timeCreated: 1512999412
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/UI/UI_Debug_Led.cs
+  uploadId: 793312

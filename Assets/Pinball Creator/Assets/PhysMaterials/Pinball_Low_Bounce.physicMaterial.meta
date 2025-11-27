@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0164bce7e5ae44382b5c71fc671cf368
+timeCreated: 1457273370
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/PhysMaterials/Pinball_Low_Bounce.physicMaterial
+  uploadId: 793312

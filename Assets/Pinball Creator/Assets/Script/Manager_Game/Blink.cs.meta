@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 2162ea9224e6f4dc6b41f66fda3808f4
+timeCreated: 1513008062
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/Manager_Game/Blink.cs
+  uploadId: 793312

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e4dc914101637417280e5b3dfd80c238
+timeCreated: 1451303694
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/PhysMaterials/Pinball_Pinball_Plateau.physicMaterial
+  uploadId: 793312

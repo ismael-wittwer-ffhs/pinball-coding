@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: b6326ab3026b64382a8ca8fcde87aadd
+timeCreated: 1513683951
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Basics/Leds/Plane_Led_Long/p_Plane_Long_Led_14.prefab
+  uploadId: 793312

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5572e48b008127547a03c74488f84a2f
+timeCreated: 1469709199
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/Tuto_Mat/Tuto_Led_01.mat
+  uploadId: 793312

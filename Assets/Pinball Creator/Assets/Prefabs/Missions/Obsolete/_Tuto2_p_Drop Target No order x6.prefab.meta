@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 997afcfe9c8a54786a969792b634577a
+timeCreated: 1513688643
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Missions/Obsolete/_Tuto2_p_Drop
+    Target No order x6.prefab
+  uploadId: 793312

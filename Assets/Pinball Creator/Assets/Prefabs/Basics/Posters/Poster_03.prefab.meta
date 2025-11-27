@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 25df13b5c9fc94790bad03890985e26f
+timeCreated: 1513684036
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Basics/Posters/Poster_03.prefab
+  uploadId: 793312

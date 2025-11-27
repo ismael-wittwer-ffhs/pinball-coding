@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bf53bf5d16b764461b52ab67449656fb
+timeCreated: 1470653443
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Pipe/Complex/IN_Pipe_Turn_Left_45_Very_Very_Big.prefab
+  uploadId: 793312

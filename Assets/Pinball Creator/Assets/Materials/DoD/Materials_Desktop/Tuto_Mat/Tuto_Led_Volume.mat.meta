@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 83045ce54884ff648bd2ad8398460d2c
+timeCreated: 1469709210
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/DoD/Materials_Desktop/Tuto_Mat/Tuto_Led_Volume.mat
+  uploadId: 793312

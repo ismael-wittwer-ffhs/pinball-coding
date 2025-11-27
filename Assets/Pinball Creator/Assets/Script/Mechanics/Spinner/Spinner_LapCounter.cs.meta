@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 430da21bafae549b6b22f3af5ab95a5e
+timeCreated: 1513004974
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/Mechanics/Spinner/Spinner_LapCounter.cs
+  uploadId: 793312
