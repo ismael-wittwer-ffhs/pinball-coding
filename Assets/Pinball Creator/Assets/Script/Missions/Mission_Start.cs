@@ -44,9 +44,6 @@ public class Mission_Start : MonoBehaviour {
 	private bool Rollover_StopMoving = true;
 	private int[] LedTmp;  
 	public bool SpecificText = false;					// If you want a specific text appear letter by letter on LCD Screen. Use for rollover Grp1
-	private string Input_name_Left = "m";						// Use with Rollover_Type3_Grp_1. 
-	private string Input_name_Right = "q";						// Use with Rollover_Type3_Grp_1. 
-	private ManagerInputSetting gameManager_Input;			// access ManagerInputSetting component from ManagerGame GameObject
 
 	[Header ("Type : Bumper")]											// --> 
 	public bool Grp_1_Bumper = false;
@@ -910,10 +907,6 @@ public class Mission_Start : MonoBehaviour {
 			led_Part1_InProgress_.led_Part_InProgress_State(0);	
 			Led_Part1_InProgress_State = 0;
 		}
-
-		gameManager_Input = obj_Game_Manager.GetComponent<ManagerInputSetting>();	// Access ManagerInputSetting component from object ManagerGame on the hierarchy 
-		Input_name_Left = gameManager_Input.F_flipper_Left();							
-		Input_name_Right = gameManager_Input.F_flipper_Right();
 
 		if(Mission_Txt.Length == 0){newTxtArray();}										// if(Mission_Txt.Length == 0) Create text for the mission 
 
@@ -2247,20 +2240,4 @@ public class Mission_Start : MonoBehaviour {
 		if(PlayfieldAnimation && PF_AnimNumFail!=-1)playfieldAnimation.PlayAnimationNumber(PF_AnimNumFail);
 		if(sfx_Fail){sound_.clip = sfx_Fail;sound_.Play();}
 	}
-
-
-	#region Legacy Compatibility (can be removed after full migration)
-
-	/// <summary>
-	/// Legacy method - no longer needed with new Input System.
-	/// Kept for backward compatibility during migration.
-	/// </summary>
-	[System.Obsolete("No longer needed with new Input System. Will be removed in future version.")]
-	public void F_InputGetButton()
-	{
-		// No-op: New input system handles this automatically
-	}
-
-	#endregion
-
 }

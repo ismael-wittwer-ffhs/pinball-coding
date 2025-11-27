@@ -885,17 +885,6 @@ public class ManagerGame : MonoBehaviour
         obj_Skillshot_Mission = obj; // 
     }
 
-    /// <summary>
-    /// Legacy method - no longer needed with new Input System.
-    /// Kept for backward compatibility during migration.
-    /// </summary>
-    [Obsolete("No longer needed with new Input System. Will be removed in future version.")]
-    public void F_InputGetButton()
-    {
-        // No-op: New input system handles this automatically
-    }
-
-
     public void F_InsertCoin_GameStart()
     {
         if (!b_Pause) InsertCoin_GameStart();

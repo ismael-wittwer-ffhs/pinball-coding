@@ -1,6 +1,5 @@
 ﻿// Flippers: Manages flipper movements using Unity's new Input System
 
-using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
@@ -146,16 +145,6 @@ public class Flippers : MonoBehaviour
     public void F_Desactivate()
     {
         if (!b_Debug) Activate = false;
-    }
-
-    /// <summary>
-    /// Legacy method - no longer needed with new Input System.
-    /// Kept for backward compatibility during migration.
-    /// </summary>
-    [Obsolete("No longer needed with new Input System. Will be removed in future version.")]
-    public void F_InputGetButton()
-    {
-        // No-op: New input system handles this automatically
     }
 
     public void F_Pause_Start()

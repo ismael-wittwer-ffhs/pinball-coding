@@ -1,6 +1,5 @@
 ﻿// SpringLauncher: Manages the spring launcher (plunger) using Unity's new Input System
 
-using System;
 using UnityEngine;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
@@ -283,16 +282,6 @@ public class SpringLauncher : MonoBehaviour
     {
         Activate = false;
         if (_BoxCollider) _BoxCollider.enabled = false;
-    }
-
-    /// <summary>
-    /// Legacy method - no longer needed with new Input System.
-    /// Kept for backward compatibility during migration.
-    /// </summary>
-    [Obsolete("No longer needed with new Input System. Will be removed in future version.")]
-    public void F_InputGetButton()
-    {
-        // No-op: New input system handles this automatically
     }
 
     public void Tilt_Mode()
