@@ -56,7 +56,6 @@ public class Hole : MonoBehaviour {
 
 	[Header ("Points added when the ball enter the hole")]
 	public int Points = 0;							// Points when the object is hitting 
-	private GameObject obj_Game_Manager;						// 
 	private ManagerGame gameManager;						// access to the script ManagerGame.js on gameObject ManagerGame on the hierarchy
 	[Header ("Toy connected to the bumper")]
 	public GameObject Toy_Enter;						// Connect a toy or particule system
@@ -79,9 +78,7 @@ public class Hole : MonoBehaviour {
 	void Start(){																			// --> Function Start
 		Box_Col = GetComponent<BoxCollider>();
 		sound_ = GetComponent<AudioSource>();													// Access AudioSource component 
-		obj_Game_Manager = GameObject.Find("ManagerGame");										// Find ManagerGame gameObject
-		if(obj_Game_Manager!=null)
-			gameManager = obj_Game_Manager.GetComponent<ManagerGame>();							// access to the script ManagerGame.js on gameObject ManagerGame on the hierarchy
+		gameManager = ManagerGame.Instance;													// access to the script ManagerGame.js on gameObject ManagerGame on the hierarchy
 
 		if(obj_Led)led_Renderer = obj_Led.GetComponent<ChangeSpriteRenderer>();				// obj_Led != null Access ChangeSpriteRenderer component 
 		if(obj_Target)target = obj_Target.GetComponent<Target>();								// obj_Target != null Access Target component 
@@ -100,8 +97,7 @@ public class Hole : MonoBehaviour {
 		if(collision.transform.tag == "Ball" && rb == null){									//	OnCollisionEnter with a ball and There is no ball in the hole actualy
 			if(Mission_Kickback){
 				Box_Col.isTrigger = true;
-				if(obj_Game_Manager!=null)
-				if(gameManager)gameManager.PlayMultiLeds(KickbackLedAnimation);							// Choose Led ANimation if it's a kickback mission
+				if(gameManager != null)gameManager.PlayMultiLeds(KickbackLedAnimation);							// Choose Led ANimation if it's a kickback mission
 			}
 			tmp_Ball = collision.gameObject;													
 
@@ -120,9 +116,9 @@ public class Hole : MonoBehaviour {
 					Parent_Manager[j].SendMessage(functionToCall,index);						// Call Parents Mission script
 				}
 			}
-			if(obj_Game_Manager!=null){
-				if(gameManager)gameManager.F_Mode_BONUS_Counter();													// Add +1 to the Bonus counter. Manage by the ManagerGame game object on the hierarchy
-				if(gameManager)gameManager.Add_Score(Points);														// Add points. Manage by the ManagerGame game object on the hierarchy
+			if(gameManager != null){
+				gameManager.F_Mode_BONUS_Counter();													// Add +1 to the Bonus counter. Manage by the ManagerGame game object on the hierarchy
+				gameManager.Add_Score(Points);														// Add points. Manage by the ManagerGame game object on the hierarchy
 			}
 			if(Toy_Enter)toyEnter.PlayAnimationNumber(AnimNunEnter);							// Play Toy if connected
 

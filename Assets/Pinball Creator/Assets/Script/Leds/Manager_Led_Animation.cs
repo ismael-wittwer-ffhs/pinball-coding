@@ -6,7 +6,6 @@ using System;
 
 public class Manager_Led_Animation : MonoBehaviour {
 
-	private GameObject obj_Game_Manager;
 	private ManagerGame gameManager;
 
 	public  GameObject[] obj_Led;
@@ -44,11 +43,7 @@ public class Manager_Led_Animation : MonoBehaviour {
 	private float TimeScale;
 
 	void Start () {
-		if (obj_Game_Manager == null)																		// Connection with the gameObject : "ManagerGame"
-			obj_Game_Manager = GameObject.Find("ManagerGame");
-
-		if(obj_Game_Manager!=null)
-			gameManager = obj_Game_Manager.GetComponent<ManagerGame>();	
+		gameManager = ManagerGame.Instance;																	// Connection with the gameObject : "ManagerGame"
 
 		TimeScale = Time.timeScale;
 		target += timeBetweenTwoLight*TimeScale;
@@ -68,16 +63,16 @@ public class Manager_Led_Animation : MonoBehaviour {
 				}
 				if(count == (list_Led_Pattern[isPlaying_Pattern].pattern.Length+1)){						// Init Animation
 					//Debug.Log("End of the animation : " + this.name);
-					if(obj_Game_Manager!=null)gameManager.checkGlobalAnimationEnded();
+					if(gameManager != null)gameManager.checkGlobalAnimationEnded();
 					count = 0;target = 0;Timer = 0;Led_Anim_isPlaying = false;								// Init script
 					if(b_Mission){
 						SendMessage("Init_Leds_State");														// Init Led Object with the mission's scripts
 					}
-					else if(b_extraBall_or_BallSaver && obj_Game_Manager!=null){														// Special Condition to initialize the BallSaver and Extraball leds after a pattern. 	
+					else if(b_extraBall_or_BallSaver && gameManager != null){														// Special Condition to initialize the BallSaver and Extraball leds after a pattern. 	
 						if(gameManager.b_ExtraBall)Led_Renderer[0].F_ChangeSprite_On();						// We check BallSaver and ExtraBall states directly from ManagerGame.js script
 						else Led_Renderer[0].F_ChangeSprite_Off();											
-
-						if(gameManager.b_Ball_Saver && obj_Game_Manager!=null)Led_Renderer[1].F_ChangeSprite_On();
+						
+						if(gameManager.b_Ball_Saver && gameManager != null)Led_Renderer[1].F_ChangeSprite_On();
 						else Led_Renderer[1].F_ChangeSprite_Off();
 					}
 					else if(b_Multiplier){	
@@ -192,7 +187,7 @@ public class Manager_Led_Animation : MonoBehaviour {
 
 
 	public void init_Multiplier_Leds(){																		// Special Condition to initialize the Multiplier leds  
-		if(obj_Game_Manager!=null){
+		if(gameManager != null){
 			int tmp_multi  = gameManager.multiplier;														// We check Multiplier states directly from ManagerGame.js script 
 			tmp_multi = tmp_multi/2;
 			if(tmp_multi < 1){																					// multiplier = 1 so all the leds are switch off

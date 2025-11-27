@@ -22,7 +22,6 @@ public class Slingshot : MonoBehaviour {
 
 	[Header ("Points when the slingshot is hit")]
 	public int Points = 1000;					// Points you win when the object is hitting 
-	private GameObject obj_Game_Manager;
 	private ManagerGame gameManager;
 
 	[Header ("Connect a led")]
@@ -36,9 +35,7 @@ public class Slingshot : MonoBehaviour {
 
 
 	void Start(){																	//	--> Init
-		obj_Game_Manager = GameObject.Find("ManagerGame");								// Find the gameObject ManagerGame
-		if(obj_Game_Manager!=null)
-			gameManager = obj_Game_Manager.GetComponent<ManagerGame>();					// Access ManagerGame from obj_Game_Manager
+		gameManager = ManagerGame.Instance;											// Access ManagerGame from singleton
 		sound_ = GetComponent<AudioSource>();											// Access AudioSource Component
 
 		if(obj_Led)Led_Renderer = obj_Led.GetComponent<ChangeSpriteRenderer>();		// Access led component if needed

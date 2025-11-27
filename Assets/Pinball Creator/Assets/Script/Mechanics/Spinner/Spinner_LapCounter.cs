@@ -20,13 +20,11 @@ public class Spinner_LapCounter : MonoBehaviour {
 
 	[Header ("Points when the spinner rotate")]
 	public int Points = 1000;								// Points you win when the object is hitting 
-	private GameObject obj_Game_Manager;								// Use to connect the gameObject ManagerGame
-	private ManagerGame gameManager;								// ManagerGame Component from obj_Game_Manager
+	private ManagerGame gameManager;								// ManagerGame Component from singleton
 
 
 	void Start(){														// --> init
-		obj_Game_Manager = GameObject.Find("ManagerGame");					// Find the gameObject ManagerGame
-		gameManager = obj_Game_Manager.GetComponent<ManagerGame>();		// Access ManagerGame from obj_Game_Manager
+		gameManager = ManagerGame.Instance;							// Access ManagerGame from singleton
 		sound_ = GetComponent<AudioSource>();								// Access AudioSource Component
 	}
 

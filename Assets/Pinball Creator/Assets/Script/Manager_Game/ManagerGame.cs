@@ -10,6 +10,12 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class ManagerGame : MonoBehaviour
 {
+    #region --- Singleton ---
+
+    public static ManagerGame Instance { get; private set; }
+
+    #endregion
+
     #region --- Nested Types ---
 
     [Serializable]
@@ -232,6 +238,17 @@ public class ManagerGame : MonoBehaviour
     #endregion
 
     #region --- Unity Methods ---
+
+    private void Awake()
+    {
+        // Singleton setup
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -1655,6 +1672,14 @@ public class ManagerGame : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         if (Loop_AnimDemoPlayfield) PlayMultiLeds(AnimDemoPlayfield); // Play a loop animation until the game Start. 
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 
     #endregion

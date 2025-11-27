@@ -6,14 +6,10 @@ using UnityEngine;
 
 public class Pinball_TriggerForBall : MonoBehaviour {
 
-	private GameObject obj_Game_Manager;											// ManagerGame GameObject
 	private ManagerGame gameManager;											// access ManagerGame component from ManagerGame GameObject on the hierarchy
 
 	void Start(){																	// --> Function Start
-		if (obj_Game_Manager == null)													// Connect the Mission to the gameObject : "ManagerGame"
-			obj_Game_Manager = GameObject.Find("ManagerGame");
-
-		gameManager = obj_Game_Manager.GetComponent<ManagerGame>();					// Access ManagerGame gameComponent from obj_Game_Manager
+		gameManager = ManagerGame.Instance;										// Access ManagerGame gameComponent from singleton
 	}
 
 	void OnTriggerEnter (Collider other) {										// --> Function OnTriggerEnter

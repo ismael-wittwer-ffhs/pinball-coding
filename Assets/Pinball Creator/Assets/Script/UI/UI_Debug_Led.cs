@@ -8,7 +8,6 @@ public class UI_Debug_Led : MonoBehaviour {
 
 	public Text Gui_Txt_Timer;						// Connect a UI.Text
 
-	private GameObject obj_Game_Manager;				// Represent Object ManagerGame on the hierarchy
 	private MissionIndex missionIndex;					// Used to Access Mission_Index component (You find Mission_Index.js on each Mission)
 	private ManagerGame gameManager;					// Used to Access ManagerGame component (You find ManagerGame.js on ManagerGame object on the hierachy)
 
@@ -27,9 +26,7 @@ public class UI_Debug_Led : MonoBehaviour {
 
 	void Start () {
 		if(Global_Led){
-			if (obj_Game_Manager == null)									// Connect the Mission to the gameObject : "ManagerGame"
-				obj_Game_Manager = GameObject.Find("ManagerGame");
-			gameManager = obj_Game_Manager.GetComponent<ManagerGame>();	// --> Connect the Mission to <ManagerGame>() component. 
+			gameManager = ManagerGame.Instance;								// --> Connect the Mission to <ManagerGame>() component. 
 			HowManyAnim = gameManager.HowManyAnimation();
 		}
 		if(Group_Led){

@@ -19,8 +19,7 @@ public class Bumper_js : MonoBehaviour {
 
 	[Header ("Points when the bumper is hit")]
 	public int Points = 1000;					// Points you win when the object is hitting 
-	private GameObject obj_Game_Manager;					// Use to connect the gameObject ManagerGame
-	private ManagerGame gameManager;					// ManagerGame Component from obj_Game_Manager
+	private ManagerGame gameManager;					// ManagerGame Component from singleton
 
 	[Header ("LED connected to the bumper")]
 	public GameObject obj_Led;					// Usefull if you want a led blinked when the slingshot is hitting
@@ -38,9 +37,7 @@ public class Bumper_js : MonoBehaviour {
 
 
 	void Start(){																			// --> function Start
-		obj_Game_Manager = GameObject.Find("ManagerGame");										// Find the gameObject ManagerGame
-		if(obj_Game_Manager!=null)
-			gameManager = obj_Game_Manager.GetComponent<ManagerGame>();							// Access ManagerGame from obj_Game_Manager
+		gameManager = ManagerGame.Instance;													// Access ManagerGame from singleton
 		sound_ = GetComponent<AudioSource>();													// Access AudioSource Component
 
 		if(obj_Led)Led_Renderer = obj_Led.GetComponent<ChangeSpriteRenderer>();				// If obj_Led = true; Access ChangeSpriteRenderer Component
@@ -62,9 +59,9 @@ public class Bumper_js : MonoBehaviour {
 			Parent_Manager[j].SendMessage(functionToCall,index);								// Call Parents Mission script
 		}
 
-		if(obj_Game_Manager!=null){
-			if(gameManager)gameManager.F_Mode_BONUS_Counter();													// Send Message to the gameManager(ManagerGame.js) Add 1 to BONUS_Global_Hit_Counter
-			if(gameManager)gameManager.Add_Score(Points);														// Send Message to the gameManager(ManagerGame.js) Add Points to Add_Score
+		if(gameManager != null){
+			gameManager.F_Mode_BONUS_Counter();													// Send Message to the gameManager(ManagerGame.js) Add 1 to BONUS_Global_Hit_Counter
+			gameManager.Add_Score(Points);														// Send Message to the gameManager(ManagerGame.js) Add Points to Add_Score
 		}
 		if(obj_Led)Led_Renderer.Led_On_With_Timer(.2f);											// If Obj_Led. Switch On the Led during .2 seconds
 		if(Toy)toy.PlayAnimationNumber(AnimNum);												// Play toy animation if needed

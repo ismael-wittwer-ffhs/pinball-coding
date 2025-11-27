@@ -12,7 +12,6 @@ public class Mission_Start : MonoBehaviour {
 	private bool DownLeft = false;
 	private bool DownRight = false;
 
-	private GameObject obj_Game_Manager;						// Represent Object ManagerGame on the hierarchy
 	private MissionIndex missionIndex;						// Used to Access Mission_Index component (You find Mission_Index.js on each Mission)
 	private ManagerGame gameManager;						// Used to Access ManagerGame component (You find ManagerGame.js on ManagerGame object on the hierachy)
 	private AudioSource sound_;
@@ -784,9 +783,6 @@ public class Mission_Start : MonoBehaviour {
 
 	//////// FUNCTION FIRST : START /////////
 	public void first(){																	// --> Initialisation when scene start
-		if (obj_Game_Manager == null)														// Connect the Mission to the gameObject : "ManagerGame"
-			obj_Game_Manager = GameObject.Find("ManagerGame");
-
 		obj_Led = new GameObject[obj_Grp_1_Leds.Length + obj_Grp_2_Leds.Length];		// --> Put obj_Grp_1_Leds + obj_Grp_2_Leds inside obj_Led
 		for(var l =0;l<obj_Grp_1_Leds.Length;l++){															
 			obj_Led[l] = obj_Grp_1_Leds[l];
@@ -800,7 +796,7 @@ public class Mission_Start : MonoBehaviour {
 		}
 
 		missionIndex = GetComponent<MissionIndex>();									// --> Connect the Mission to <MissionIndex>() component. 
-		gameManager = obj_Game_Manager.GetComponent<ManagerGame>();					// --> Connect the Mission to <ManagerGame>() component. 
+		gameManager = ManagerGame.Instance;											// --> Connect the Mission to <ManagerGame>() component. 
 
 
 		arr_led_State.Clear ();
