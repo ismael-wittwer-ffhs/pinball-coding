@@ -13,14 +13,14 @@ public class switchMech : MonoBehaviour {
 
 	public  int Points = 1000;			// Points you win when the object is hitting 
 	private GameObject obj_Game_Manager;
-	private Manager_Game gameManager;
+	private ManagerGame gameManager;
 
 	void Awake(){
 		Physics.IgnoreLayerCollision(8,12, true);
 	}
 	void Start(){
-		obj_Game_Manager = GameObject.Find("Manager_Game");
-		gameManager = obj_Game_Manager.GetComponent<Manager_Game>();	
+		obj_Game_Manager = GameObject.Find("ManagerGame");
+		gameManager = obj_Game_Manager.GetComponent<ManagerGame>();	
 		sound_ = GetComponent<AudioSource>();
 	}
 

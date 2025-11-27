@@ -1,4 +1,4 @@
-﻿// UI_Call_A_Function: Description : Use by the UI button to connect Manager_Game to the button and to call a function
+﻿// UI_Call_A_Function: Description : Use by the UI button to connect ManagerGame to the button and to call a function
 
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class UI_Call_A_Function : MonoBehaviour {
 
-	public Manager_Game manager_Game;
+	public ManagerGame manager_Game;
 	public GameObject obj_UI;
 	public GameObject obj_UI2;
 	public GameObject obj_PauseMobile;
@@ -18,8 +18,8 @@ public class UI_Call_A_Function : MonoBehaviour {
 
 
 	void Start () {
-		GameObject tmp = GameObject.Find("Manager_Game");
-		if(tmp!=null)manager_Game = tmp.GetComponent<Manager_Game>();
+		GameObject tmp = GameObject.Find("ManagerGame");
+		if(tmp!=null)manager_Game = tmp.GetComponent<ManagerGame>();
 
 
 		tmp = GameObject.Find("G_UI_Game_Interface_Mobile");

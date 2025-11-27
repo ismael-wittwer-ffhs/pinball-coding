@@ -12,9 +12,9 @@ public class Mission_Start : MonoBehaviour {
 	private bool DownLeft = false;
 	private bool DownRight = false;
 
-	private GameObject obj_Game_Manager;						// Represent Object Manager_Game on the hierarchy
+	private GameObject obj_Game_Manager;						// Represent Object ManagerGame on the hierarchy
 	private MissionIndex missionIndex;						// Used to Access Mission_Index component (You find Mission_Index.js on each Mission)
-	private Manager_Game gameManager;						// Used to Access Manager_Game component (You find Manager_Game.js on Manager_Game object on the hierachy)
+	private ManagerGame gameManager;						// Used to Access ManagerGame component (You find ManagerGame.js on ManagerGame object on the hierachy)
 	private AudioSource sound_;
 	private bool a_Sound_is_Playing_When_Pause_Game_Start = false;
 	[Header ("|->See Documentation for more informations about Mission<-|", order = 0)	]
@@ -46,7 +46,7 @@ public class Mission_Start : MonoBehaviour {
 	public bool SpecificText = false;					// If you want a specific text appear letter by letter on LCD Screen. Use for rollover Grp1
 	private string Input_name_Left = "m";						// Use with Rollover_Type3_Grp_1. 
 	private string Input_name_Right = "q";						// Use with Rollover_Type3_Grp_1. 
-	private Manager_Input_Setting gameManager_Input;			// access Manager_Input_Setting component from Manager_Game GameObject
+	private ManagerInputSetting gameManager_Input;			// access ManagerInputSetting component from ManagerGame GameObject
 
 	[Header ("Type : Bumper")]											// --> 
 	public bool Grp_1_Bumper = false;
@@ -158,7 +158,7 @@ public class Mission_Start : MonoBehaviour {
 
 
 
-	[Header ("--> Skillshot Mission")]									// --> Skillshot Mission . Skillshot work in association with the Plunger(Spring object) and Manager_Game on the hierarchy 
+	[Header ("--> Skillshot Mission")]									// --> Skillshot Mission . Skillshot work in association with the Plunger(Spring object) and ManagerGame on the hierarchy 
 	public bool b_SkillShot = false;					// true if it is the skillshot mission
 	public int Skillshot_Target_num = 1;							// Index number of the object you want to choose to be the target
 	public GameObject Led_SkillShot;						// The led connected to the Skillshot mission
@@ -172,7 +172,7 @@ public class Mission_Start : MonoBehaviour {
 	private bool b_Skillshot_OnAir = false;					// Use to prevent the skillshot timer restart if the ball is not correctly ejected from the plunger 
 
 	[Header ("--> Choose a led animation (or not) for each mission part")]// --> Animation that could be played for PART 1(before), PART 2(the mission Start), PART 3 (during the Mission), Mission Complete or fail
-	// Next section refer to the animations created on script Manager_Game.js (Global Manager Leds pattern)						
+	// Next section refer to the animations created on script ManagerGame.js (Global Manager Leds pattern)						
 	public int LED_Anim_Num_Part1 = 0;							// if LED_Anim_Num_Part1 = -1 no animation is playing/
 	public int LED_Anim_Num_Part2 = 0;							// if LED_Anim_Num_Part2 = -1 no animation is playing/
 	public int LED_Anim_Num_Part3 = 0;							// if LED_Anim_Num_Part3 = -1 no animation is playing/
@@ -353,7 +353,7 @@ public class Mission_Start : MonoBehaviour {
 		init_Ended = true;
 	}
 
-	public void Mission_Intialisation_StartGame(){											// --> Function to initialize a mission when a game is starting. Call by Manager_Game.js
+	public void Mission_Intialisation_StartGame(){											// --> Function to initialize a mission when a game is starting. Call by ManagerGame.js
 		init_Ended = false;
 		if(Grp_1_Target){			Mission_Intialisation_Target_Gp1();}
 		else if(Grp_1_Rollover){	Mission_Intialisation_Rollover_Gp1();}
@@ -480,10 +480,10 @@ public class Mission_Start : MonoBehaviour {
 
 	//////// FUNCTION WHEN multi-ball id ENDED ////////
 	// This function is used to initialize a mission that uses the multi-ball
-	// Multi ball is manage by the manager_Game Object on the hierarchy (see script Manager_Game.js).
+	// Multi ball is manage by the manager_Game Object on the hierarchy (see script ManagerGame.js).
 	// How to start a multi ball :
 	// 1) call gameManager.F_Mission_MultiBall(missionIndex.F_index(), nbr_of_Ball : int) to start multi ball
-	// 2) When a multi-ball end the mission receved a message (Mode_MultiBall_Ended()) from manager_Game (search Mission Multi Ball stop on  Manager_Game.js). 
+	// 2) When a multi-ball end the mission receved a message (Mode_MultiBall_Ended()) from manager_Game (search Mission Multi Ball stop on  ManagerGame.js). 
 	public void Mode_MultiBall_Ended(){													// --> Call by manager_Game on the hierachy
 		Play_LedAnim_ObjAnim_LCDAnim_Fail();											// Play led animation; object animation or lcd animation							
 		if(Mission_Txt.Length > 1
@@ -629,7 +629,7 @@ public class Mission_Start : MonoBehaviour {
 		missionTimer = 0;															
 	}
 
-	public void Skillshot_Mission(){														// --> Call by the script Spring_Launcher.js on the object Spring on the hierarchy.
+	public void Skillshot_Mission(){														// --> Call by the script SpringLauncher.js on the object Spring on the hierarchy.
 		if(b_Mission_SkillShot && !b_Skillshot_OnAir){									// Use to prevent the skillshot timer restart if the ball is not correctly ejected from the plunger				
 			F_SkillshotTimer(SkillshotDuration);										// start the skillshot timer
 			b_Skillshot_OnAir = true;													// The timer can not start twice
@@ -787,8 +787,8 @@ public class Mission_Start : MonoBehaviour {
 
 	//////// FUNCTION FIRST : START /////////
 	public void first(){																	// --> Initialisation when scene start
-		if (obj_Game_Manager == null)														// Connect the Mission to the gameObject : "Manager_Game"
-			obj_Game_Manager = GameObject.Find("Manager_Game");
+		if (obj_Game_Manager == null)														// Connect the Mission to the gameObject : "ManagerGame"
+			obj_Game_Manager = GameObject.Find("ManagerGame");
 
 		obj_Led = new GameObject[obj_Grp_1_Leds.Length + obj_Grp_2_Leds.Length];		// --> Put obj_Grp_1_Leds + obj_Grp_2_Leds inside obj_Led
 		for(var l =0;l<obj_Grp_1_Leds.Length;l++){															
@@ -803,7 +803,7 @@ public class Mission_Start : MonoBehaviour {
 		}
 
 		missionIndex = GetComponent<MissionIndex>();									// --> Connect the Mission to <MissionIndex>() component. 
-		gameManager = obj_Game_Manager.GetComponent<Manager_Game>();					// --> Connect the Mission to <Manager_Game>() component. 
+		gameManager = obj_Game_Manager.GetComponent<ManagerGame>();					// --> Connect the Mission to <ManagerGame>() component. 
 
 
 		arr_led_State.Clear ();
@@ -832,10 +832,10 @@ public class Mission_Start : MonoBehaviour {
 			GameObject[] gos;			
 			gos = GameObject.FindGameObjectsWithTag("Plunger"); 						 
 			foreach (GameObject go in gos)  { 
-				go.SendMessage("Connect_Plunger_To_Skillshot_Mission",this.gameObject);	// you need to tell the PLUNGER that is the skillshot mission	Spring_Launcher.js	on gameObject Spring_Launcher on the hierarchy
+				go.SendMessage("Connect_Plunger_To_Skillshot_Mission",this.gameObject);	// you need to tell the PLUNGER that is the skillshot mission	SpringLauncher.js	on gameObject SpringLauncher on the hierarchy
 			} 
 
-			gameManager.F_Init_Skillshot_Mission(this.gameObject);						// you need to tell the Manager_Game that is the skillshot mission	 
+			gameManager.F_Init_Skillshot_Mission(this.gameObject);						// you need to tell the ManagerGame that is the skillshot mission	 
 
 			if(Led_SkillShot)															// if a led is connected to the mission
 				led_SkillShot= Led_SkillShot.GetComponent<ChangeSpriteRenderer>();		// Access ChangeSpriteRenderer component from Led_SkillShot GameObject
@@ -911,7 +911,7 @@ public class Mission_Start : MonoBehaviour {
 			Led_Part1_InProgress_State = 0;
 		}
 
-		gameManager_Input = obj_Game_Manager.GetComponent<Manager_Input_Setting>();	// Access Manager_Input_Setting component from object Manager_Game on the hierarchy 
+		gameManager_Input = obj_Game_Manager.GetComponent<ManagerInputSetting>();	// Access ManagerInputSetting component from object ManagerGame on the hierarchy 
 		Input_name_Left = gameManager_Input.F_flipper_Left();							
 		Input_name_Right = gameManager_Input.F_flipper_Right();
 
@@ -937,7 +937,7 @@ public class Mission_Start : MonoBehaviour {
 	}
 
 	public void InitLedMission(){															// Init led that indicate that mission is complete
-		if(Led_Mission_Complete)														// This function is called by the Manager_Game.js when player is Game Over
+		if(Led_Mission_Complete)														// This function is called by the ManagerGame.js when player is Game Over
 			Led_Mission_Renderer.Led_Mission_Complete("Off");
 	}
 

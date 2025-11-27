@@ -7,7 +7,7 @@ using System;
 public class Manager_Led_Animation : MonoBehaviour {
 
 	private GameObject obj_Game_Manager;
-	private Manager_Game gameManager;
+	private ManagerGame gameManager;
 
 	public  GameObject[] obj_Led;
 	private ChangeSpriteRenderer[] Led_Renderer;
@@ -35,20 +35,20 @@ public class Manager_Led_Animation : MonoBehaviour {
 	[Header ("Led Animation associated only with Mission Led_Mission_InProgress and Led_Part1_InProgress")]	
 	public bool b_Mission_Leds_Mission_Part = false;		
 	[Header ("Led Animation associated only with the Group_Leds_ExtraBall_BallSaver")]	
-	public bool b_extraBall_or_BallSaver = false;					// Special condition for extraBall and BallSaver Leds. ExtraBall and ballSaver are manage by the Manager_Game.js script
+	public bool b_extraBall_or_BallSaver = false;					// Special condition for extraBall and BallSaver Leds. ExtraBall and ballSaver are manage by the ManagerGame.js script
 	[Header ("Led Animation associated only with the Group_Leds_Multiplier")]
-	public bool b_Multiplier = false;								// Special condition for Multiplier. Multipiler is manage by the Manager_Game.js script
+	public bool b_Multiplier = false;								// Special condition for Multiplier. Multipiler is manage by the ManagerGame.js script
 
 
 	private bool b_Pause = false; 
 	private float TimeScale;
 
 	void Start () {
-		if (obj_Game_Manager == null)																		// Connection with the gameObject : "Manager_Game"
-			obj_Game_Manager = GameObject.Find("Manager_Game");
+		if (obj_Game_Manager == null)																		// Connection with the gameObject : "ManagerGame"
+			obj_Game_Manager = GameObject.Find("ManagerGame");
 
 		if(obj_Game_Manager!=null)
-			gameManager = obj_Game_Manager.GetComponent<Manager_Game>();	
+			gameManager = obj_Game_Manager.GetComponent<ManagerGame>();	
 
 		TimeScale = Time.timeScale;
 		target += timeBetweenTwoLight*TimeScale;
@@ -74,7 +74,7 @@ public class Manager_Led_Animation : MonoBehaviour {
 						SendMessage("Init_Leds_State");														// Init Led Object with the mission's scripts
 					}
 					else if(b_extraBall_or_BallSaver && obj_Game_Manager!=null){														// Special Condition to initialize the BallSaver and Extraball leds after a pattern. 	
-						if(gameManager.b_ExtraBall)Led_Renderer[0].F_ChangeSprite_On();						// We check BallSaver and ExtraBall states directly from Manager_Game.js script
+						if(gameManager.b_ExtraBall)Led_Renderer[0].F_ChangeSprite_On();						// We check BallSaver and ExtraBall states directly from ManagerGame.js script
 						else Led_Renderer[0].F_ChangeSprite_Off();											
 
 						if(gameManager.b_Ball_Saver && obj_Game_Manager!=null)Led_Renderer[1].F_ChangeSprite_On();
@@ -193,7 +193,7 @@ public class Manager_Led_Animation : MonoBehaviour {
 
 	public void init_Multiplier_Leds(){																		// Special Condition to initialize the Multiplier leds  
 		if(obj_Game_Manager!=null){
-			int tmp_multi  = gameManager.multiplier;														// We check Multiplier states directly from Manager_Game.js script 
+			int tmp_multi  = gameManager.multiplier;														// We check Multiplier states directly from ManagerGame.js script 
 			tmp_multi = tmp_multi/2;
 			if(tmp_multi < 1){																					// multiplier = 1 so all the leds are switch off
 				for(var i = 0;i< obj_Led.Length;i++){

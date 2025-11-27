@@ -1,94 +1,97 @@
-﻿// Spring_Launcher: Manages the spring launcher (plunger) using Unity's new Input System
+﻿// SpringLauncher: Manages the spring launcher (plunger) using Unity's new Input System
+
+using System;
 using UnityEngine;
-using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
-public class Spring_Launcher : MonoBehaviour
+public class SpringLauncher : MonoBehaviour
 {
-    [Header("Manual or Auto launcher")]
-    public bool Auto_Mode = false;
+    #region --- Exposed Fields ---
 
-    private Rigidbody rb_Ball;
-    private bool Activate = false;
-
-    [Header("Force apply to the ball")]
-    public float _Spring_Force = 7;
-    private float tmp_Spring_Force;
+    public AudioClip Sfx_Kick;
 
     [Header("Sound fx")]
     public AudioClip Sfx_Pull;
-    private bool Play_Once = false;
-    public AudioClip Sfx_Kick;
-    private AudioSource sound_;
 
-    private float Spring_Max_Position = 0;
-    private float Spring_Min_Position = -.6f;
+    [Header("Manual or Auto launcher")]
+    public bool Auto_Mode;
 
-    private Camera_Movement camera_Movement;
+    public bool springIsPulled;
+
+    public BoxCollider _BoxCollider;
+
+    [Header("Force apply to the ball")]
+    public float _Spring_Force = 7;
 
     [Header("Spring force to change cam view")]
     public float Cam_Change_Min = .4f;
 
     [Header("Time To wait before player could launch the ball")]
     public float Timer = .5f;
-    private float tmp_Timer = 0;
-    private bool b_Timer = false;
-
-    private bool Ball_ExitThePlunger = false;
-
-    private bool b_Debug = false;
-    private bool b_touch = false;
-    private bool b_Tilt = false;
-    private GameObject obj_Mission_SkillShot;
-
-    public bool springIsPulled = false;
-
-    public BoxCollider _BoxCollider;
 
     public GameObject Mobile_Collider_zl;
 
+    #endregion
+
+    #region --- Private Fields ---
+
+    private AudioSource sound_;
+    private bool Activate;
+
+    private bool b_Debug;
+    private bool b_Tilt;
+    private bool b_Timer;
+    private bool b_touch;
+
+    private bool Ball_ExitThePlunger;
+    private bool Play_Once;
+
+    private Camera_Movement camera_Movement;
+
+    private float Spring_Max_Position = 0;
+    private float Spring_Min_Position = -.6f;
+    private float tmp_Spring_Force;
+    private float tmp_Timer;
+    private GameObject obj_Mission_SkillShot;
+
     private PinballInputManager inputManager;
 
-    void Start()
+    private Rigidbody rb_Ball;
+
+    #endregion
+
+    #region --- Unity Methods ---
+
+    private void Start()
     {
         // Init Camera
-        GameObject cameraBoard = GameObject.Find("Main Camera");
-        if (!b_Debug && cameraBoard != null)
-        {
-            camera_Movement = cameraBoard.GetComponent<Camera_Movement>();
-        }
+        var cameraBoard = GameObject.Find("Main Camera");
+        if (!b_Debug && cameraBoard != null) camera_Movement = cameraBoard.GetComponent<Camera_Movement>();
 
         sound_ = GetComponent<AudioSource>();
         inputManager = PinballInputManager.Instance;
 
-        if (inputManager == null)
-        {
-            Debug.LogWarning("Spring_Launcher: PinballInputManager not found. Make sure it exists in the scene.");
-        }
+        if (inputManager == null) Debug.LogWarning("SpringLauncher: PinballInputManager not found. Make sure it exists in the scene.");
     }
 
-    void Update()
+    private void Update()
     {
         if (rb_Ball)
         {
-            if (Mobile_Collider_zl && !Mobile_Collider_zl.activeInHierarchy)
-            {
-                Mobile_Collider_zl.SetActive(true);
-            }
+            if (Mobile_Collider_zl && !Mobile_Collider_zl.activeInHierarchy) Mobile_Collider_zl.SetActive(true);
 
             // Update touch state
             UpdateTouchInput();
 
             // Auto Mode: press to launch
             if (Activate && Auto_Mode)
-            {
                 if (WasPlungerPressed() || b_touch)
                 {
                     Ball_AddForceExplosion();
                     if (!b_Debug && camera_Movement) camera_Movement.PlayIdle();
                     F_Desactivate();
                 }
-            }
 
             // Manual Mode: hold to pull, release to launch
             if (Activate && !Auto_Mode)
@@ -114,6 +117,7 @@ public class Spring_Launcher : MonoBehaviour
 
                         springIsPulled = true;
                     }
+
                     tmp_Spring_Force = _Spring_Force * .5f * transform.localPosition.z * transform.localPosition.z;
                 }
                 else
@@ -134,16 +138,14 @@ public class Spring_Launcher : MonoBehaviour
                                 sound_.Stop();
                                 Play_Once = false;
                             }
+
                             springIsPulled = false;
                             Ball_AddForceExplosion();
                         }
                     }
                 }
 
-                if (Ball_ExitThePlunger && transform.localPosition.z == 0)
-                {
-                    F_Desactivate();
-                }
+                if (Ball_ExitThePlunger && transform.localPosition.z == 0) F_Desactivate();
             }
             else if (!Activate && !Auto_Mode)
             {
@@ -156,10 +158,7 @@ public class Spring_Launcher : MonoBehaviour
                         Mathf.MoveTowards(transform.localPosition.z, Spring_Max_Position, 15 * Time.deltaTime)
                     );
 
-                    if (transform.localPosition.z == 0)
-                    {
-                        Play_Once = false;
-                    }
+                    if (transform.localPosition.z == 0) Play_Once = false;
                 }
             }
 
@@ -179,96 +178,35 @@ public class Spring_Launcher : MonoBehaviour
             if (b_Tilt && rb_Ball)
             {
                 rb_Ball.AddForce(transform.forward * _Spring_Force, ForceMode.VelocityChange);
-                if (!b_Debug && camera_Movement) camera_Movement.PlayIdle();
+                if (!b_Debug          && camera_Movement) camera_Movement.PlayIdle();
                 if (!sound_.isPlaying && Sfx_Kick) sound_.PlayOneShot(Sfx_Kick);
                 rb_Ball = null;
             }
         }
         else
         {
-            if (Mobile_Collider_zl && Mobile_Collider_zl.activeInHierarchy)
-            {
-                Mobile_Collider_zl.SetActive(false);
-            }
+            if (Mobile_Collider_zl && Mobile_Collider_zl.activeInHierarchy) Mobile_Collider_zl.SetActive(false);
         }
     }
 
-    private void UpdateTouchInput()
-    {
-        bool touchActive = false;
+    #endregion
 
-        foreach (var touch in Touch.activeTouches)
+    #region --- Methods ---
+
+    /// <summary>
+    /// Activate plunger from external script. Call via SendMessage("ActivatePlunger")
+    /// </summary>
+    public void ActivatePlunger()
+    {
+        if (!sound_.isPlaying && Sfx_Pull && !Play_Once)
         {
-            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
-            {
-                Ray ray = Camera.main.ScreenPointToRay(touch.screenPosition);
-                if (Physics.Raycast(ray, out RaycastHit hit, 100))
-                {
-                    if (hit.transform.name == "Mobile_Collider" || hit.transform.name == "Mobile_Collider_zl")
-                    {
-                        touchActive = true;
-                    }
-                }
-            }
-            else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Moved ||
-                     touch.phase == UnityEngine.InputSystem.TouchPhase.Stationary)
-            {
-                // Keep touch active while held
-                if (b_touch) touchActive = true;
-            }
+            sound_.clip = Sfx_Pull;
+            sound_.volume = .7f;
+            sound_.Play();
+            Play_Once = true;
         }
 
-        // Also check PinballInputManager for generic plunger touch area
-        if (inputManager != null && inputManager.PlungerTouched)
-        {
-            touchActive = true;
-        }
-
-        b_touch = touchActive;
-
-        // Reset when no touches
-        if (Touch.activeTouches.Count == 0)
-        {
-            b_touch = false;
-        }
-    }
-
-    private bool IsPlungerHeld()
-    {
-        if (inputManager == null) return false;
-        return inputManager.IsPlungerHeld();
-    }
-
-    private bool WasPlungerPressed()
-    {
-        if (inputManager == null) return false;
-        return inputManager.WasPlungerPressed();
-    }
-
-    public void F_Activate()
-    {
-        b_Timer = true;
-        Ball_ExitThePlunger = false;
-        if (_BoxCollider) _BoxCollider.enabled = true;
-    }
-
-    public void F_Desactivate()
-    {
-        Activate = false;
-        if (_BoxCollider) _BoxCollider.enabled = false;
-    }
-
-    public void F_Activate_After_Tilt()
-    {
-        b_Timer = true;
-        Ball_ExitThePlunger = false;
-        b_Tilt = false;
-        if (_BoxCollider) _BoxCollider.enabled = true;
-    }
-
-    public void Tilt_Mode()
-    {
-        b_Tilt = true;
+        b_touch = true;
     }
 
     public void Ball_AddForceExplosion()
@@ -282,10 +220,7 @@ public class Spring_Launcher : MonoBehaviour
                 {
                     if (camera_Movement) camera_Movement.PlayIdle();
                     Ball_ExitThePlunger = true;
-                    if (obj_Mission_SkillShot)
-                    {
-                        obj_Mission_SkillShot.SendMessage("Skillshot_Mission");
-                    }
+                    if (obj_Mission_SkillShot) obj_Mission_SkillShot.SendMessage("Skillshot_Mission");
                 }
             }
             else
@@ -311,29 +246,9 @@ public class Spring_Launcher : MonoBehaviour
         rb_Ball = rb_obj;
     }
 
-    public void F_Debug()
-    {
-        b_Debug = true;
-    }
-
     public void Connect_Plunger_To_Skillshot_Mission(GameObject obj)
     {
         obj_Mission_SkillShot = obj;
-    }
-
-    /// <summary>
-    /// Activate plunger from external script. Call via SendMessage("ActivatePlunger")
-    /// </summary>
-    public void ActivatePlunger()
-    {
-        if (!sound_.isPlaying && Sfx_Pull && !Play_Once)
-        {
-            sound_.clip = Sfx_Pull;
-            sound_.volume = .7f;
-            sound_.Play();
-            Play_Once = true;
-        }
-        b_touch = true;
     }
 
     /// <summary>
@@ -344,16 +259,87 @@ public class Spring_Launcher : MonoBehaviour
         b_touch = false;
     }
 
-    #region Legacy Compatibility (can be removed after full migration)
+    public void F_Activate()
+    {
+        b_Timer = true;
+        Ball_ExitThePlunger = false;
+        if (_BoxCollider) _BoxCollider.enabled = true;
+    }
+
+    public void F_Activate_After_Tilt()
+    {
+        b_Timer = true;
+        Ball_ExitThePlunger = false;
+        b_Tilt = false;
+        if (_BoxCollider) _BoxCollider.enabled = true;
+    }
+
+    public void F_Debug()
+    {
+        b_Debug = true;
+    }
+
+    public void F_Desactivate()
+    {
+        Activate = false;
+        if (_BoxCollider) _BoxCollider.enabled = false;
+    }
 
     /// <summary>
     /// Legacy method - no longer needed with new Input System.
     /// Kept for backward compatibility during migration.
     /// </summary>
-    [System.Obsolete("No longer needed with new Input System. Will be removed in future version.")]
+    [Obsolete("No longer needed with new Input System. Will be removed in future version.")]
     public void F_InputGetButton()
     {
         // No-op: New input system handles this automatically
+    }
+
+    public void Tilt_Mode()
+    {
+        b_Tilt = true;
+    }
+
+    private bool IsPlungerHeld()
+    {
+        if (inputManager == null) return false;
+        return inputManager.IsPlungerHeld();
+    }
+
+    private void UpdateTouchInput()
+    {
+        var touchActive = false;
+
+        foreach (var touch in Touch.activeTouches)
+        {
+            if (touch.phase == TouchPhase.Began)
+            {
+                var ray = Camera.main.ScreenPointToRay(touch.screenPosition);
+                if (Physics.Raycast(ray, out var hit, 100))
+                    if (hit.transform.name == "Mobile_Collider" || hit.transform.name == "Mobile_Collider_zl")
+                        touchActive = true;
+            }
+            else if (touch.phase == TouchPhase.Moved ||
+                     touch.phase == TouchPhase.Stationary)
+            {
+                // Keep touch active while held
+                if (b_touch) touchActive = true;
+            }
+        }
+
+        // Also check PinballInputManager for generic plunger touch area
+        if (inputManager != null && inputManager.PlungerTouched) touchActive = true;
+
+        b_touch = touchActive;
+
+        // Reset when no touches
+        if (Touch.activeTouches.Count == 0) b_touch = false;
+    }
+
+    private bool WasPlungerPressed()
+    {
+        if (inputManager == null) return false;
+        return inputManager.WasPlungerPressed();
     }
 
     #endregion

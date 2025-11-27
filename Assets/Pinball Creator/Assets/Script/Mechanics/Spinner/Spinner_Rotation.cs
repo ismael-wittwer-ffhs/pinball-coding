@@ -10,7 +10,7 @@ public class Spinner_Rotation : MonoBehaviour {
 	public AudioClip Sfx_Hit;
 	private AudioSource  sound_;
 	//private GameObject obj_Game_Manager;
-	//private Manager_Game gameManager;
+	//private ManagerGame gameManager;
 	private bool b_Pause = false;
 
 	void Start(){
@@ -20,8 +20,8 @@ public class Spinner_Rotation : MonoBehaviour {
 		hinge.motor = motor;
 		hinge.useMotor = true;
 
-		//obj_Game_Manager = GameObject.Find("Manager_Game");
-		//gameManager = obj_Game_Manager.GetComponent<Manager_Game>();	
+		//obj_Game_Manager = GameObject.Find("ManagerGame");
+		//gameManager = obj_Game_Manager.GetComponent<ManagerGame>();	
 		sound_ = GetComponent<AudioSource>();
 	}
 

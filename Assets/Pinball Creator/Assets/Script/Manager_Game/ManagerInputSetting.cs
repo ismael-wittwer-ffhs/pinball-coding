@@ -1,8 +1,8 @@
-﻿// Manager_Input_Setting: Legacy input settings wrapper
+﻿// ManagerInputSetting: Legacy input settings wrapper
 // Note: This class is now simplified as input is handled by PinballInputManager
 using UnityEngine;
 
-public class Manager_Input_Setting : MonoBehaviour
+public class ManagerInputSetting : MonoBehaviour
 {
     [Header("Debug Shortcuts")]
     [SerializeField] private bool PinballDebugMode = false;

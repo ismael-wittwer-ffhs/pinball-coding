@@ -58,7 +58,7 @@ public class Blink : MonoBehaviour {
 
 
 
-	public void Pause_Blinking(){																	// This function is called by Manager_Game.js (line 355) when you want to pause the game
+	public void Pause_Blinking(){																	// This function is called by ManagerGame.js (line 355) when you want to pause the game
 		if(b_Pause_Blinking) b_Pause_Blinking = false;											// Pause stop
 		else b_Pause_Blinking = true;															// Pause start
 	}

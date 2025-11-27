@@ -31,7 +31,7 @@ public class ChangeSpriteRenderer : MonoBehaviour {
 
 
 	void Awake(){
-		if(b_Blinking)this.transform.tag = "Blink"; 					// this tag is use by the script Blink.js on Manager_Game on the hierachy. 
+		if(b_Blinking)this.transform.tag = "Blink"; 					// this tag is use by the script Blink.js on ManagerGame on the hierachy. 
 	}
 
 	void Start(){													// --> Init Led

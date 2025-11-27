@@ -15,8 +15,8 @@ public class Rollovers : MonoBehaviour {
 
 	[Header ("Points when ball go through rollover")]
 	public int Points = 1000;			// Points you win when the object is hitting 
-	private GameObject obj_Game_Manager;			// Use to connect the gameObject Manager_Game
-	private Manager_Game gameManager;			// Manager_Game Component from obj_Game_Manager
+	private GameObject obj_Game_Manager;			// Use to connect the gameObject ManagerGame
+	private ManagerGame gameManager;			// ManagerGame Component from obj_Game_Manager
 
 	[Header ("Toy connected to the Rollover")]			// Connect a GameObject or paticule system with the script Toys.js attached
 	public GameObject Toy;
@@ -24,9 +24,9 @@ public class Rollovers : MonoBehaviour {
 	public int AnimNum = 0;
 
 	void Start(){															// --> Init
-		obj_Game_Manager = GameObject.Find("Manager_Game");						// Find the gameObject Manager_Game
+		obj_Game_Manager = GameObject.Find("ManagerGame");						// Find the gameObject ManagerGame
 		if(obj_Game_Manager!=null)
-			gameManager = obj_Game_Manager.GetComponent<Manager_Game>();			// Access Manager_Game from obj_Game_Manager
+			gameManager = obj_Game_Manager.GetComponent<ManagerGame>();			// Access ManagerGame from obj_Game_Manager
 		sound_ = GetComponent<AudioSource>();									// Access AudioSource Component
 		if(Toy)toy = Toy.GetComponent<Toys>();									// access Toys component if needed
 	}
@@ -39,8 +39,8 @@ public class Rollovers : MonoBehaviour {
 
 			if(!sound_.isPlaying && Sfx_Hit)sound_.PlayOneShot(Sfx_Hit);		// Play a sound if needed
 			if(obj_Game_Manager!=null){
-				if(gameManager)gameManager.F_Mode_BONUS_Counter();									// Send Message to the gameManager(Manager_Game.js) Add 1 to BONUS_Global_Hit_Counter
-				if(gameManager)gameManager.Add_Score(Points);										// Send Message to the gameManager(Manager_Game.js) Add Points to Add_Score
+				if(gameManager)gameManager.F_Mode_BONUS_Counter();									// Send Message to the gameManager(ManagerGame.js) Add 1 to BONUS_Global_Hit_Counter
+				if(gameManager)gameManager.Add_Score(Points);										// Send Message to the gameManager(ManagerGame.js) Add Points to Add_Score
 			}
 			if(Toy)toy.PlayAnimationNumber(AnimNum);							// Play toy animation if needed
 		}

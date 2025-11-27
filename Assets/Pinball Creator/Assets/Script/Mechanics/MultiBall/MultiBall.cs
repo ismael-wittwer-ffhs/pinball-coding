@@ -7,7 +7,7 @@ public class MultiBall : MonoBehaviour {
 
 	public int index;
 	public GameObject obj_Game_Manager;
-	private Manager_Game gameManager;
+	private ManagerGame gameManager;
 	public GameObject[] Gestionnaire_Parent;
 	public string functionToCall = "Counter";			// Call a function when OnCollisionEnter -> true;
 
@@ -52,10 +52,10 @@ public class MultiBall : MonoBehaviour {
 	void Start(){
 		Box = GetComponent<BoxCollider>();
 		source = GetComponent<AudioSource>();
-		if (obj_Game_Manager == null)														// Connect the Mission to the gameObject : "Manager_Game"
-			obj_Game_Manager = GameObject.Find("Manager_Game");
+		if (obj_Game_Manager == null)														// Connect the Mission to the gameObject : "ManagerGame"
+			obj_Game_Manager = GameObject.Find("ManagerGame");
 		//if (obj_Game_Manager != null)
-		//	gameManager = obj_Game_Manager.GetComponent<Manager_Game>();	
+		//	gameManager = obj_Game_Manager.GetComponent<ManagerGame>();	
 
 		GameObject tmp  = GameObject.Find("Pivot_Cam");
 		if(tmp)pivotCam = tmp.GetComponent<CameraSmoothFollow>();	// Access Component CameraSmoothFollow from the main camera

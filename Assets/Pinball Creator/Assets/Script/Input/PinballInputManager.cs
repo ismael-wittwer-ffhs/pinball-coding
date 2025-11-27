@@ -140,7 +140,7 @@ public class PinballInputManager : MonoBehaviour
             float normalizedY = screenPos.y / Screen.height;
 
             // Check for plunger touch (right side, upper area or specific collider)
-            // Plunger detection will be handled by raycast in Spring_Launcher for precision
+            // Plunger detection will be handled by raycast in SpringLauncher for precision
             // Here we just track if right side bottom is touched (where plunger usually is)
             bool isPlungerArea = normalizedX > 0.7f && normalizedY < 0.4f;
 

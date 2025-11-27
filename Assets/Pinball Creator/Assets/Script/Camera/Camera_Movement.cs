@@ -111,7 +111,7 @@ public class Camera_Movement : MonoBehaviour {
 			anim.SetInteger(ShakerHash, 0);	
 	}
 
-	public void Shake_Cam(int shake){														// Play a specific animation when player shake the pinball. It's call by Manager_Game.js from the gameObject Manager_Game on the hierarchy
+	public void Shake_Cam(int shake){														// Play a specific animation when player shake the pinball. It's call by ManagerGame.js from the gameObject ManagerGame on the hierarchy
 		anim.SetInteger(ShakerHash, shake);
 
 	}
@@ -124,7 +124,7 @@ public class Camera_Movement : MonoBehaviour {
 	}
 
 
-	public void PlayIdle(){																	// This function is call by the script Spring_Launcher.js from the gameObject Spring on the hierachy
+	public void PlayIdle(){																	// This function is call by the script SpringLauncher.js from the gameObject Spring on the hierachy
 		if(!CamStyle2D){
 			anim.SetInteger(ShakerHash, 0);
 			anim.SetBool(IdleHash_2, false);													// The ball exit the plunger										
@@ -133,7 +133,7 @@ public class Camera_Movement : MonoBehaviour {
 	}
 
 
-	public void PlayPlunger(){																	// This function is call by the script Spring_Launcher.js from the gameObject Spring on the hierachy 
+	public void PlayPlunger(){																	// This function is call by the script SpringLauncher.js from the gameObject Spring on the hierachy 
 		AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);			// The ball enter the plunger
 		//if(!CamStyle2D){
 		if(stateInfo.fullPathHash == IdleStateHash_1 									
@@ -162,7 +162,7 @@ public class Camera_Movement : MonoBehaviour {
 	}
 
 
-	public void Camera_MultiBall_Start(){									// --> Call by Manager_Game.js to use a specific camera when MultiBall Mode Start. Camera 4 is used
+	public void Camera_MultiBall_Start(){									// --> Call by ManagerGame.js to use a specific camera when MultiBall Mode Start. Camera 4 is used
 		if(!CamStyle2D){
 			LastView = CamView;												// Save the camera number
 			if(CamView == 1 || CamView == 2){								// The camera change only if it's cam 1 and cam 2 because cam 3 and 4 already sees the whole playfield 
@@ -178,7 +178,7 @@ public class Camera_Movement : MonoBehaviour {
 			CameraMultiBall = true;	
 		}
 	}
-	public void Camera_MultiBall_Stop(){									// --> Call by Manager_Game.js to use a specific camera when MultiBall Mode Stop
+	public void Camera_MultiBall_Stop(){									// --> Call by ManagerGame.js to use a specific camera when MultiBall Mode Stop
 		if(!CamStyle2D){												
 			CameraMultiBall = false;
 			if(b_ChangeViewEnable){

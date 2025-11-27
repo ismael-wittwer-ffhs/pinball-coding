@@ -57,7 +57,7 @@ public class Hole : MonoBehaviour {
 	[Header ("Points added when the ball enter the hole")]
 	public int Points = 0;							// Points when the object is hitting 
 	private GameObject obj_Game_Manager;						// 
-	private Manager_Game gameManager;						// access to the script Manager_Game.js on gameObject Manager_Game on the hierarchy
+	private ManagerGame gameManager;						// access to the script ManagerGame.js on gameObject ManagerGame on the hierarchy
 	[Header ("Toy connected to the bumper")]
 	public GameObject Toy_Enter;						// Connect a toy or particule system
 	private Toys toyEnter;
@@ -79,9 +79,9 @@ public class Hole : MonoBehaviour {
 	void Start(){																			// --> Function Start
 		Box_Col = GetComponent<BoxCollider>();
 		sound_ = GetComponent<AudioSource>();													// Access AudioSource component 
-		obj_Game_Manager = GameObject.Find("Manager_Game");										// Find Manager_Game gameObject
+		obj_Game_Manager = GameObject.Find("ManagerGame");										// Find ManagerGame gameObject
 		if(obj_Game_Manager!=null)
-			gameManager = obj_Game_Manager.GetComponent<Manager_Game>();							// access to the script Manager_Game.js on gameObject Manager_Game on the hierarchy
+			gameManager = obj_Game_Manager.GetComponent<ManagerGame>();							// access to the script ManagerGame.js on gameObject ManagerGame on the hierarchy
 
 		if(obj_Led)led_Renderer = obj_Led.GetComponent<ChangeSpriteRenderer>();				// obj_Led != null Access ChangeSpriteRenderer component 
 		if(obj_Target)target = obj_Target.GetComponent<Target>();								// obj_Target != null Access Target component 
@@ -121,8 +121,8 @@ public class Hole : MonoBehaviour {
 				}
 			}
 			if(obj_Game_Manager!=null){
-				if(gameManager)gameManager.F_Mode_BONUS_Counter();													// Add +1 to the Bonus counter. Manage by the Manager_Game game object on the hierarchy
-				if(gameManager)gameManager.Add_Score(Points);														// Add points. Manage by the Manager_Game game object on the hierarchy
+				if(gameManager)gameManager.F_Mode_BONUS_Counter();													// Add +1 to the Bonus counter. Manage by the ManagerGame game object on the hierarchy
+				if(gameManager)gameManager.Add_Score(Points);														// Add points. Manage by the ManagerGame game object on the hierarchy
 			}
 			if(Toy_Enter)toyEnter.PlayAnimationNumber(AnimNunEnter);							// Play Toy if connected
 

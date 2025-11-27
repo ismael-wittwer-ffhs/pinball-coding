@@ -24,14 +24,14 @@ public class Pause_Mission : MonoBehaviour {
 	}
 
 
-	/// The function is called by the object : "Manager_Game" in the hierachy
+	/// The function is called by the object : "ManagerGame" in the hierachy
 	public void Start_Pause_Mission(){
 		Pause = true;
 		SendMessage("Pause_Start");												// Call function "Pause_Start" on the Mission Script 
 
 	}
 
-	/// The function is called by the object : "Manager_Game" in the hierachy
+	/// The function is called by the object : "ManagerGame" in the hierachy
 	public void Stop_Pause_Mission() {
 		Pause = false;
 		SendMessage("Pause_Stop");												// Call function "Pause_Stop" on the Mission Script 
