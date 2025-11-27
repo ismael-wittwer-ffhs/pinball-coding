@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cd878f1b968974b04843560076226f33
+timeCreated: 1458206982
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Animation/Toys/Toy_Bone/Toy_Bone_Idle.anim
+  uploadId: 793312

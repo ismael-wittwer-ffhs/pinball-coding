@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8b6d271989e8748838ef4ff60fd7e552
+timeCreated: 1471603229
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Ramps/Classic/Complex/Ramp_04_Straight_Small.prefab
+  uploadId: 793312

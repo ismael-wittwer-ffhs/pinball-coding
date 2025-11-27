@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f19ad5987f44943ed9580a3792cc2e55
+timeCreated: 1471603188
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Ramps/Classic/Complex/Ramp_04_Straight_Long.prefab
+  uploadId: 793312

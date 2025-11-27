@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ab56b7531218b4220a31ac74bfe52323
+timeCreated: 1461082597
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Animation/LCD/LCD_Anim_1/LCD_Animator_1.controller
+  uploadId: 793312

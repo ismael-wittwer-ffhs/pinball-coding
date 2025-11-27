@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 438c731f210a84eb68fe087ef5d73365
+timeCreated: 1513684311
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Board and Platform/p_Board_Turn_90_02
+    (1).prefab
+  uploadId: 793312

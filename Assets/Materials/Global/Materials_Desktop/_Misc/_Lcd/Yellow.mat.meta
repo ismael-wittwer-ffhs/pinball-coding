@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 06ef44fa851b16442a80075816f823bf
+timeCreated: 1451990361
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/Global/Materials_Desktop/_Misc/_Lcd/Yellow.mat
+  uploadId: 793312

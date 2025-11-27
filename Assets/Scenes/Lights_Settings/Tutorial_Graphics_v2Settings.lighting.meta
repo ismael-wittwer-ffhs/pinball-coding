@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c98d0e52dc15a814d9e9b5e70971c4b5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Scenes/Lights_Settings/Tutorial_Graphics_v2Settings.lighting
+  uploadId: 793312

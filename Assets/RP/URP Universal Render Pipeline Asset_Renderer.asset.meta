@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 304b430d06d96d041959251d8165668a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/RP/URP Universal Render Pipeline Asset_Renderer.asset
+  uploadId: 793312

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: f7b7f356793fb4e80a06b90531f4fa3b
+timeCreated: 1513683759
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Basics/Leds/Plane_Led/p_Plane_Led_13_multiplier_x8.prefab
+  uploadId: 793312

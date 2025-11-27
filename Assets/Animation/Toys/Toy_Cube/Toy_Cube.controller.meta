@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a69768b8061814e7dac540d5c2e468ce
+timeCreated: 1456327215
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Animation/Toys/Toy_Cube/Toy_Cube.controller
+  uploadId: 793312

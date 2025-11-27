@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b27c147bd4c9c4f859fc332d7b3abfb9
+timeCreated: 1470666102
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Pipe/Complex/other/Example_Pipe_09.prefab
+  uploadId: 793312

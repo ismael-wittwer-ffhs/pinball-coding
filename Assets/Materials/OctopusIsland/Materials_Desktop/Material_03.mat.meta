@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7c921b0c5ec134c4abaaac83d06d9a96
+timeCreated: 1457521936
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/OctopusIsland/Materials_Desktop/Material_03.mat
+  uploadId: 793312

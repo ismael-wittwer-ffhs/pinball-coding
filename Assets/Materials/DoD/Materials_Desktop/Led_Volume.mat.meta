@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f5421aac8dd97214a85cdbeb7037dd64
+timeCreated: 1469709210
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/DoD/Materials_Desktop/Led_Volume.mat
+  uploadId: 793312

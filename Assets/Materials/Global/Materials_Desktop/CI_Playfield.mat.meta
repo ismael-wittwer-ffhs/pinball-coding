@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 807e8da2a85677f4585a8ac614c5dde0
+timeCreated: 1482329503
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/Global/Materials_Desktop/CI_Playfield.mat
+  uploadId: 793312

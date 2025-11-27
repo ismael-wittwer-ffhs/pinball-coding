@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 90c0c3b0ac5074670a07e649b7b28f8f
+timeCreated: 1513005863
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/Mechanics/Rollovers/Rollovers.cs
+  uploadId: 793312

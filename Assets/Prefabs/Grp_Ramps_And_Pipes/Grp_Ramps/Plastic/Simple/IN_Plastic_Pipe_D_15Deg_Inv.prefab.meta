@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5a31d8e0a795f4b6f8838501e6df4134
+timeCreated: 1471610864
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Ramps/Plastic/Simple/IN_Plastic_Pipe_D_15Deg_Inv.prefab
+  uploadId: 793312

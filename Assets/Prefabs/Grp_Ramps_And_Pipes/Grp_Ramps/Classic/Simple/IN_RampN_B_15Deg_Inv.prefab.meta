@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 43eb18d6f6ad44e0cac84fdd35763ef6
+timeCreated: 1471599072
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Ramps/Classic/Simple/IN_RampN_B_15Deg_Inv.prefab
+  uploadId: 793312

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: afc87735a499d4e9db74a4e86d322111
+timeCreated: 1513683888
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Basics/Leds/Plane_Led/p_Plane_Led_57_Square.prefab
+  uploadId: 793312

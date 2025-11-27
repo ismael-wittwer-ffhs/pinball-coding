@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 522f44ea2ebd049c4b123e9c9e97abb8
+timeCreated: 1512980579
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/Camera/ConnectCameraToUI.cs
+  uploadId: 793312

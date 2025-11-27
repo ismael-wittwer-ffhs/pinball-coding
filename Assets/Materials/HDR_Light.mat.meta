@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 97119374cdf005b47a5dfebbcd21364e
+timeCreated: 1458577768
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/HDR_Light.mat
+  uploadId: 793312

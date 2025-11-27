@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a03b12bace571e84cb931f92c20755ea
+timeCreated: 1471949053
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/Global/Materials_Desktop/Material_15_Tank_Sticker_Transparent.mat
+  uploadId: 793312

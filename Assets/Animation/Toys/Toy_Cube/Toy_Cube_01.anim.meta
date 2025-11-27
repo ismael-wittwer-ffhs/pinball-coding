@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f5ccb8df61f724272a18102b2b219b71
+timeCreated: 1456388947
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Animation/Toys/Toy_Cube/Toy_Cube_01.anim
+  uploadId: 793312

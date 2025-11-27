@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 2dc7838853f714d69b1b073f7a3059d2
+timeCreated: 1513000194
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/Toys/Skull/Toy_Skull_Eye_LookAt_Ball.cs
+  uploadId: 793312

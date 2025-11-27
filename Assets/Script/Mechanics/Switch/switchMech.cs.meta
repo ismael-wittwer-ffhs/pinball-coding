@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 61343d974a5fb4ff2b4d21bd08d06ee5
+timeCreated: 1513004126
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/Mechanics/Switch/switchMech.cs
+  uploadId: 793312

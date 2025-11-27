@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f0949728ebaf5cc448c00fac7682983d
+timeCreated: 1450713191
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/Global/Materials_Desktop/_Misc/Pinball_Ball.mat
+  uploadId: 793312

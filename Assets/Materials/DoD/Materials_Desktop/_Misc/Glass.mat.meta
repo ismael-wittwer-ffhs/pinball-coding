@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d12cc1d525a750546b33f535310eb0e2
+timeCreated: 1458811544
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/DoD/Materials_Desktop/_Misc/Glass.mat
+  uploadId: 793312

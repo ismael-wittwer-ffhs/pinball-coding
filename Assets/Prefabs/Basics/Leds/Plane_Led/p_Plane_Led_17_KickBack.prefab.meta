@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 1cc6be574b2e6422c94e078180a3ea26
+timeCreated: 1513683767
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Basics/Leds/Plane_Led/p_Plane_Led_17_KickBack.prefab
+  uploadId: 793312

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: db4d2d599ced0411b8659e83b9709826
+timeCreated: 1471612728
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Ramps/Plastic/Complex/IN_C_Plastic_Pipe_05_Inv.prefab
+  uploadId: 793312

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dcbb365e9d4d96c4c8410b2d14fd6df5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Scenes/Lights_Settings/ShowroomSettings.lighting
+  uploadId: 793312

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: ff4437b54f6a0453a84c10055e6fd4c5
+timeCreated: 1513683407
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Basics/Blocker/p_Blocker_Board_Short
+    1.prefab
+  uploadId: 793312

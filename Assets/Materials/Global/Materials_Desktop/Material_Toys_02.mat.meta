@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2f90cc7bec8ad8146b158f1a9892fabd
+timeCreated: 1458660342
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/Global/Materials_Desktop/Material_Toys_02.mat
+  uploadId: 793312

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 686a1e26a96b0469e90464004a03729f
+timeCreated: 1471610871
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Ramps/Plastic/Simple/IN_Plastic_Pipe_F_30Deg.prefab
+  uploadId: 793312

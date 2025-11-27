@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b3809a36b1cd7884daf7d2da2c3faf80
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Demo/Lights_Settings/MM_Table_01Settings.lighting
+  uploadId: 793312

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9d6b82ed24a694f43bc29264aa08a77d
+timeCreated: 1482329503
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/Global/Materials_Desktop/CI_Coconut_Toys.mat
+  uploadId: 793312

@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: b9f17ac53d96c4740bb30e241fb70c2b
+timeCreated: 1486377886
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Script/Menu/MainMenuEditor.cs
+  uploadId: 793312

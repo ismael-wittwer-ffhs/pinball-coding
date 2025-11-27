@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 44b2f6484571b6643b1c8eb8559b9e39
+timeCreated: 1471948836
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Materials/Global/Materials_Desktop/Material_14_Tank_Transparent.mat
+  uploadId: 793312

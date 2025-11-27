@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d8d7e5083a60640db9e0ddbbed43d372
+timeCreated: 1513688211
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Missions/Obsolete/Spinner/02_Spin20_STarg3.prefab
+  uploadId: 793312

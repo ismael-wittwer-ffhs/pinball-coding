@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 23df57e9e1a5c4fb1a507f64af0b4af6
+timeCreated: 1470652949
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Pipe/Complex/IN_Pipe_Turn_Left_90_Small.prefab
+  uploadId: 793312

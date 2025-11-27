@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cd37e88e8113542dc8bdde2724e040f2
+timeCreated: 1470653485
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Grp_Ramps_And_Pipes/Grp_Pipe/Complex/IN_Pipe_Turn_Right_90_Very_Very_Big.prefab
+  uploadId: 793312

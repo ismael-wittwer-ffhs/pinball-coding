@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 77665f5a1625649ab95e163a23bafde2
+timeCreated: 1457610960
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Animation/Noise/Noise_im_01.controller
+  uploadId: 793312

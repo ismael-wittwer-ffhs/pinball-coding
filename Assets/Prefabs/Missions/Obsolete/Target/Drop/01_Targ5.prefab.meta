@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: a93c5f5b71d3d4febba9e6a48c55b1c7
+timeCreated: 1513688257
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Assets/Prefabs/Missions/Obsolete/Target/Drop/01_Targ5.prefab
+  uploadId: 793312

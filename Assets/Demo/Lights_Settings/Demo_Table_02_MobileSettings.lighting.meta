@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e319a99eaf1c7144a9f1d5093f39e994
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 74772
+  packageName: Pinball Creator
+  packageVersion: 2.2
+  assetPath: Assets/Pinball Creator/Demo/Lights_Settings/Demo_Table_02_MobileSettings.lighting
+  uploadId: 793312
