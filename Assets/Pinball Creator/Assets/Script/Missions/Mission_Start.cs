@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class Mission_Start : MonoBehaviour {
 
-	private bool _GetButton = false;					// true if you want input manage by Edit -> Project Settings -> Input
+	private PinballInputManager inputManager;
 	private bool DownLeft = false;
 	private bool DownRight = false;
 
@@ -214,6 +216,7 @@ public class Mission_Start : MonoBehaviour {
 
 	void Start(){																			// --> 1) INIT
 		sound_ = GetComponent<AudioSource>();													// access AudioSource component
+		inputManager = PinballInputManager.Instance;
 		first();																				// first() initialize obj_Grp_1[], obj_Grp_2[] and obj_Led[]
 		//yield WaitForEndOfFrame();																
 		//Mission_Intialisation();																// Init mission
@@ -501,41 +504,40 @@ public class Mission_Start : MonoBehaviour {
 	void Update(){																	// --> Update function
 		if(!b_Pause){
 
-			if(!_GetButton){																// true if you want input manage by Edit -> Project Settings -> Input
-				if(Step < HowManyTime_Gpr1 && Rollover_Type3_Grp_1 && init_Ended){			// Use when Rollover_Type3_Grp_1 is chosen. init_Ended prevent bug when the mission is initialized
-					if(Input.GetKeyDown(Input_name_Right) && Rollover_StopMoving){			
-						Move_Leds_To_Right();}												// Move the led to the right 
-					if(Input.GetKeyDown(Input_name_Left) && Rollover_StopMoving){
-						Move_Leds_To_Left ();}												// Move the led to the left 
+			// Rollover Type3 input handling - uses flipper buttons to move LEDs
+			if (inputManager != null && Step < HowManyTime_Gpr1 && Rollover_Type3_Grp_1 && init_Ended)
+			{
+				// Right flipper moves LEDs right
+				if (inputManager.WasRightFlipperPressed() && Rollover_StopMoving)
+				{
+					Move_Leds_To_Right();
 				}
-			}
-			else{
-				if(Step < HowManyTime_Gpr1 && Rollover_Type3_Grp_1 && init_Ended){			// Use when Rollover_Type3_Grp_1 is chosen. init_Ended prevent bug when the mission is initialized
-					if(Input.GetAxisRaw(Input_name_Right) > 0 && !DownRight && Rollover_StopMoving){			
-						Move_Leds_To_Right();DownRight = true;}									// Move the led to the right 
-					if(Input.GetAxisRaw(Input_name_Left) > 0 && !DownLeft && Rollover_StopMoving){
-						Move_Leds_To_Left ();DownLeft = true;}									// Move the led to the left 
-
-					if(Input.GetAxisRaw(Input_name_Right) == 0 && DownRight){					// Right Move led position only once
-						DownRight = false;}
-					if(Input.GetAxisRaw(Input_name_Left)  == 0 && DownLeft){					// Left Move led position only once
-						DownLeft = false;}
-
+				// Left flipper moves LEDs left
+				if (inputManager.WasLeftFlipperPressed() && Rollover_StopMoving)
+				{
+					Move_Leds_To_Left();
 				}
 			}
 
-			if(Rollover_Type3_Grp_1){
-				for (var i = 0; i < Input.touchCount; ++i) {									// --> Touch Screen part
-					if(Input.GetTouch(i).position.x > Screen.width*.5
-						&& Input.GetTouch(i).position.y < Screen.height*.5){						// know which part of the screen is touched by the player
-						if (Input.GetTouch(i).phase == TouchPhase.Began && Rollover_StopMoving){// if touch is detect 		
-							Move_Leds_To_Right();												// (Lane Change Mission) Move the led to the right 											
+			// Touch input for Rollover Type3 (lane change)
+			if (Rollover_Type3_Grp_1)
+			{
+				foreach (var touch in Touch.activeTouches)
+				{
+					if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began && Rollover_StopMoving)
+					{
+						float normalizedX = touch.screenPosition.x / Screen.width;
+						float normalizedY = touch.screenPosition.y / Screen.height;
+
+						// Right side of screen = move right
+						if (normalizedX > 0.5f && normalizedY < 0.5f)
+						{
+							Move_Leds_To_Right();
 						}
-					}
-					if(Input.GetTouch(i).position.x < Screen.width*.5
-						&& Input.GetTouch(i).position.y < Screen.height*.5){						// know which part of the screen is touched by the player
-						if (Input.GetTouch(i).phase == TouchPhase.Began && Rollover_StopMoving){// if touch is detect 	
-							Move_Leds_To_Left ();												// (Lane Change Mission) Move the led to the left 		
+						// Left side of screen = move left
+						if (normalizedX < 0.5f && normalizedY < 0.5f)
+						{
+							Move_Leds_To_Left();
 						}
 					}
 				}
@@ -2247,8 +2249,18 @@ public class Mission_Start : MonoBehaviour {
 	}
 
 
-	public void F_InputGetButton(){														// use Edit -> Project Settings -> Input for Flippers
-		_GetButton = true;
+	#region Legacy Compatibility (can be removed after full migration)
+
+	/// <summary>
+	/// Legacy method - no longer needed with new Input System.
+	/// Kept for backward compatibility during migration.
+	/// </summary>
+	[System.Obsolete("No longer needed with new Input System. Will be removed in future version.")]
+	public void F_InputGetButton()
+	{
+		// No-op: New input system handles this automatically
 	}
+
+	#endregion
 
 }

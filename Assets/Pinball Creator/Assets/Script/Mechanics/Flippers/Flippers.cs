@@ -1,189 +1,236 @@
-﻿// Flippers.js : Description : manage flippers movements
-using System.Collections;
-using System.Collections.Generic;
+﻿// Flippers: Manages flipper movements using Unity's new Input System
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
-public class Flippers : MonoBehaviour {
+public class Flippers : MonoBehaviour
+{
+    [Header("-> Choose between left or right flipper (only one)")]
+    public bool b_Flipper_Left = false;
+    public bool b_Flipper_Right = false;
 
-	private bool 						_GetButton = false;				// true if you want input manage by Edit -> Project Settings -> Input
-	public string 						name_F;							// the keyboard input to move the flipper	
-	[Header ("-> Choose between left or right flipper (only one)")]	
-	public bool 						b_Flipper_Left	= false;		// Left Flipper
-	public bool 						b_Flipper_Right	 = false;		// Right Flipper
+    public HingeJoint hinge;
 
-	public HingeJoint 					hinge;							// access HingeJoint component
+    [Header("-> Audio when key input is pressed")]
+    public AudioClip Sfx_Flipper;
+    private AudioSource source;
 
-	[Header ("-> Audio when key input is pressed")	]
-	public AudioClip 					Sfx_Flipper;					// Audio clip when player presses name_F 
-	private AudioSource 				source;							// Audiosourcce component
+    [Header("-> Know if the flipper is activated or not")]
+    public bool Activate = false;
 
-	[Header ("-> Know if the flipper is activated or not")	]
-	public bool 						Activate = false;				// Know if the flipper is activated or not
+    private PinballInputManager inputManager;
 
-	private GameObject 					obj_Game_Manager;				// Access to the Manager_Game gameobject tou can find the hierarchy
-	private Manager_Input_Setting 		gameManager_Input;				// use to access Manager_Input_Setting component from Manager_Game gameobject
+    private bool b_touch = false;
+    private bool b_Pause = false;
+    private bool b_Debug = false;
 
-	private bool 						b_touch = false;				// Used to mobile input
-	private bool 						b_Pause = false;				
-	private bool 						b_Debug = false;				// use when you want to make test. Call by Manager_Input_Setting.js
+    private bool wasPressed = false;  // Track if input was pressed (for sound)
+    private bool b_PullPlunger = false;  // If pulling plunger, can't use right flippers
 
-	public bool 						Down = false;					// use to if key is press when you use Input manager inputs 
+    void Awake()
+    {
+        // Ignore collision between layers
+        Physics.IgnoreLayerCollision(8, 9, true);   // Board / Paddle
+        Physics.IgnoreLayerCollision(10, 9, true);
+        Physics.IgnoreLayerCollision(11, 9, true);
+        Physics.IgnoreLayerCollision(12, 9, true);
+        Physics.IgnoreLayerCollision(13, 9, true);
+        Physics.IgnoreLayerCollision(0, 9, true);   // Default / Paddle
 
-	private bool 						b_PullPlunger = false;			// if you pull the plunger you can't use right flippers
+        source = GetComponent<AudioSource>();
+    }
 
-	void Awake(){																	// --> Awake
-		Physics.IgnoreLayerCollision(8, 9, true);										// Ignore collision between Layer 8 : "Board" and Layer 9 : "Paddle"
-		Physics.IgnoreLayerCollision(10, 9, true);										// Ignore collision between Layer 8 : "Board" and Layer 9 : "Paddle"
-		Physics.IgnoreLayerCollision(11, 9, true);										// Ignore collision between Layer 8 : "Board" and Layer 9 : "Paddle"
-		Physics.IgnoreLayerCollision(12, 9, true);										// Ignore collision between Layer 8 : "Board" and Layer 9 : "Paddle"
-		Physics.IgnoreLayerCollision(13, 9, true);										// Ignore collision between Layer 8 : "Board" and Layer 9 : "Paddle"
-		Physics.IgnoreLayerCollision(0, 9, true);										// Ignore collision between Layer 8 : "Default" and Layer 9 : "Paddle"
-		source = GetComponent<AudioSource>();											// Access GetComponent.<AudioSource>()
-		obj_Game_Manager = GameObject.Find("Manager_Game");							 
-		if(obj_Game_Manager!=null)
-			gameManager_Input = obj_Game_Manager.GetComponent<Manager_Input_Setting>();	// 	Access GetComponent..<Manager_Input_Setting>() from the gameObject Manager_Game on the hierarchy
-	}
+    void Start()
+    {
+        hinge = GetComponent<HingeJoint>();
+        inputManager = PinballInputManager.Instance;
 
+        if (inputManager == null)
+        {
+            Debug.LogWarning("Flippers: PinballInputManager not found. Make sure it exists in the scene.");
+        }
+    }
 
-	void Start() {																	// --> Start
-		hinge = GetComponent<HingeJoint>();											// Access GetComponent.<HingeJoint>()
-		StartCoroutine ("WaitToInit");
+    public void F_Activate()
+    {
+        if (!b_Debug) Activate = true;
+    }
 
-	}
+    public void F_Desactivate()
+    {
+        if (!b_Debug) Activate = false;
+    }
 
-	IEnumerator WaitToInit(){
-		yield return new WaitForEndOfFrame();
-		if(b_Flipper_Left && gameManager_Input!=null && !_GetButton)name_F = gameManager_Input.F_flipper_Left();	// Choose the keyboard button sttup on Game_Manager object on the hierarchy
-		if(b_Flipper_Right && gameManager_Input!=null && !_GetButton)name_F = gameManager_Input.F_flipper_Right();	// Choose the keyboard button sttup on Game_Manager object on the hierarchy
-	}
+    public void F_Pause_Start()
+    {
+        b_Pause = true;
+        F_Desactivate();
+    }
 
+    public void F_Pause_Stop()
+    {
+        b_Pause = false;
+        F_Activate();
+    }
 
-	public void F_Activate(){if(!b_Debug)Activate = true;}									// --> Activate the flipper	. Call by Manager_Game.js on game object Manager_Game on the hierarchy
-	public void  F_Desactivate(){if(!b_Debug)Activate = false;}								// --> Deactivate the flipper	. Call by Manager_Game.js on game object Manager_Game on the hierarchy
-	public void  F_Pause_Start(){b_Pause = true;F_Desactivate();}	
-	public void  F_Pause_Stop(){b_Pause = false;F_Activate();}	
+    public void F_Debug()
+    {
+        // b_Debug = true; Activate = true;
+    }
 
+    public void PreventBugWhenOrientationChange()
+    {
+        b_touch = false;
+    }
 
-	public void  F_Debug(){/*b_Debug = true;Activate = true;*/}
+    void Update()
+    {
+        if (Activate)
+        {
+            // Prevent flipper getting stuck when returning to init position
+            JointSpring hingeSpring = hinge.spring;
+            hingeSpring.spring = Random.Range(1.99f, 2.01f);
+            hinge.spring = hingeSpring;
+            var motor = hinge.motor;
 
-	public void  PreventBugWhenOrientationChange(){											// If the orientation change you say that flippers are released
-		b_touch = false;	
-	}
+            // Update touch state
+            UpdateTouchInput();
 
-	public void  Update(){																	// --> Update
-		if(Activate){																	// if flipper is activate
-			JointSpring hingeSpring  = hinge.spring;								// Prevent Flipper stuck when flipper need to go back his init position
-			hingeSpring.spring = Random.Range(1.99f,2.01f);
-			hinge.spring = hingeSpring;
-			var motor = hinge.motor;	
+            // Check if input is held (keyboard/gamepad or touch)
+            bool inputHeld = IsInputHeld();
 
-			for (var i = 0; i < Input.touchCount; ++i) {							// --> Touch Screen part
-				if (Input.GetTouch(i).phase == TouchPhase.Began) {
+            // Play sound on press
+            if (inputHeld && !wasPressed)
+            {
+                PlayFlipperSound();
+                wasPressed = true;
+            }
+            else if (!inputHeld)
+            {
+                wasPressed = false;
+            }
 
-					Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);	// Construct a ray from the current touch coordinates
-					RaycastHit hit;
+            // Move flipper based on input
+            if (inputHeld)
+            {
+                hinge.motor = motor;
+                hinge.useMotor = true;
+            }
+            else
+            {
+                motor = hinge.motor;
+                hinge.motor = motor;
+                hinge.useMotor = false;
+            }
+        }
+        else if (!b_Pause)
+        {
+            // When table is tilted - flipper deactivated but should return to init position
+            var motor = hinge.motor;
+            hinge.motor = motor;
+            hinge.useMotor = false;
+        }
+    }
 
-					if (Physics.Raycast(ray,out hit, 100) 									// Don't move the right flippers if you pull the plnuger
-						&& (hit.transform.name == "Mobile_Collider_zl" || hit.transform.name == "Mobile_Collider")) {
-						b_PullPlunger = true;
-					}
-					else{
-						b_PullPlunger = false;
-					}
-				}
+    private void UpdateTouchInput()
+    {
+        // Check for plunger touch to prevent right flipper activation
+        foreach (var touch in Touch.activeTouches)
+        {
+            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(touch.screenPosition);
+                if (Physics.Raycast(ray, out RaycastHit hit, 100))
+                {
+                    if (hit.transform.name == "Mobile_Collider_zl" || hit.transform.name == "Mobile_Collider")
+                    {
+                        b_PullPlunger = true;
+                        return;
+                    }
+                }
+                b_PullPlunger = false;
+            }
+        }
 
+        // Update touch state from PinballInputManager
+        if (inputManager != null)
+        {
+            if (b_Flipper_Left)
+            {
+                b_touch = inputManager.LeftFlipperTouched;
+            }
+            else if (b_Flipper_Right && !b_PullPlunger)
+            {
+                b_touch = inputManager.RightFlipperTouched;
+            }
+            else if (b_Flipper_Right && b_PullPlunger)
+            {
+                b_touch = false;
+            }
+        }
 
+        // Reset plunger flag when no touches
+        if (Touch.activeTouches.Count == 0)
+        {
+            b_PullPlunger = false;
+        }
+    }
 
-				if(!b_PullPlunger && b_Flipper_Right && Input.GetTouch(i).position.x > Screen.width*.5	// know which part of the screen is touched by the player
-					&& Input.GetTouch(i).position.y < Screen.height*.6 
-                   || !b_PullPlunger && b_Flipper_Left && Input.GetTouch(i).position.x < Screen.width*.5 
-					&& Input.GetTouch(i).position.y < Screen.height*.6){
-					if (Input.GetTouch(i).phase == TouchPhase.Began ){					// if touch is detect 	
-						if(Sfx_Flipper){
-							source.volume = 1;
-							source.PlayOneShot(Sfx_Flipper);							// play a sound
-						}
-						b_touch = true;												
-					}
-					else if(Input.GetTouch(i).phase == TouchPhase.Ended){
-						b_touch = false;
-					}
-				}
-			}
-			if(!_GetButton){															// if a key is pressed
-				if(Input.GetKeyDown(name_F) && Sfx_Flipper){
-					source.volume = 1;
-					source.PlayOneShot(Sfx_Flipper);									// play a sound
-				}
-			}
-			else{
-				//if(Input.GetButtonDown(name_F) && Sfx_Flipper){
-				//if(!Down && Sfx_Flipper){
-					//source.volume = 1;
-					//source.PlayOneShot(Sfx_Flipper);									// play a sound
-				//	Down = true;
-				//}
-			}
+    private bool IsInputHeld()
+    {
+        if (inputManager == null) return b_touch;
 
+        if (b_Flipper_Left)
+        {
+            return inputManager.IsLeftFlipperHeld() || b_touch;
+        }
+        else if (b_Flipper_Right)
+        {
+            // Don't activate right flipper if pulling plunger
+            if (b_PullPlunger) return false;
+            return inputManager.IsRightFlipperHeld() || b_touch;
+        }
 
-			if(!_GetButton){
-				if(Input.GetKey(name_F) || b_touch){										// --> the player presses a button or presses a touch screen
-					hinge.motor = motor;													// move the flipper
-					hinge.useMotor = true;
-				}
-				else{																		// --> Flipper go to the init position.
-					motor = hinge.motor;													// move the flipper to reach the init position
-					hinge.motor = motor;
-					hinge.useMotor = false;
-				}
-			}
-			else{
-				if(Input.GetAxisRaw(name_F) > .4f && _GetButton || b_touch){				// --> the player presses a button or presses a touch screen
-					motor = hinge.motor;													// move the flipper
-					hinge.motor = motor;
-					hinge.useMotor = true;
+        return false;
+    }
 
-					if(!Down && Sfx_Flipper){
-						//Debug.Log ("Here");
-						source.volume = 1;
-						source.PlayOneShot(Sfx_Flipper);									// play a sound
-						Down = true;
-					}
-					//Down = true;
-				}
-				else{																		// --> Flipper go to the init position.
-					motor = hinge.motor;													// move the flipper to reach the init position
-					hinge.motor = motor;
-					hinge.useMotor = false;
-					Down = false;
-				}
-			}
-		}	
-		else if(!b_Pause){																			// --> When the table is tilted. 
-			var motor = hinge.motor;	
-			motor = hinge.motor;														//		Flipper is desactivate. But you want him to go to the init position.
-			hinge.motor = motor;
-			hinge.useMotor = false;
-		}
-	}
+    private void PlayFlipperSound()
+    {
+        if (Sfx_Flipper != null && source != null)
+        {
+            source.volume = 1;
+            source.PlayOneShot(Sfx_Flipper);
+        }
+    }
 
+    /// <summary>
+    /// Activate flipper from external script. Call via SendMessage("ActivateFlipper")
+    /// </summary>
+    public void ActivateFlipper()
+    {
+        PlayFlipperSound();
+        b_touch = true;
+    }
 
-	public void  F_InputGetButton(){														// use Edit -> Project Settings -> Input for Flippers
-		_GetButton = true;
-		if(b_Flipper_Left)name_F = gameManager_Input.F_flipper_Left();	// Choose the keyboard button sttup on Game_Manager object on the hierarchy
-		if(b_Flipper_Right)name_F = gameManager_Input.F_flipper_Right();	// Choose the keyboard button sttup on Game_Manager object on the hierarchy
+    /// <summary>
+    /// Deactivate flipper from external script. Call via SendMessage("DeactivateFlipper")
+    /// </summary>
+    public void DeactivateFlipper()
+    {
+        b_touch = false;
+    }
 
-	}
+    #region Legacy Compatibility (can be removed after full migration)
 
-	public void  ActivateFlipper(){												// Use This function is you want to activate flippers outside this script.Call SendMessage("ActivateFlipper");
-		if(Sfx_Flipper){
-			source.volume = 1;
-			source.PlayOneShot(Sfx_Flipper);							
-		}
-		b_touch = true;		
-	}
+    /// <summary>
+    /// Legacy method - no longer needed with new Input System.
+    /// Kept for backward compatibility during migration.
+    /// </summary>
+    [System.Obsolete("No longer needed with new Input System. Will be removed in future version.")]
+    public void F_InputGetButton()
+    {
+        // No-op: New input system handles this automatically
+    }
 
-	public void  DeactivateFlipper(){											// Use This function is you want to deactivate flippers outside this script. Call SendMessage("DeactivateFlipper");
-		b_touch = false;
-	}
+    #endregion
 }

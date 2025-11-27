@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class Manager_Game : MonoBehaviour {
-	public bool _GetButton = false;			// true if you want input manage by Edit -> Project Settings -> Input (&uto connect)
+	private PinballInputManager inputManager;
 
 
 	private GameObject[] obj_Managers;				// (connected automatically) Array with GameObjects that manage each mission that you can find on playfield
@@ -201,6 +203,12 @@ public class Manager_Game : MonoBehaviour {
 
 	void Start () {	
 		manager_Input_Setting = GetComponent<Manager_Input_Setting>();
+		inputManager = PinballInputManager.Instance;
+		
+		if (inputManager == null)
+		{
+			Debug.LogWarning("Manager_Game: PinballInputManager not found. Make sure it exists in the scene.");
+		}
 		GameObject tmp_Gui  = GameObject.Find("txt_Timer");						// Connect UI.text to the LCD screen
 		if(tmp_Gui)Gui_Txt_Timer = tmp_Gui.GetComponent<Text>();
 		tmp_Gui = GameObject.Find("txt_Ball");
@@ -392,68 +400,63 @@ public class Manager_Game : MonoBehaviour {
 
 	void Update () {
 
-
-
-		if(!_GetButton){																				// If we do not use Edit -> Project Settings -> Input (see Input_GetButton on Manager_Input_Setting)
-			if(  Game_UI && Game_UI.activeInHierarchy && eventSystem.currentSelectedGameObject  == null 						// UI : Select a button if nothing is selected
-				&& Mathf.Abs(Input.GetAxisRaw("Horizontal"))==1
-				|| Game_UI && Game_UI.activeInHierarchy && eventSystem.currentSelectedGameObject  == null 
-				&& Input.GetKeyDown(manager_Input_Setting.F_Plunger())
-			){
-				SelectLastButton();
-			}
-			if(Input.GetKeyDown(manager_Input_Setting.F_Pause_Game())){
-				F_Pause_Game();}					// Pause Mode
-
-			if(Input.GetKeyDown(manager_Input_Setting.F_Change_Camera())){								// Change the Camera view
-				if(camera_Movement)camera_Movement.Selected_Cam();}	
-
-
-
-		}
-		else{																							// If we do not use Edit -> Project Settings -> Input
-			if(Game_UI && Game_UI.activeInHierarchy && eventSystem.currentSelectedGameObject == null 						// UI : Select a button if nothing is selected
-				&& Mathf.Abs(Input.GetAxisRaw("Horizontal"))==1
-				|| Game_UI && Game_UI.activeInHierarchy && eventSystem.currentSelectedGameObject == null 
-				&& Input.GetButtonDown(manager_Input_Setting.F_Plunger())
-			){	
+		// UI Navigation and global controls
+		if (inputManager != null)
+		{
+			// UI: Select a button if nothing is selected
+			if (Game_UI && Game_UI.activeInHierarchy && eventSystem.currentSelectedGameObject == null 
+				&& (Mathf.Abs(inputManager.GetNavigateHorizontal()) == 1 || inputManager.WasPlungerPressed()))
+			{
 				SelectLastButton();
 			}
 
-			if(Input.GetButtonDown(manager_Input_Setting.F_Pause_Game())){
-				F_Pause_Game();}					// Pause Mode
+			// Pause Mode
+			if (inputManager.WasPausePressed())
+			{
+				F_Pause_Game();
+			}
 
-			if(Input.GetButtonDown(manager_Input_Setting.F_Change_Camera())){								// Change the Camera view
-				if(camera_Movement)camera_Movement.Selected_Cam();}	
+			// Change the Camera view
+			if (inputManager.WasCameraChangePressed())
+			{
+				if (camera_Movement) camera_Movement.Selected_Cam();
+			}
 		}
 
 
 
 		if(!b_Pause){
 			/////////////////////////////////	SECTION : Player Input : START /////////////
-			if(!_GetButton){																				// If we do not use Edit -> Project Settings -> Input (see Input_GetButton on Manager_Input_Setting)
-				if(!Game_UI && Input.GetKeyDown(manager_Input_Setting.F_Plunger())){if(!b_Game)F_InsertCoin_GameStart();}	// New Game Start
-			}
-			else{
-				if(!Game_UI && Input.GetButtonDown(manager_Input_Setting.F_Plunger())){if(!b_Game)F_InsertCoin_GameStart();}
+			// New Game Start
+			if (inputManager != null && !Game_UI && inputManager.WasPlungerPressed())
+			{
+				if (!b_Game) F_InsertCoin_GameStart();
 			}
 
-			//if(Input.GetKeyDown(manager_Input_Setting.F_Plunger())){if(!b_Game)InsertCoin_GameStart();/*if(Game_UI)Game_UI.transform.localPosition.y = PosGameUI[0];*/}	// New Game Start
 			if(b_Game){
 				if(MobileNudge){
-					for (var k = 0; k < Input.touchCount; ++k) {								// --> Touch Screen part USE for TILT Mode
-						if(Input.GetTouch(k).position.x < Screen.width*.5						// know which part of the screen is touched by the player
-							&& Input.GetTouch(k).position.y > Screen.height*.6 	&& Input.GetTouch(k).position.y < Screen.height*.8){
-							if (Input.GetTouch(k).phase == TouchPhase.Began && b_Tilt <= 1){
-								b_touch_TiltLeft = true;										// Enable Left Tilt	
-							}							
+					// Touch Screen part for TILT Mode using Enhanced Touch
+					foreach (var touch in Touch.activeTouches)
+					{
+						float normalizedX = touch.screenPosition.x / Screen.width;
+						float normalizedY = touch.screenPosition.y / Screen.height;
+						
+						// Left side tilt zone
+						if (normalizedX < 0.5f && normalizedY > 0.6f && normalizedY < 0.8f)
+						{
+							if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began && b_Tilt <= 1)
+							{
+								b_touch_TiltLeft = true;
+							}
 						}
-						if(Input.GetTouch(k).position.x > Screen.width*.5						// know which part of the screen is touched by the player
-							&& Input.GetTouch(k).position.y > Screen.height*.6 	&& Input.GetTouch(k).position.y < Screen.height*.8){
-							if (Input.GetTouch(k).phase == TouchPhase.Began && b_Tilt <= 1){
-								b_touch_TiltRight = true;										// Enable Right Tilt	
-							}										
-						}								
+						// Right side tilt zone
+						if (normalizedX > 0.5f && normalizedY > 0.6f && normalizedY < 0.8f)
+						{
+							if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began && b_Tilt <= 1)
+							{
+								b_touch_TiltRight = true;
+							}
+						}
 					}
 				}
 			}
@@ -467,147 +470,92 @@ public class Manager_Game : MonoBehaviour {
 					Tilt_Timer = 0;																			// init Tilt timer
 				}
 			}
-			if(!_GetButton){																				// If we do not use Edit -> Project Settings -> Input (see Input_GetButton on Manager_Input_Setting)
-				if(Input.GetKeyDown(manager_Input_Setting.F_Shake_Right()) && b_Game						// --> Player shakes the playfield : Right 
-					|| b_touch_TiltRight &&  b_Game){
-					if(b_Tilt == 1){																			// --> Start The Tilt Mode
-						Start_Pause_Mode(-1);																	// Start Pause Mode for all the missions. We want to stop mission until all the balls exit the playfield
-						if(camera_Movement)camera_Movement.Shake_Cam(1);										// PLay camera animation	
-						if(s_Tilt)sound.PlayOneShot(s_Tilt);													// Play a soound
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[0],3);											// Write tilt on LCD Screen
-						b_Tilt = 2;																				// b_Tilt = 2 : Tilt Mode Enable  
-						Tilt_Timer = 0;																			// init timer
-						F_Mode_Ball_Saver_Off();																// Disable Ball Saver
-						b_ExtraBall = false;																	// Disable ExtraBall
-						if(obj_Led_ExtraBall)led_ExtraBall.F_ChangeSprite_Off();								// Switch off the extra Ball led on playfield
-						Flippers_Plunger_State_Tilt_Mode("Desactivate");										// Desactivate Flipper and plunger until all the balls exit the playfield
-						b_touch_TiltRight = false; 
-					}	
-					else if(b_Tilt == 0){																	// --> Player shakes the playfield	: First Time
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[1],1);									// Wirte text on LCD Screen
-						if(s_Warning)sound.PlayOneShot(s_Warning);												// Play a sound
-						if(camera_Movement)camera_Movement.Shake_Cam(1);										// Play an animation 
-						Shake_AddForce_ToBall(new Vector3(-1,0,0));													// Add force to balls on playfield
-						b_Tilt = 1;																				// b_Tilt = 1 : Player shakes the playfield	
-						b_touch_TiltRight = false; 
-					}
-				}	
-				if(Input.GetKeyDown(manager_Input_Setting.F_Shake_Left()) && b_Game							// --> Player shakes the playfield :  Left 
-					|| b_touch_TiltLeft && b_Game){
-					if(b_Tilt == 1){
+			// Shake/Tilt input handling (consolidated from legacy dual code paths)
+			if (inputManager != null)
+			{
+				// --> Player shakes the playfield : Right
+				if ((inputManager.WasShakeRightPressed() && b_Game) || (b_touch_TiltRight && b_Game))
+				{
+					if (b_Tilt == 1)
+					{
+						// Start The Tilt Mode
 						Start_Pause_Mode(-1);
-						if(camera_Movement)camera_Movement.Shake_Cam(2);	
-						if(s_Tilt)sound.PlayOneShot(s_Tilt);
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[0],3);
+						if (camera_Movement) camera_Movement.Shake_Cam(1);
+						if (s_Tilt) sound.PlayOneShot(s_Tilt);
+						if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[0], 3);
 						b_Tilt = 2;
 						Tilt_Timer = 0;
 						F_Mode_Ball_Saver_Off();
 						b_ExtraBall = false;
-						if(obj_Led_ExtraBall)led_ExtraBall.F_ChangeSprite_Off();
+						if (obj_Led_ExtraBall) led_ExtraBall.F_ChangeSprite_Off();
 						Flippers_Plunger_State_Tilt_Mode("Desactivate");
-						b_touch_TiltLeft = false;
+						b_touch_TiltRight = false;
 					}
-					else if(b_Tilt == 0){
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[1],1);
-						if(s_Warning)sound.PlayOneShot(s_Warning);
-						if(camera_Movement)camera_Movement.Shake_Cam(2);															 
-						Shake_AddForce_ToBall(new Vector3(1,0,0));													
+					else if (b_Tilt == 0)
+					{
+						// First warning
+						if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[1], 1);
+						if (s_Warning) sound.PlayOneShot(s_Warning);
+						if (camera_Movement) camera_Movement.Shake_Cam(1);
+						Shake_AddForce_ToBall(new Vector3(-1, 0, 0));
 						b_Tilt = 1;
-						b_touch_TiltLeft = false;
+						b_touch_TiltRight = false;
 					}
-				}	
-				if(Input.GetKeyDown(manager_Input_Setting.F_Shake_Up()) && b_Game){							// --> Player shakes the playfield :  Up 
-					if(b_Tilt == 1){
+				}
+
+				// --> Player shakes the playfield : Left
+				if ((inputManager.WasShakeLeftPressed() && b_Game) || (b_touch_TiltLeft && b_Game))
+				{
+					if (b_Tilt == 1)
+					{
 						Start_Pause_Mode(-1);
-						if(camera_Movement)camera_Movement.Shake_Cam(3);	
-						if(s_Tilt)sound.PlayOneShot(s_Tilt);
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[0],3);
+						if (camera_Movement) camera_Movement.Shake_Cam(2);
+						if (s_Tilt) sound.PlayOneShot(s_Tilt);
+						if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[0], 3);
 						b_Tilt = 2;
 						Tilt_Timer = 0;
 						F_Mode_Ball_Saver_Off();
 						b_ExtraBall = false;
-						if(obj_Led_ExtraBall)led_ExtraBall.F_ChangeSprite_Off();
+						if (obj_Led_ExtraBall) led_ExtraBall.F_ChangeSprite_Off();
 						Flippers_Plunger_State_Tilt_Mode("Desactivate");
+						b_touch_TiltLeft = false;
 					}
-					else if(b_Tilt == 0){
-						if(s_Warning)sound.PlayOneShot(s_Warning);
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[1],1);
-						if(camera_Movement)camera_Movement.Shake_Cam(3);															
-						Shake_AddForce_ToBall(new Vector3(0,0,1));													
+					else if (b_Tilt == 0)
+					{
+						if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[1], 1);
+						if (s_Warning) sound.PlayOneShot(s_Warning);
+						if (camera_Movement) camera_Movement.Shake_Cam(2);
+						Shake_AddForce_ToBall(new Vector3(1, 0, 0));
 						b_Tilt = 1;
+						b_touch_TiltLeft = false;
 					}
-				}	
-			}
-			else{																								// If we do use Edit -> Project Settings -> Input (see Input_GetButton on Manager_Input_Setting)
-				if(Input.GetButtonDown(manager_Input_Setting.F_Shake_Right()) && b_Game						// --> Player shakes the playfield : Right 
-					|| b_touch_TiltRight &&  b_Game){
-					if(b_Tilt == 1){																			// --> Start The Tilt Mode
-						Start_Pause_Mode(-1);																	// Start Pause Mode for all the missions. We want to stop mission until all the balls exit the playfield
-						if(camera_Movement)camera_Movement.Shake_Cam(1);										// PLay camera animation	
-						if(s_Tilt)sound.PlayOneShot(s_Tilt);													// Play a soound
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[0],3);											// Write tilt on LCD Screen
-						b_Tilt = 2;																				// b_Tilt = 2 : Tilt Mode Enable  
-						Tilt_Timer = 0;																			// init timer
-						F_Mode_Ball_Saver_Off();																// Disable Ball Saver
-						b_ExtraBall = false;																	// Disable ExtraBall
-						if(obj_Led_ExtraBall)led_ExtraBall.F_ChangeSprite_Off();								// Switch off the extra Ball led on playfield
-						Flippers_Plunger_State_Tilt_Mode("Desactivate");										// Desactivate Flipper and plunger until all the balls exit the playfield
-						b_touch_TiltRight = false; 
-					}	
-					else if(b_Tilt == 0){																	// --> Player shakes the playfield	: First Time
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[1],1);									// Wirte text on LCD Screen
-						if(s_Warning)sound.PlayOneShot(s_Warning);												// Play a sound
-						if(camera_Movement)camera_Movement.Shake_Cam(1);										// Play an animation 
-						Shake_AddForce_ToBall(new Vector3(-1,0,0));													// Add force to balls on playfield
-						b_Tilt = 1;																				// b_Tilt = 1 : Player shakes the playfield	
-						b_touch_TiltRight = false; 
-					}
-				}	
-				if(Input.GetButtonDown(manager_Input_Setting.F_Shake_Left()) && b_Game							// --> Player shakes the playfield :  Left 
-					|| b_touch_TiltLeft && b_Game){
-					if(b_Tilt == 1){
+				}
+
+				// --> Player shakes the playfield : Up
+				if (inputManager.WasShakeUpPressed() && b_Game)
+				{
+					if (b_Tilt == 1)
+					{
 						Start_Pause_Mode(-1);
-						if(camera_Movement)camera_Movement.Shake_Cam(2);	
-						if(s_Tilt)sound.PlayOneShot(s_Tilt);
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[0],3);
+						if (camera_Movement) camera_Movement.Shake_Cam(3);
+						if (s_Tilt) sound.PlayOneShot(s_Tilt);
+						if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[0], 3);
 						b_Tilt = 2;
 						Tilt_Timer = 0;
 						F_Mode_Ball_Saver_Off();
 						b_ExtraBall = false;
-						if(obj_Led_ExtraBall)led_ExtraBall.F_ChangeSprite_Off();
-						Flippers_Plunger_State_Tilt_Mode("Desactivate");
-						b_touch_TiltLeft = false;
-					}
-					else if(b_Tilt == 0){
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[1],1);
-						if(s_Warning)sound.PlayOneShot(s_Warning);
-						if(camera_Movement)camera_Movement.Shake_Cam(2);															 
-						Shake_AddForce_ToBall(new Vector3(1,0,0));													
-						b_Tilt = 1;
-						b_touch_TiltLeft = false;
-					}
-				}	
-				if(Input.GetButtonDown(manager_Input_Setting.F_Shake_Up()) && b_Game){							// --> Player shakes the playfield :  Up 
-					if(b_Tilt == 1){
-						Start_Pause_Mode(-1);
-						if(camera_Movement)camera_Movement.Shake_Cam(3);	
-						if(s_Tilt)sound.PlayOneShot(s_Tilt);
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[0],3);
-						b_Tilt = 2;
-						Tilt_Timer = 0;
-						F_Mode_Ball_Saver_Off();
-						b_ExtraBall = false;
-						if(obj_Led_ExtraBall)led_ExtraBall.F_ChangeSprite_Off();
+						if (obj_Led_ExtraBall) led_ExtraBall.F_ChangeSprite_Off();
 						Flippers_Plunger_State_Tilt_Mode("Desactivate");
 					}
-					else if(b_Tilt == 0){
-						if(s_Warning)sound.PlayOneShot(s_Warning);
-						if(Gui_Txt_Score)Add_Info_To_Array(Txt_Game[1],1);
-						if(camera_Movement)camera_Movement.Shake_Cam(3);															
-						Shake_AddForce_ToBall(new Vector3(0,0,1));													
+					else if (b_Tilt == 0)
+					{
+						if (s_Warning) sound.PlayOneShot(s_Warning);
+						if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[1], 1);
+						if (camera_Movement) camera_Movement.Shake_Cam(3);
+						Shake_AddForce_ToBall(new Vector3(0, 0, 1));
 						b_Tilt = 1;
 					}
-				}	
+				}
 			}
 			/////////////////////////////////	SECTION END /////////////
 
@@ -1529,9 +1477,19 @@ public class Manager_Game : MonoBehaviour {
 	}
 
 
-	public void F_InputGetButton(){														// use Edit -> Project Settings -> Input for Flippers
-		_GetButton = true;
+	#region Legacy Compatibility (can be removed after full migration)
+
+	/// <summary>
+	/// Legacy method - no longer needed with new Input System.
+	/// Kept for backward compatibility during migration.
+	/// </summary>
+	[System.Obsolete("No longer needed with new Input System. Will be removed in future version.")]
+	public void F_InputGetButton()
+	{
+		// No-op: New input system handles this automatically
 	}
+
+	#endregion
 
 
 	public void NudgeEnable(bool value ){
