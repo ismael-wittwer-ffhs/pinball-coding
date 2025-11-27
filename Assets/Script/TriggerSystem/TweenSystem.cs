@@ -5,11 +5,12 @@ using System.Collections;
 
 namespace TriggerSystem
 {
+    [System.Flags]
     public enum AnimationType
     {
-        Rotation,
-        Scale,
-        Translation
+        Rotation = 1 << 0,
+        Scale = 1 << 1,
+        Translation = 1 << 2
     }
 
     public class TweenSystem : MonoBehaviour

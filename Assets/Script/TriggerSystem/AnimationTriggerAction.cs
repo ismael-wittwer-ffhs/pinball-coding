@@ -73,17 +73,17 @@ namespace TriggerSystem
 
         private void PlayAnimation()
         {
-            switch (animationType)
+            if ((animationType & AnimationType.Rotation) != 0)
             {
-                case AnimationType.Rotation:
-                    TweenSystem.TweenRotation(transform, targetRotation, duration);
-                    break;
-                case AnimationType.Scale:
-                    TweenSystem.TweenScale(transform, targetScale, duration);
-                    break;
-                case AnimationType.Translation:
-                    TweenSystem.TweenTranslation(transform, targetPosition, duration);
-                    break;
+                TweenSystem.TweenRotation(transform, targetRotation, duration);
+            }
+            if ((animationType & AnimationType.Scale) != 0)
+            {
+                TweenSystem.TweenScale(transform, targetScale, duration);
+            }
+            if ((animationType & AnimationType.Translation) != 0)
+            {
+                TweenSystem.TweenTranslation(transform, targetPosition, duration);
             }
         }
 
@@ -93,17 +93,17 @@ namespace TriggerSystem
             Vector3 resetScl = resetScale == Vector3.one ? originalScale : resetScale;
             Vector3 resetPos = resetPosition == Vector3.zero ? originalPosition : resetPosition;
 
-            switch (animationType)
+            if ((animationType & AnimationType.Rotation) != 0)
             {
-                case AnimationType.Rotation:
-                    TweenSystem.TweenRotation(transform, resetRot, duration);
-                    break;
-                case AnimationType.Scale:
-                    TweenSystem.TweenScale(transform, resetScl, duration);
-                    break;
-                case AnimationType.Translation:
-                    TweenSystem.TweenTranslation(transform, resetPos, duration);
-                    break;
+                TweenSystem.TweenRotation(transform, resetRot, duration);
+            }
+            if ((animationType & AnimationType.Scale) != 0)
+            {
+                TweenSystem.TweenScale(transform, resetScl, duration);
+            }
+            if ((animationType & AnimationType.Translation) != 0)
+            {
+                TweenSystem.TweenTranslation(transform, resetPos, duration);
             }
         }
     }
