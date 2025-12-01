@@ -4,13 +4,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UI_Call_A_Function : MonoBehaviour
+public class UiFunctionCaller : MonoBehaviour
 {
     #region --- Exposed Fields ---
 
     public Camera_Movement camera_Movement;
-
-    public GameManager manager_Game;
     public GameObject BlackScreen;
     public GameObject obj_PauseMobile;
     public GameObject obj_UI;
@@ -19,6 +17,8 @@ public class UI_Call_A_Function : MonoBehaviour
     #endregion
 
     #region --- Private Fields ---
+
+    private GameManager manager_Game;
 
     private GameObject tmp;
 
@@ -79,23 +79,23 @@ public class UI_Call_A_Function : MonoBehaviour
         if (obj_UI2) obj_UI2.SetActive(false);
     }
 
-    public void Debug_Ball_Saver_Off() { manager_Game.F_Ball_Saver_Off(); }
-    public void Debug_Ball_Saver_On() { manager_Game.F_Ball_Saver_On(); }
+    public void Debug_Ball_Saver_Off() { manager_Game.F_Mode_Ball_Saver_Off(); }
+    public void Debug_Ball_Saver_On() { manager_Game.F_Mode_Ball_Saver_On(-1); }
 
     public void Debug_ChangeCam() { camera_Movement.Selected_Cam(); }
-    public void Debug_ExtraBall() { manager_Game.F_ExtraBall(); }
-    public void Debug_Init_All_Mission() { manager_Game.F_Init_All_Mission(); }
+    public void Debug_ExtraBall() { manager_Game.F_Mode_ExtraBall(); }
+    public void Debug_Init_All_Mission() { manager_Game.Init_All_Mission(); }
 
 
     public void Debug_InsertCoin_GameStart() { manager_Game.F_InsertCoin_GameStart(); }
-    public void Debug_MultiBall() { manager_Game.F_MultiBall(); }
+    public void Debug_MultiBall() { manager_Game.F_Mode_MultiBall(); }
 
     public void Debug_NewBall() { manager_Game.F_NewBall(); }
     public void Debug_Pause_Game() { manager_Game.F_Pause_Game(); }
 
-    public void Debug_PlayMultiLeds() { manager_Game.F_PlayMultiLeds(); }
-    public void Debug_Start_Pause_Mode() { manager_Game.F_Start_Pause_Mode(); }
-    public void Debug_Stop_Pause_Mode() { manager_Game.F_Stop_Pause_Mode(); }
+    public void Debug_PlayMultiLeds() { manager_Game.PlayMultiLeds(0); }
+    public void Debug_Start_Pause_Mode() { manager_Game.Start_Pause_Mode(-1); }
+    public void Debug_Stop_Pause_Mode() { manager_Game.Stop_Pause_Mode(); }
 
     public void Exit_Game()
     {
