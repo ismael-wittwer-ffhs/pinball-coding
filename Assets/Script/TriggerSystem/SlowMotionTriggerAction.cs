@@ -6,19 +6,23 @@ namespace TriggerSystem
 {
     public class SlowMotionTriggerAction : TriggerAction
     {
-        #region --- Private Fields ---
+        #region --- Exposed Fields ---
 
         [SerializeField]
-        private bool resetOnExit = true;
+        public bool ResetOnExit = true;
 
         [SerializeField]
-        private bool slowOnEnter = true;
-
-        private float originalTimeScale;
+        public bool SlowOnEnter = true;
 
         [Header("Slow Motion Settings")]
         [SerializeField]
-        private float slowMotionTimeScale = 0.5f;
+        public float SlowMotionTimeScale = 0.5f;
+
+        #endregion
+
+        #region --- Private Fields ---
+
+        private float _originalTimeScale;
 
         #endregion
 
@@ -26,12 +30,12 @@ namespace TriggerSystem
 
         private void Awake()
         {
-            originalTimeScale = Time.timeScale;
+            _originalTimeScale = Time.timeScale;
         }
 
         private void OnDestroy()
         {
-            Time.timeScale = originalTimeScale;
+            Time.timeScale = _originalTimeScale;
         }
 
         #endregion
@@ -44,22 +48,22 @@ namespace TriggerSystem
                 switch (collisionContext.Type)
                 {
                     case TriggerType.Enter:
-                        if (slowOnEnter) ApplySlowMotion();
+                        if (SlowOnEnter) ApplySlowMotion();
                         break;
                     case TriggerType.Exit:
-                        if (resetOnExit) ResetTimeScale();
+                        if (ResetOnExit) ResetTimeScale();
                         break;
                 }
         }
 
         private void ApplySlowMotion()
         {
-            Time.timeScale = slowMotionTimeScale;
+            Time.timeScale = SlowMotionTimeScale;
         }
 
         private void ResetTimeScale()
         {
-            Time.timeScale = originalTimeScale;
+            Time.timeScale = _originalTimeScale;
         }
 
         #endregion

@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace TriggerSystem
 {
+    public enum AnimationMode
+    {
+        Absolute,
+        Relative
+    }
+
     public class AnimationTriggerAction : TriggerAction
     {
         [Header("Animation Settings")]
@@ -11,6 +17,7 @@ namespace TriggerSystem
         [SerializeField] private bool playOnExit = false;
         [SerializeField] private bool playOnStay = false;
         [SerializeField] private AnimationType animationType = AnimationType.Rotation;
+        [SerializeField] private AnimationMode animationMode = AnimationMode.Absolute;
         [SerializeField] private float duration = 1f;
 
         [Header("Animation Values")]
@@ -73,17 +80,32 @@ namespace TriggerSystem
 
         private void PlayAnimation()
         {
+            Vector3 finalRotation = targetRotation;
+            Vector3 finalScale = targetScale;
+            Vector3 finalPosition = targetPosition;
+
+            if (animationMode == AnimationMode.Relative)
+            {
+                finalRotation = originalRotation + targetRotation;
+                finalScale = new Vector3(
+                    originalScale.x * targetScale.x,
+                    originalScale.y * targetScale.y,
+                    originalScale.z * targetScale.z
+                );
+                finalPosition = originalPosition + targetPosition;
+            }
+
             if ((animationType & AnimationType.Rotation) != 0)
             {
-                TweenSystem.TweenRotation(transform, targetRotation, duration);
+                TweenSystem.TweenRotation(transform, finalRotation, duration);
             }
             if ((animationType & AnimationType.Scale) != 0)
             {
-                TweenSystem.TweenScale(transform, targetScale, duration);
+                TweenSystem.TweenScale(transform, finalScale, duration);
             }
             if ((animationType & AnimationType.Translation) != 0)
             {
-                TweenSystem.TweenTranslation(transform, targetPosition, duration);
+                TweenSystem.TweenTranslation(transform, finalPosition, duration);
             }
         }
 
