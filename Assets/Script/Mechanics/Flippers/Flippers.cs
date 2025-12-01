@@ -2,8 +2,6 @@
 
 using UnityEngine;
 using Random = UnityEngine.Random;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
-using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class Flippers : MonoBehaviour
 {
@@ -29,9 +27,7 @@ public class Flippers : MonoBehaviour
     private AudioSource source;
     private bool b_Debug = false;
     private bool b_Pause;
-    private bool b_PullPlunger; // If pulling plunger, can't use right flippers
-
-    private bool b_touch;
+    private bool b_touch; // Used for external activation via SendMessage
 
     private bool wasPressed; // Track if input was pressed (for sound)
 
@@ -72,10 +68,7 @@ public class Flippers : MonoBehaviour
             hinge.spring = hingeSpring;
             var motor = hinge.motor;
 
-            // Update touch state
-            UpdateTouchInput();
-
-            // Check if input is held (keyboard/gamepad or touch)
+            // Check if input is held (keyboard/gamepad or external activation)
             var inputHeld = IsInputHeld();
 
             // Play sound on press
@@ -172,8 +165,6 @@ public class Flippers : MonoBehaviour
 
         if (b_Flipper_Right)
         {
-            // Don't activate right flipper if pulling plunger
-            if (b_PullPlunger) return false;
             return inputManager.IsRightFlipperHeld() || b_touch;
         }
 
@@ -187,39 +178,6 @@ public class Flippers : MonoBehaviour
             source.volume = 1;
             source.PlayOneShot(Sfx_Flipper);
         }
-    }
-
-    private void UpdateTouchInput()
-    {
-        // Check for plunger touch to prevent right flipper activation
-        foreach (var touch in Touch.activeTouches)
-        {
-            if (touch.phase == TouchPhase.Began)
-            {
-                var ray = Camera.main.ScreenPointToRay(touch.screenPosition);
-                if (Physics.Raycast(ray, out var hit, 100))
-                    if (hit.transform.name == "Mobile_Collider_zl" || hit.transform.name == "Mobile_Collider")
-                    {
-                        b_PullPlunger = true;
-                        return;
-                    }
-
-                b_PullPlunger = false;
-            }
-        }
-
-        // Update touch state from PinballInputManager
-        if (inputManager != null)
-        {
-            if (b_Flipper_Left)
-                b_touch = inputManager.LeftFlipperTouched;
-            else if (b_Flipper_Right && !b_PullPlunger)
-                b_touch = inputManager.RightFlipperTouched;
-            else if (b_Flipper_Right && b_PullPlunger) b_touch = false;
-        }
-
-        // Reset plunger flag when no touches
-        if (Touch.activeTouches.Count == 0) b_PullPlunger = false;
     }
 
     #endregion

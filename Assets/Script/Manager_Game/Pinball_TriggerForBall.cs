@@ -26,7 +26,7 @@ public class Pinball_TriggerForBall : MonoBehaviour
     {
         // --> Function OnTriggerEnter
         if (other.transform.tag == "Ball") // If it's a ball 
-            gameManager.gamePlay(other.gameObject); // Send Message to the obj_Game_Manager.  
+            gameManager.GamePlay(other.gameObject); // Send Message to the obj_Game_Manager.  
     }
 
     #endregion

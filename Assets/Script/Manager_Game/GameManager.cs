@@ -3,21 +3,25 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
-using TouchPhase = UnityEngine.InputSystem.TouchPhase;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
     #region --- Nested Types ---
 
     [Serializable]
-    public class Leds_Pattern_Multi
+    public class LedsPatternMulti
     {
         #region --- Exposed Fields ---
 
-        public GameObject[] obj = new GameObject[1]; // array to connect object with the Tag "Leds_Groups","Missions" 
-        public int[] num_pattern = new int[1]; // choose the led animation you want to play. The order as obj
-        public Manager_Led_Animation[] manager_Led_Animation = new Manager_Led_Animation[1]; // access component
+        [FormerlySerializedAs("obj")]
+        public GameObject[] Obj = new GameObject[1]; // array to connect object with the Tag "Leds_Groups","Missions" 
+
+        [FormerlySerializedAs("num_pattern")]
+        public int[] NumPattern = new int[1]; // choose the led animation you want to play. The order as obj
+
+        [FormerlySerializedAs("manager_Led_Animation")]
+        public Manager_Led_Animation[] ManagerLedAnimation = new Manager_Led_Animation[1]; // access component
 
         #endregion
     }
@@ -32,20 +36,39 @@ public class GameManager : MonoBehaviour
 
     #region --- Exposed Fields ---
 
-    public AudioClip a_BallSave; // Play a sound when the player lose a ball
-    public AudioClip a_Bonus_Screen; // Play a sound during the bonus score 
-    public AudioClip a_LoseBall; // Play a sound when the player lose a ball
-    public AudioClip s_Load_Ball; // play a sound when the ball respan
-    public AudioClip s_Tilt; // Play this sound if mode Tilt start
-    public AudioClip s_Warning; // Play this sound when player hit the table
-    public bool b_Ball_Saver; // if true : Ball Saver is enabled
+    [FormerlySerializedAs("a_BallSave")]
+    public AudioClip ABallSave; // Play a sound when the player lose a ball
 
+    [FormerlySerializedAs("a_Bonus_Screen")]
+    public AudioClip ABonusScreen; // Play a sound during the bonus score 
+
+    [FormerlySerializedAs("a_LoseBall")]
+    public AudioClip ALoseBall; // Play a sound when the player lose a ball
+
+    [FormerlySerializedAs("s_Load_Ball")]
+    public AudioClip SLoadBall; // play a sound when the ball respan
+
+    [FormerlySerializedAs("s_Tilt")]
+    public AudioClip STilt; // Play this sound if mode Tilt start
+
+    [FormerlySerializedAs("s_Warning")]
+    public AudioClip SWarning; // Play this sound when player hit the table
+
+    [FormerlySerializedAs("b_Ball_Saver")]
+    public bool BBallSaver; // if true : Ball Saver is enabled
+
+    [FormerlySerializedAs("b_ExtraBall")]
     [Header("Bonus Extra Ball")] // --> Bonus Extra Ball
-    public bool b_ExtraBall; // if true : extra ball is enabled
+    public bool BExtraBall; // if true : extra ball is enabled
 
-    public bool b_InsertCoin_GameStart; // Use when a new game start
-    public bool b_Respawn_Timer_Ball_Saver; // use to respawn the ball when ball lost
-    public bool Loop_AnimDemoPlayfield = true; // loop global leds animations
+    [FormerlySerializedAs("b_InsertCoin_GameStart")]
+    public bool BInsertCoinGameStart; // Use when a new game start
+
+    [FormerlySerializedAs("b_Respawn_Timer_Ball_Saver")]
+    public bool BRespawnTimerBallSaver; // use to respawn the ball when ball lost
+
+    [FormerlySerializedAs("Loop_AnimDemoPlayfield")]
+    public bool LoopAnimDemoPlayfield = true; // loop global leds animations
 
     [Header("Bonus Ball Saver")] // --> Bonus Ball Saver
     public bool StartGameWithBallSaver; // If true : player start a new ball with BallSaver
@@ -53,41 +76,62 @@ public class GameManager : MonoBehaviour
     [Header("Tilt Mode")] // --> Tilt Mode
     public float MinTimeTilt = 1; // minimum time in seconds between two shake 
 
-    public float Respawn_Timer_BallSaver = 2; // use to respawn the ball when ball lost
+    [FormerlySerializedAs("Respawn_Timer_BallSaver")]
+    public float RespawnTimerBallSaver = 2; // use to respawn the ball when ball lost
 
 
+    [FormerlySerializedAs("Time_Ballout_Part_1_BallOut")]
     [Header("Ball Lost")] // --> BALL LOST (There is 3 parts : Part 1 
-    public float Time_Ballout_Part_1_BallOut = 2; // Part 1 : Ball Lost : Choose the duration of this part
+    public float TimeBalloutPart1BallOut = 2; // Part 1 : Ball Lost : Choose the duration of this part
 
-    public float Time_Ballout_Part_2_Bonus = 2; // Part 2 : Bonus calculation : Choose the duration of this part					
+    [FormerlySerializedAs("Time_Ballout_Part_2_Bonus")]
+    public float TimeBalloutPart2Bonus = 2; // Part 2 : Bonus calculation : Choose the duration of this part					
 
-    public float Time_Ballout_Part_3_TotalScore = 2; // Part 3 : Next Ball or GameOver : Choose the duration of this part		
+    [FormerlySerializedAs("Time_Ballout_Part_3_TotalScore")]
+    public float TimeBalloutPart3TotalScore = 2; // Part 3 : Next Ball or GameOver : Choose the duration of this part		
+
     public float TimeToWaitMulti = 3; // Time To Wait before the multi ball start 
 
+    [FormerlySerializedAs("obj_Launcher_MultiBall")]
     [Header("Mode Multi Ball")] // --> Mode Multi Ball
-    public GameObject obj_Launcher_MultiBall; // Object that manage the multi-ball on playfield. Manage how the ball is ejected on playfield
+    public GameObject ObjLauncherMultiBall; // Object that manage the multi-ball on playfield. Manage how the ball is ejected on playfield
 
-    public GameObject obj_Led_Ball_Saver; // Connect here a Led
-    public GameObject obj_Led_ExtraBall; // Connect here a Led 
-    public GameObject[] Deactivate_Obj; // Deactivate Target when multiball start
+    [FormerlySerializedAs("obj_Led_Ball_Saver")]
+    public GameObject ObjLedBallSaver; // Connect here a Led
 
-    public GameObject[] Deactivate_Obj_WhenMultIsFinished = { }; // Deactivate Target when multiball start
+    [FormerlySerializedAs("obj_Led_ExtraBall")]
+    public GameObject ObjLedExtraBall; // Connect here a Led 
 
-    public GameObject[] obj_Multiplier_Leds; // Connect here 5 Leds
+    [FormerlySerializedAs("Deactivate_Obj")]
+    public GameObject[] DeactivateObj; // Deactivate Target when multiball start
+
+    [FormerlySerializedAs("Deactivate_Obj_WhenMultIsFinished")]
+    public GameObject[] DeactivateObjWhenMultIsFinished = { }; // Deactivate Target when multiball start
+
+    [FormerlySerializedAs("obj_Multiplier_Leds")]
+    public GameObject[] ObjMultiplierLeds; // Connect here 5 Leds
+
     public int AnimDemoPlayfield; // Choose leds animation used when the game is over or when the scene starts
     public int BallSaverLedAnimation; // Choose Led ANimation when after a ball saved 
-    public int Bonus_Base = 100; // 
-    public int BONUS_Global_Hit_Counter; // Record the number of object that hit the ball during the current ball
+
+    [FormerlySerializedAs("Bonus_Base")]
+    public int BonusBase = 100; // 
+
+    [FormerlySerializedAs("BONUS_Global_Hit_Counter")]
+    public int BonusGlobalHitCounter; // Record the number of object that hit the ball during the current ball
+
     public int GameOverLedAnimation; // Choose Led Animation when the player lose a ball 
 
     // Variables used for the gameplay
     [Header("Player Life and Score")]
     public int Life = 3; // --> Life
 
-    public int Mulitplier_SuperBonus = 1000000; // add points if multiplier = 10
+    [FormerlySerializedAs("Mulitplier_SuperBonus")]
+    public int MulitplierSuperBonus = 1000000; // add points if multiplier = 10
 
+    [FormerlySerializedAs("multiplier")]
     [Header("Bonus Multiplier")] // --> Bonus Multiplier (Bonus Multiplier = multiplier x Bonus_Base x BONUS_Global_Hit_Counter)
-    public int multiplier = 1; // multiplier could be x1 x2 x4 x6 x 8 x10							
+    public int Multiplier = 1; // multiplier could be x1 x2 x4 x6 x 8 x10							
 
     public int NewBallLedAnimation; // Choose Led ANimation when there is a new ball on plunger after ball lost 
 
@@ -95,65 +139,65 @@ public class GameManager : MonoBehaviour
 
     // leds_Multi[0] is auto connected. leds_Multi[0] plays the first animation of each object with the Tag "Leds_Groups","Missions" or "Led_animation"
     // It is better to create your own leds pattern from leds_Multi[1]
+    [FormerlySerializedAs("leds_Multi")]
     [Header("Global Leds pattern manager")] // --> Global Leds pattern manager
-    public Leds_Pattern_Multi[] leds_Multi = new Leds_Pattern_Multi[1];
+    public LedsPatternMulti[] LedsMulti = new LedsPatternMulti[1];
 
-    public MultiBall multiBall; // Access MultiBall component from obj_Launcher_MultiBall gameObject;
+    [FormerlySerializedAs("multiBall")]
+    public MultiBall MultiBall; // Access MultiBall component from obj_Launcher_MultiBall gameObject;
 
-    public SpringLauncher[] spring_Launcher; // Plunger : access component SpringLauncher
+    [FormerlySerializedAs("spring_Launcher")]
+    public SpringLauncher[] SpringLauncher; // Plunger : access component SpringLauncher
 
     [Header("Score is saved with this name")]
     public string BestScoreName = "BestScore";
 
+    [FormerlySerializedAs("Txt_Game")]
     [Header("Text used during game")] // --> Text used during game
-    public string[] Txt_Game; // Array : All the text use by the game Manager
+    public string[] TxtGame; // Array : All the text use by the game Manager
 
 
+    [FormerlySerializedAs("ball")]
     [Header("Ball")] // --> Ball
-    public Transform ball; // Connect the ball Prefab
+    public Transform Ball; // Connect the ball Prefab
 
     #endregion
 
     #region --- Private Fields ---
 
     [Header("Audio : Sfx")] // --> Audio
-    private AudioSource sound; // access AudioSOurce omponent
+    private AudioSource _sound; // access AudioSOurce omponent
 
-    private bool b_Ballout_Part_1 = true;
-    private bool b_Ballout_Part_2 = true;
-    private bool b_Ballout_Part_3 = true;
-    private bool b_Game; // True : Player start the game . False : Game is over
-    private bool b_Pause; // use to pause the script
-    private bool b_Timer_Ball_Saver;
-    private bool b_touch_TiltLeft; // use for mobile device
-    private bool b_touch_TiltRight; // use for mobile device
-    private bool Debug_Game;
-    private bool LCD_Wait_Start_Game = true; // use to switch between best score and insert coin
+    private bool _bBalloutPart1 = true;
+    private bool _bBalloutPart2 = true;
+    private bool _bBalloutPart3 = true;
+    private bool _bGame; // True : Player start the game . False : Game is over
+    private bool _bPause; // use to pause the script
+    private bool _bTimerBallSaver;
+    private bool _debugGame;
+    private bool _lcdWaitStartGame = true; // use to switch between best score and insert coin
 
-    private bool Mission_Multi_Ball_Ended; // use to know if the multi ball stop
+    private bool _missionMultiBallEnded; // use to know if the multi ball stop
 
-    //private bool OnceTouchLeft = true;				// use for mobile device
-    //private bool OnceTouchRight = true;				// use for mobile device
-    private bool MobileNudge; // use for mobile device to enable or disable nudge mode
-    private bool Multi_Ball; // Mode Multi ball activate or not
-    private bool TimeToWaitBeforeMultiBallStart; // prevent bug when a multi ball start after enter a hole
+    private bool _multiBall; // Mode Multi ball activate or not
+    private bool _timeToWaitBeforeMultiBallStart; // prevent bug when a multi ball start after enter a hole
 
     //private GameObject Camera_Board;					// (auto connected) Camera with the tag "Main Camera"
-    private Camera_Movement camera_Movement; // access component Camera_Movement
-    private CameraSmoothFollow pivotCam; // access component CameraSmoothFollow. Use to avoid that the camera move too harshly when the ball respawn on the plunger  
-    private ChangeSpriteRenderer led_Ball_Saver_Renderer; // Access ChangeSpriteRenderer component from obj_Led_Ball_Saver if a led is connected
-    private ChangeSpriteRenderer led_ExtraBall; // Access ChangeSpriteRenderer component from obj_Led_ExtraBall if a led is connected
-    private ChangeSpriteRenderer[] led_Multiplier_Renderer; // Access ChangeSpriteRenderer component from obj_Multiplier_Leds if leds are connected
-    private float Tilt_Timer; // timer to know if we need to start tilt mode
-    private float Timer_Ball_Saver = 2; // Ball Saver duration					
-    private float Timer_Multi = 1; // ejection time between two balls 
-    private float TimerMultiBall;
-    private float tmp_Ball_Saver; // use for the ball saver timer 
-    private float tmp_Ballout_Time;
-    private float tmp_Ballout_Time_2;
-    private float tmp_Ballout_Time_3;
+    private Camera_Movement _cameraMovement; // access component Camera_Movement
+    private CameraSmoothFollow _pivotCam; // access component CameraSmoothFollow. Use to avoid that the camera move too harshly when the ball respawn on the plunger  
+    private ChangeSpriteRenderer _ledBallSaverRenderer; // Access ChangeSpriteRenderer component from obj_Led_Ball_Saver if a led is connected
+    private ChangeSpriteRenderer _ledExtraBall; // Access ChangeSpriteRenderer component from obj_Led_ExtraBall if a led is connected
+    private ChangeSpriteRenderer[] _ledMultiplierRenderer; // Access ChangeSpriteRenderer component from obj_Multiplier_Leds if leds are connected
+    private float _tiltTimer; // timer to know if we need to start tilt mode
+    private float _timerBallSaver = 2; // Ball Saver duration					
+    private float _timerMulti = 1; // ejection time between two balls 
+    private float _timerMultiBall;
+    private float _tmpBalloutTime;
+    private float _tmpBalloutTime2;
+    private float _tmpBalloutTime3;
+    private float _tmpBallSaver; // use for the ball saver timer 
 
-    private GameObject obj_Skillshot_Mission; // (auto connected) with the function F_Init_Skillshot_Mission(obj : GameObject)
+    private GameObject _objSkillshotMission; // (auto connected) with the function F_Init_Skillshot_Mission(obj : GameObject)
     // Use for Tilting mode
     // Txt_Game[0] : Tilt
     // Txt_Game[1] : Tilt Warning
@@ -176,35 +220,35 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Plunger")] // --> Plunger
-    private GameObject spawnBall; // (connected automatically) The GameObject that manage the ejection after a ball respawn
+    private GameObject _spawnBall; // (connected automatically) The GameObject that manage the ejection after a ball respawn
 
 
-    private GameObject[] obj_Managers; // (connected automatically) Array with GameObjects that manage each mission that you can find on playfield
-    private GameObject[] obj_Tmp_Leds_Groups;
+    private GameObject[] _objManagers; // (connected automatically) Array with GameObjects that manage each mission that you can find on playfield
+    private GameObject[] _objTmpLedsGroups;
 
-    private GameObject[] obj_Tmp_Mission;
-    private int AnimInProgress; // Use to know the name of global Leds animation is being played
-    private int b_Tilt; // 0 : Tilt Desactivate	 	1 : Player shakes the playfield			2 : Tilt Mode Enable  
-    private int Ball_num; // the number of ball played by the player
-    private int globAnimCount; // Use to know if all the leds animation on playfield are finish
-    private int Number_Of_Ball_On_Board; // Know the number of board. 
-    private int player_Score; // player score
-    private int ReloadNumber = 3; // number of ball for the multi ball mode. Send by the mission with the function gameManager.F_Mission_MultiBall(missionIndex.F_index(),numberOfBall);
-    private int tmp_BONUS_Global_Hit_Counter; // Use to calculate the score
-    private int tmp_Bonus_Score; // Use to calculate the score
-    private int tmp_count;
-    private int tmp_index_Info = -1; // lets you know what mission start Multi ball. Send by the mission with the function gameManager.F_Mission_MultiBall(missionIndex.F_index(),numberOfBall);
-    private int tmp_Life; // tmp_Life : the number of remaining life
-    private int tmp_Multiplier; // Use to calculate the score
-    private int tmp_ReloadNumber = 3;
-    private int[] Missions_Index; // (connected automatically) Array with the ID of all the mission you can find on playfield
+    private GameObject[] _objTmpMission;
+    private int _animInProgress; // Use to know the name of global Leds animation is being played
+    private int _ballNum; // the number of ball played by the player
+    private int _bTilt; // 0 : Tilt Desactivate	 	1 : Player shakes the playfield			2 : Tilt Mode Enable  
+    private int _globAnimCount; // Use to know if all the leds animation on playfield are finish
+    private int _numberOfBallOnBoard; // Know the number of board. 
+    private int _playerScore; // player score
+    private int _reloadNumber = 3; // number of ball for the multi ball mode. Send by the mission with the function gameManager.F_Mission_MultiBall(missionIndex.F_index(),numberOfBall);
+    private int _tmpBonusGlobalHitCounter; // Use to calculate the score
+    private int _tmpBonusScore; // Use to calculate the score
+    private int _tmpCount;
+    private int _tmpIndexInfo = -1; // lets you know what mission start Multi ball. Send by the mission with the function gameManager.F_Mission_MultiBall(missionIndex.F_index(),numberOfBall);
+    private int _tmpLife; // tmp_Life : the number of remaining life
+    private int _tmpMultiplier; // Use to calculate the score
+    private int _tmpReloadNumber = 3;
+    private int[] _missionsIndex; // (connected automatically) Array with the ID of all the mission you can find on playfield
 
 
     // variables used for debuging
-    private ManagerInputSetting manager_Input_Setting;
-    private Pause_Mission[] pause_Mission; // (connected automatically) Access the Pause_Mission component for all the mission on playfield
-    private PinballInputManager inputManager;
-    private UiManager uiManager;
+    private ManagerInputSetting _managerInputSetting;
+    private Pause_Mission[] _pauseMission; // (connected automatically) Access the Pause_Mission component for all the mission on playfield
+    private PinballInputManager _inputManager;
+    private UiManager _uiManager;
 
     #endregion
 
@@ -224,133 +268,133 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        manager_Input_Setting = GetComponent<ManagerInputSetting>();
-        inputManager = PinballInputManager.Instance;
-        uiManager = UiManager.Instance;
+        _managerInputSetting = GetComponent<ManagerInputSetting>();
+        _inputManager = PinballInputManager.Instance;
+        _uiManager = UiManager.Instance;
 
-        if (inputManager == null) Debug.LogWarning("ManagerGame: PinballInputManager not found. Make sure it exists in the scene.");
-        if (uiManager    == null) Debug.LogWarning("ManagerGame: UiManager not found. Make sure it exists in the scene.");
+        if (_inputManager == null) Debug.LogWarning("ManagerGame: PinballInputManager not found. Make sure it exists in the scene.");
+        if (_uiManager    == null) Debug.LogWarning("ManagerGame: UiManager not found. Make sure it exists in the scene.");
 
         // Initialize UiManager with text array and best score name
-        if (uiManager != null)
+        if (_uiManager != null)
         {
-            uiManager.Txt_Game = Txt_Game;
-            uiManager.BestScoreName = BestScoreName;
+            _uiManager.Txt_Game = TxtGame;
+            _uiManager.BestScoreName = BestScoreName;
         }
 
 
         var gos = GameObject.FindGameObjectsWithTag("MainCamera"); // Connect the main camera
-        foreach (var go_ in gos)
+        foreach (var go in gos)
         {
-            if (go_.GetComponent<Camera_Movement>())
+            if (go.GetComponent<Camera_Movement>())
                 //Camera_Board = go_;
-                camera_Movement = go_.GetComponent<Camera_Movement>();
+                _cameraMovement = go.GetComponent<Camera_Movement>();
         }
 
 
-        if (obj_Launcher_MultiBall) // Connect obj_Launcher_MultiBall to the script
-            multiBall = obj_Launcher_MultiBall.GetComponent<MultiBall>();
+        if (ObjLauncherMultiBall) // Connect obj_Launcher_MultiBall to the script
+            MultiBall = ObjLauncherMultiBall.GetComponent<MultiBall>();
 
-        sound = GetComponent<AudioSource>(); // Access Audiosource component
+        _sound = GetComponent<AudioSource>(); // Access Audiosource component
 
-        if (spawnBall == null) // Connect the Mission to the gameObject : "spawnBall"
-            spawnBall = GameObject.Find("Plunger_Spawn");
+        if (_spawnBall == null) // Connect the Mission to the gameObject : "spawnBall"
+            _spawnBall = GameObject.Find("Plunger_Spawn");
 
         gos = GameObject.FindGameObjectsWithTag("Plunger");
-        spring_Launcher = new SpringLauncher[gos.Length]; // Prepare array size 
+        SpringLauncher = new SpringLauncher[gos.Length]; // Prepare array size 
 
-        tmp_count = 0;
+        _tmpCount = 0;
 
 
-        foreach (var go_ in gos)
+        foreach (var go in gos)
         {
-            spring_Launcher[tmp_count] = go_.GetComponent<SpringLauncher>(); // access Plungers SpringLauncher component
-            tmp_count++;
+            SpringLauncher[_tmpCount] = go.GetComponent<SpringLauncher>(); // access Plungers SpringLauncher component
+            _tmpCount++;
         }
 
         gos = GameObject.FindGameObjectsWithTag("Missions"); // Find all game objects with tag Missions and put them on arrays. 
-        obj_Managers = new GameObject[gos.Length]; // Prepare array size
-        Missions_Index = new int[gos.Length]; // Prepare array size
+        _objManagers = new GameObject[gos.Length]; // Prepare array size
+        _missionsIndex = new int[gos.Length]; // Prepare array size
 
-        tmp_count = 0;
+        _tmpCount = 0;
         foreach (var go4 in gos)
         {
-            obj_Managers[tmp_count] = go4; // Save information inside obj_Managers[] : the Mission gameObject 
-            Missions_Index[tmp_count] = go4.GetComponent<MissionIndex>().F_index(); // Save information inside Missions_Index[] : save the index of the Mission
-            tmp_count++;
+            _objManagers[_tmpCount] = go4; // Save information inside obj_Managers[] : the Mission gameObject 
+            _missionsIndex[_tmpCount] = go4.GetComponent<MissionIndex>().F_index(); // Save information inside Missions_Index[] : save the index of the Mission
+            _tmpCount++;
         }
 
-        pause_Mission = new Pause_Mission[obj_Managers.Length]; // Prepare array size
-        for (var i = 0; i < obj_Managers.Length; i++) pause_Mission[i] = obj_Managers[i].GetComponent<Pause_Mission>(); // access Pause_Mission component from all object inside obj_Managers[]
+        _pauseMission = new Pause_Mission[_objManagers.Length]; // Prepare array size
+        for (var i = 0; i < _objManagers.Length; i++) _pauseMission[i] = _objManagers[i].GetComponent<Pause_Mission>(); // access Pause_Mission component from all object inside obj_Managers[]
 
-        if (obj_Led_ExtraBall) // Init obj_Led_ExtraBall
-            led_ExtraBall = obj_Led_ExtraBall.GetComponent<ChangeSpriteRenderer>();
-        if (obj_Led_Ball_Saver) // Init obj_Led_Ball_Saver
-            led_Ball_Saver_Renderer = obj_Led_Ball_Saver.GetComponent<ChangeSpriteRenderer>();
+        if (ObjLedExtraBall) // Init obj_Led_ExtraBall
+            _ledExtraBall = ObjLedExtraBall.GetComponent<ChangeSpriteRenderer>();
+        if (ObjLedBallSaver) // Init obj_Led_Ball_Saver
+            _ledBallSaverRenderer = ObjLedBallSaver.GetComponent<ChangeSpriteRenderer>();
 
 
-        if (obj_Multiplier_Leds.Length > 0)
+        if (ObjMultiplierLeds.Length > 0)
         {
             // Init obj_Multiplier_Leds[] and access ChangeSpriteRenderer component
-            led_Multiplier_Renderer = new ChangeSpriteRenderer[obj_Multiplier_Leds.Length];
-            for (var i = 0; i < obj_Multiplier_Leds.Length; i++) led_Multiplier_Renderer[i] = obj_Multiplier_Leds[i].GetComponent<ChangeSpriteRenderer>();
+            _ledMultiplierRenderer = new ChangeSpriteRenderer[ObjMultiplierLeds.Length];
+            for (var i = 0; i < ObjMultiplierLeds.Length; i++) _ledMultiplierRenderer[i] = ObjMultiplierLeds[i].GetComponent<ChangeSpriteRenderer>();
         }
 
-        if (leds_Multi[0].obj[0] == null)
+        if (LedsMulti[0].Obj[0] == null)
         {
             // if nothing is connected to Leds_Multi (LEDS Patterns). automaticaly create a led pattern with objects with the Tag "Leds_Groups","Missions"
-            tmp_count = 0;
+            _tmpCount = 0;
 
-            var gos_t = GameObject.FindGameObjectsWithTag("Missions");
-            obj_Tmp_Mission = new GameObject[gos_t.Length];
-            foreach (var go10 in gos_t)
+            var gosT = GameObject.FindGameObjectsWithTag("Missions");
+            _objTmpMission = new GameObject[gosT.Length];
+            foreach (var go10 in gosT)
             {
-                obj_Tmp_Mission[tmp_count] = go10;
-                tmp_count++;
+                _objTmpMission[_tmpCount] = go10;
+                _tmpCount++;
             }
 
-            tmp_count = 0;
-            gos_t = GameObject.FindGameObjectsWithTag("Leds_Groups");
-            obj_Tmp_Leds_Groups = new GameObject[gos_t.Length];
-            foreach (var go10 in gos_t)
+            _tmpCount = 0;
+            gosT = GameObject.FindGameObjectsWithTag("Leds_Groups");
+            _objTmpLedsGroups = new GameObject[gosT.Length];
+            foreach (var go10 in gosT)
             {
-                obj_Tmp_Leds_Groups[tmp_count] = go10;
-                tmp_count++;
+                _objTmpLedsGroups[_tmpCount] = go10;
+                _tmpCount++;
             }
 
-            tmp_count = obj_Tmp_Mission.Length + obj_Tmp_Leds_Groups.Length;
+            _tmpCount = _objTmpMission.Length + _objTmpLedsGroups.Length;
 
-            leds_Multi[0].obj = new GameObject[tmp_count];
-            leds_Multi[0].num_pattern = new int[tmp_count];
+            LedsMulti[0].Obj = new GameObject[_tmpCount];
+            LedsMulti[0].NumPattern = new int[_tmpCount];
 
-            tmp_count = 0; //obj_Tmp_Mission.Length + obj_Tmp_Leds_Groups.Length;
-            for (var i = 0; i < obj_Tmp_Mission.Length; i++)
+            _tmpCount = 0; //obj_Tmp_Mission.Length + obj_Tmp_Leds_Groups.Length;
+            for (var i = 0; i < _objTmpMission.Length; i++)
             {
-                leds_Multi[0].obj[i] = obj_Tmp_Mission[i];
-                leds_Multi[0].num_pattern[tmp_count] = 0;
-                tmp_count++;
+                LedsMulti[0].Obj[i] = _objTmpMission[i];
+                LedsMulti[0].NumPattern[_tmpCount] = 0;
+                _tmpCount++;
             }
 
-            for (var i = 0; i < obj_Tmp_Leds_Groups.Length; i++)
+            for (var i = 0; i < _objTmpLedsGroups.Length; i++)
             {
-                leds_Multi[0].obj[tmp_count] = obj_Tmp_Leds_Groups[i];
-                leds_Multi[0].num_pattern[tmp_count] = 0;
-                tmp_count++;
+                LedsMulti[0].Obj[_tmpCount] = _objTmpLedsGroups[i];
+                LedsMulti[0].NumPattern[_tmpCount] = 0;
+                _tmpCount++;
             }
         }
 
-        for (var j = 0; j < leds_Multi.Length; j++)
+        for (var j = 0; j < LedsMulti.Length; j++)
         {
-            leds_Multi[j].manager_Led_Animation = new Manager_Led_Animation[leds_Multi[j].obj.Length];
-            for (var k = 0; k < leds_Multi[j].obj.Length; k++) leds_Multi[j].manager_Led_Animation[k] = leds_Multi[j].obj[k].GetComponent<Manager_Led_Animation>();
+            LedsMulti[j].ManagerLedAnimation = new Manager_Led_Animation[LedsMulti[j].Obj.Length];
+            for (var k = 0; k < LedsMulti[j].Obj.Length; k++) LedsMulti[j].ManagerLedAnimation[k] = LedsMulti[j].Obj[k].GetComponent<Manager_Led_Animation>();
         }
 
-        tmp_ReloadNumber = ReloadNumber; // Init the number of ball for Multi player mode
+        _tmpReloadNumber = _reloadNumber; // Init the number of ball for Multi player mode
 
         var tmp = GameObject.Find("Pivot_Cam");
-        if (tmp) pivotCam = tmp.GetComponent<CameraSmoothFollow>(); // Access Component CameraSmoothFollow from the main camera
+        if (tmp) _pivotCam = tmp.GetComponent<CameraSmoothFollow>(); // Access Component CameraSmoothFollow from the main camera
 
-        Debug_Game = manager_Input_Setting.F_Debug_Game();
+        _debugGame = _managerInputSetting.F_Debug_Game();
         //yield WaitForEndOfFrame();
         StartCoroutine("WaitToInit");
     }
@@ -358,146 +402,122 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         // UI Navigation and global controls
-        if (inputManager != null && uiManager != null)
+        if (_inputManager != null && _uiManager != null)
         {
             // UI: Select a button if nothing is selected
-            if (uiManager.IsUIActive() && (Mathf.Abs(inputManager.GetNavigateHorizontal()) == 1 || inputManager.WasPlungerPressed()))
-                uiManager.SelectLastButton();
+            if (_uiManager.IsUIActive() && (Mathf.Abs(_inputManager.GetNavigateHorizontal()) == 1 || _inputManager.WasPlungerPressed()))
+                _uiManager.SelectLastButton();
 
             // Pause Mode
-            if (inputManager.WasPausePressed()) F_Pause_Game();
+            if (_inputManager.WasPausePressed()) F_Pause_Game();
 
             // Change the Camera view
-            if (inputManager.WasCameraChangePressed())
-                if (camera_Movement)
-                    camera_Movement.Selected_Cam();
+            if (_inputManager.WasCameraChangePressed())
+                if (_cameraMovement)
+                    _cameraMovement.Selected_Cam();
         }
 
 
-        if (!b_Pause)
+        if (!_bPause)
         {
             /////////////////////////////////	SECTION : Player Input : START /////////////
             // New Game Start
-            if (inputManager != null && (uiManager == null || !uiManager.IsUIActive()) && inputManager.WasPlungerPressed())
-                if (!b_Game)
+            if (_inputManager != null && (_uiManager == null || !_uiManager.IsUIActive()) && _inputManager.WasPlungerPressed())
+                if (!_bGame)
                     F_InsertCoin_GameStart();
 
-            if (b_Game)
-                if (MobileNudge)
-                    // Touch Screen part for TILT Mode using Enhanced Touch
-                    foreach (var touch in Touch.activeTouches)
-                    {
-                        var normalizedX = touch.screenPosition.x / Screen.width;
-                        var normalizedY = touch.screenPosition.y / Screen.height;
-
-                        // Left side tilt zone
-                        if (normalizedX < 0.5f && normalizedY > 0.6f && normalizedY < 0.8f)
-                            if (touch.phase == TouchPhase.Began && b_Tilt <= 1)
-                                b_touch_TiltLeft = true;
-
-                        // Right side tilt zone
-                        if (normalizedX > 0.5f && normalizedY > 0.6f && normalizedY < 0.8f)
-                            if (touch.phase == TouchPhase.Began && b_Tilt <= 1)
-                                b_touch_TiltRight = true;
-                    }
-
-
-            if (b_Tilt == 1)
+            if (_bTilt == 1)
             {
                 // --> Player shakes the playfield	: First Time
-                Tilt_Timer = Mathf.MoveTowards(Tilt_Timer, MinTimeTilt, Time.deltaTime); // A timer start to know the time between two shake on the table
-                if (Tilt_Timer == MinTimeTilt)
+                _tiltTimer = Mathf.MoveTowards(_tiltTimer, MinTimeTilt, Time.deltaTime); // A timer start to know the time between two shake on the table
+                if (_tiltTimer == MinTimeTilt)
                 {
                     // Tilt_Timer is init after  MinTimeTilt 
-                    b_Tilt = 0; // Init Tilt Mode
-                    Tilt_Timer = 0; // init Tilt timer
+                    _bTilt = 0; // Init Tilt Mode
+                    _tiltTimer = 0; // init Tilt timer
                 }
             }
 
-            // Shake/Tilt input handling (consolidated from legacy dual code paths)
-            if (inputManager != null)
+            // Shake/Tilt input handling
+            if (_inputManager != null)
             {
                 // --> Player shakes the playfield : Right
-                if ((inputManager.WasShakeRightPressed() && b_Game) || (b_touch_TiltRight && b_Game))
+                if (_inputManager.WasShakeRightPressed() && _bGame)
                 {
-                    if (b_Tilt == 1)
+                    if (_bTilt == 1)
                     {
                         // Start The Tilt Mode
                         Start_Pause_Mode(-1);
-                        if (camera_Movement) camera_Movement.Shake_Cam(1);
-                        if (s_Tilt) sound.PlayOneShot(s_Tilt);
-                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 0) uiManager.Add_Info_To_Array(Txt_Game[0], 3);
-                        b_Tilt = 2;
-                        Tilt_Timer = 0;
+                        if (_cameraMovement) _cameraMovement.Shake_Cam(1);
+                        if (STilt) _sound.PlayOneShot(STilt);
+                        if (_uiManager != null && TxtGame != null && TxtGame.Length > 0) _uiManager.Add_Info_To_Array(TxtGame[0], 3);
+                        _bTilt = 2;
+                        _tiltTimer = 0;
                         F_Mode_Ball_Saver_Off();
-                        b_ExtraBall = false;
-                        if (obj_Led_ExtraBall) led_ExtraBall.F_ChangeSprite_Off();
+                        BExtraBall = false;
+                        if (ObjLedExtraBall) _ledExtraBall.F_ChangeSprite_Off();
                         Flippers_Plunger_State_Tilt_Mode("Desactivate");
-                        b_touch_TiltRight = false;
                     }
-                    else if (b_Tilt == 0)
+                    else if (_bTilt == 0)
                     {
                         // First warning
-                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 1) uiManager.Add_Info_To_Array(Txt_Game[1], 1);
-                        if (s_Warning) sound.PlayOneShot(s_Warning);
-                        if (camera_Movement) camera_Movement.Shake_Cam(1);
+                        if (_uiManager != null && TxtGame != null && TxtGame.Length > 1) _uiManager.Add_Info_To_Array(TxtGame[1], 1);
+                        if (SWarning) _sound.PlayOneShot(SWarning);
+                        if (_cameraMovement) _cameraMovement.Shake_Cam(1);
                         Shake_AddForce_ToBall(new Vector3(-1, 0, 0));
-                        b_Tilt = 1;
-                        b_touch_TiltRight = false;
+                        _bTilt = 1;
                     }
                 }
 
                 // --> Player shakes the playfield : Left
-                if ((inputManager.WasShakeLeftPressed() && b_Game) || (b_touch_TiltLeft && b_Game))
+                if (_inputManager.WasShakeLeftPressed() && _bGame)
                 {
-                    if (b_Tilt == 1)
+                    if (_bTilt == 1)
                     {
                         Start_Pause_Mode(-1);
-                        if (camera_Movement) camera_Movement.Shake_Cam(2);
-                        if (s_Tilt) sound.PlayOneShot(s_Tilt);
-                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 0) uiManager.Add_Info_To_Array(Txt_Game[0], 3);
-                        b_Tilt = 2;
-                        Tilt_Timer = 0;
+                        if (_cameraMovement) _cameraMovement.Shake_Cam(2);
+                        if (STilt) _sound.PlayOneShot(STilt);
+                        if (_uiManager != null && TxtGame != null && TxtGame.Length > 0) _uiManager.Add_Info_To_Array(TxtGame[0], 3);
+                        _bTilt = 2;
+                        _tiltTimer = 0;
                         F_Mode_Ball_Saver_Off();
-                        b_ExtraBall = false;
-                        if (obj_Led_ExtraBall) led_ExtraBall.F_ChangeSprite_Off();
+                        BExtraBall = false;
+                        if (ObjLedExtraBall) _ledExtraBall.F_ChangeSprite_Off();
                         Flippers_Plunger_State_Tilt_Mode("Desactivate");
-                        b_touch_TiltLeft = false;
                     }
-                    else if (b_Tilt == 0)
+                    else if (_bTilt == 0)
                     {
-                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 1) uiManager.Add_Info_To_Array(Txt_Game[1], 1);
-                        if (s_Warning) sound.PlayOneShot(s_Warning);
-                        if (camera_Movement) camera_Movement.Shake_Cam(2);
+                        if (_uiManager != null && TxtGame != null && TxtGame.Length > 1) _uiManager.Add_Info_To_Array(TxtGame[1], 1);
+                        if (SWarning) _sound.PlayOneShot(SWarning);
+                        if (_cameraMovement) _cameraMovement.Shake_Cam(2);
                         Shake_AddForce_ToBall(new Vector3(1, 0, 0));
-                        b_Tilt = 1;
-                        b_touch_TiltLeft = false;
+                        _bTilt = 1;
                     }
                 }
 
                 // --> Player shakes the playfield : Up
-                if (inputManager.WasShakeUpPressed() && b_Game)
+                if (_inputManager.WasShakeUpPressed() && _bGame)
                 {
-                    if (b_Tilt == 1)
+                    if (_bTilt == 1)
                     {
                         Start_Pause_Mode(-1);
-                        if (camera_Movement) camera_Movement.Shake_Cam(3);
-                        if (s_Tilt) sound.PlayOneShot(s_Tilt);
-                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 0) uiManager.Add_Info_To_Array(Txt_Game[0], 3);
-                        b_Tilt = 2;
-                        Tilt_Timer = 0;
+                        if (_cameraMovement) _cameraMovement.Shake_Cam(3);
+                        if (STilt) _sound.PlayOneShot(STilt);
+                        if (_uiManager != null && TxtGame != null && TxtGame.Length > 0) _uiManager.Add_Info_To_Array(TxtGame[0], 3);
+                        _bTilt = 2;
+                        _tiltTimer = 0;
                         F_Mode_Ball_Saver_Off();
-                        b_ExtraBall = false;
-                        if (obj_Led_ExtraBall) led_ExtraBall.F_ChangeSprite_Off();
+                        BExtraBall = false;
+                        if (ObjLedExtraBall) _ledExtraBall.F_ChangeSprite_Off();
                         Flippers_Plunger_State_Tilt_Mode("Desactivate");
                     }
-                    else if (b_Tilt == 0)
+                    else if (_bTilt == 0)
                     {
-                        if (s_Warning) sound.PlayOneShot(s_Warning);
-                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 1) uiManager.Add_Info_To_Array(Txt_Game[1], 1);
-                        if (camera_Movement) camera_Movement.Shake_Cam(3);
+                        if (SWarning) _sound.PlayOneShot(SWarning);
+                        if (_uiManager != null && TxtGame != null && TxtGame.Length > 1) _uiManager.Add_Info_To_Array(TxtGame[1], 1);
+                        if (_cameraMovement) _cameraMovement.Shake_Cam(3);
                         Shake_AddForce_ToBall(new Vector3(0, 0, 1));
-                        b_Tilt = 1;
+                        _bTilt = 1;
                     }
                 }
             }
@@ -505,149 +525,149 @@ public class GameManager : MonoBehaviour
 
             /////////////////////////////////	SECTION : INFO : START /////////////
             // Update default LCD display when no special message is showing
-            if (uiManager != null && Txt_Game != null) uiManager.UpdateDefaultDisplay(player_Score, Ball_num, LCD_Wait_Start_Game, tmp_Life, PlayerPrefs.GetInt(BestScoreName));
+            if (_uiManager != null && TxtGame != null) _uiManager.UpdateDefaultDisplay(_playerScore, _ballNum, _lcdWaitStartGame, _tmpLife, PlayerPrefs.GetInt(BestScoreName));
 
             /////////////////////////////////	SECTION END 	/////////////
 
             /////////////////////////////////	SECTION : MULTI BALL /////////////
-            if (Multi_Ball && Number_Of_Ball_On_Board < 3 && Timer_Multi > 1 && tmp_ReloadNumber > 0)
+            if (_multiBall && _numberOfBallOnBoard < 3 && _timerMulti > 1 && _tmpReloadNumber > 0)
             {
                 // --> Multi ball. condition to create a new ball on playfied
-                newBall(spawnBall.transform.position);
-                Timer_Multi = 0;
-                tmp_ReloadNumber--;
+                NewBall(_spawnBall.transform.position);
+                _timerMulti = 0;
+                _tmpReloadNumber--;
             }
 
-            if (Multi_Ball)
+            if (_multiBall)
             {
                 // Wait between two balls
-                Timer_Multi += Time.deltaTime;
+                _timerMulti += Time.deltaTime;
 
-                if (tmp_ReloadNumber == 0 && Timer_Multi > 1) // if there is no more ball to launch
+                if (_tmpReloadNumber == 0 && _timerMulti > 1) // if there is no more ball to launch
                     F_Mode_MultiBall();
             }
 
             /////////////////////////////////	SECTION : MULTI BALL : END	/////////////
 
             /////////////////////////////////	SECTION : BALL SAVER /////////////
-            if (b_Respawn_Timer_Ball_Saver)
+            if (BRespawnTimerBallSaver)
             {
                 // --> Ball Saver : use to respawn the ball when ball is lost and BallSaver = true
-                Respawn_Timer_BallSaver = Mathf.MoveTowards(Respawn_Timer_BallSaver, 1, // Wait
+                RespawnTimerBallSaver = Mathf.MoveTowards(RespawnTimerBallSaver, 1, // Wait
                     Time.deltaTime);
-                if (Respawn_Timer_BallSaver == 1)
+                if (RespawnTimerBallSaver == 1)
                 {
                     // Respan the ball
-                    b_Respawn_Timer_Ball_Saver = false;
-                    multiBall.KickBack_MultiOnOff();
+                    BRespawnTimerBallSaver = false;
+                    MultiBall.KickBack_MultiOnOff();
                 }
             }
 
-            if (b_Timer_Ball_Saver)
+            if (_bTimerBallSaver)
             {
                 // --> Ball Saver Duration : Check if we need to disable ball saver
-                tmp_Ball_Saver = Mathf.MoveTowards(tmp_Ball_Saver, Timer_Ball_Saver,
+                _tmpBallSaver = Mathf.MoveTowards(_tmpBallSaver, _timerBallSaver,
                     Time.deltaTime);
-                if (Timer_Ball_Saver == tmp_Ball_Saver)
+                if (_timerBallSaver == _tmpBallSaver)
                 {
                     // Stop the ball saver
-                    b_Timer_Ball_Saver = false;
-                    tmp_Ball_Saver = 0;
+                    _bTimerBallSaver = false;
+                    _tmpBallSaver = 0;
                     F_Mode_Ball_Saver_Off();
                 }
             }
 
-            if (TimeToWaitBeforeMultiBallStart)
+            if (_timeToWaitBeforeMultiBallStart)
             {
                 // Add a delay before starting multi ball
-                TimerMultiBall = Mathf.MoveTowards(TimerMultiBall, TimeToWaitMulti, Time.deltaTime);
-                if (TimerMultiBall == TimeToWaitMulti)
+                _timerMultiBall = Mathf.MoveTowards(_timerMultiBall, TimeToWaitMulti, Time.deltaTime);
+                if (_timerMultiBall == TimeToWaitMulti)
                 {
-                    TimerMultiBall = 0;
-                    TimeToWaitBeforeMultiBallStart = false;
+                    _timerMultiBall = 0;
+                    _timeToWaitBeforeMultiBallStart = false;
                     F_Mode_MultiBall(); // Start the Mode_Multi ball by calling F_Mode_MultiBall()
                 }
             }
             /////////////////////////////////	SECTION : TIMER BALL SAVER : END	/////////////
 
             /////////////////////////////////	SECTION : END OF A BALL /////////////
-            if (!b_Ballout_Part_1)
+            if (!_bBalloutPart1)
             {
                 // --> End of a ball : 
-                b_Tilt = 2; // when player lose a ball. Disable Tilt Mode
+                _bTilt = 2; // when player lose a ball. Disable Tilt Mode
 
-                for (var i = 0; i < spring_Launcher.Length; i++) spring_Launcher[i].F_Desactivate(); // Desactivate plunger
-                if (obj_Skillshot_Mission)
-                    obj_Skillshot_Mission.SendMessage("Disable_Skillshot_Mission"); // Disable the skillshot mission
+                for (var i = 0; i < SpringLauncher.Length; i++) SpringLauncher[i].F_Desactivate(); // Desactivate plunger
+                if (_objSkillshotMission)
+                    _objSkillshotMission.SendMessage("Disable_Skillshot_Mission"); // Disable the skillshot mission
 
-                tmp_Ballout_Time = Mathf.MoveTowards(tmp_Ballout_Time, Time_Ballout_Part_1_BallOut, // Wait
+                _tmpBalloutTime = Mathf.MoveTowards(_tmpBalloutTime, TimeBalloutPart1BallOut, // Wait
                     Time.deltaTime);
-                if (tmp_Ballout_Time == Time_Ballout_Part_1_BallOut)
+                if (_tmpBalloutTime == TimeBalloutPart1BallOut)
                 {
                     // Part 1
-                    if (a_Bonus_Screen)
+                    if (ABonusScreen)
                     {
                         // Play a sound
-                        sound.clip = a_Bonus_Screen;
-                        sound.Play();
+                        _sound.clip = ABonusScreen;
+                        _sound.Play();
                     }
 
-                    tmp_Ballout_Time = 0;
-                    b_Ballout_Part_1 = true;
-                    b_Ballout_Part_2 = false; // start Part 2
-                    Add_Info_To_Array(Txt_Game[5]                                + "\n" // display a text
-                                                                                 + tmp_BONUS_Global_Hit_Counter + Txt_Game[6] + Bonus_Base
-                                                                                 + " x "                        + "\n"        + tmp_Multiplier + Txt_Game[7], Time_Ballout_Part_2_Bonus);
+                    _tmpBalloutTime = 0;
+                    _bBalloutPart1 = true;
+                    _bBalloutPart2 = false; // start Part 2
+                    Add_Info_To_Array(TxtGame[5]                             + "\n" // display a text
+                                                                             + _tmpBonusGlobalHitCounter + TxtGame[6] + BonusBase
+                                                                             + " x "                     + "\n"       + _tmpMultiplier + TxtGame[7], TimeBalloutPart2Bonus);
                     Total_Ball_Score(); // Add Bonus Points to player_Score
                 }
             }
 
-            if (!b_Ballout_Part_2)
+            if (!_bBalloutPart2)
             {
                 // Part 2
-                tmp_Ballout_Time_2 = Mathf.MoveTowards(tmp_Ballout_Time_2, Time_Ballout_Part_2_Bonus, // Wait
+                _tmpBalloutTime2 = Mathf.MoveTowards(_tmpBalloutTime2, TimeBalloutPart2Bonus, // Wait
                     Time.deltaTime);
-                if (tmp_Ballout_Time_2 == Time_Ballout_Part_2_Bonus)
+                if (_tmpBalloutTime2 == TimeBalloutPart2Bonus)
                 {
-                    tmp_Ballout_Time_2 = 0;
-                    b_Ballout_Part_2 = true;
-                    b_Ballout_Part_3 = false; // start Part 3
-                    Add_Info_To_Array(Txt_Game[8] + "\n" + player_Score, Time_Ballout_Part_3_TotalScore); // display a text
+                    _tmpBalloutTime2 = 0;
+                    _bBalloutPart2 = true;
+                    _bBalloutPart3 = false; // start Part 3
+                    Add_Info_To_Array(TxtGame[8] + "\n" + _playerScore, TimeBalloutPart3TotalScore); // display a text
                 }
             }
 
-            if (!b_Ballout_Part_3)
+            if (!_bBalloutPart3)
             {
                 // Part 3
-                tmp_Ballout_Time_3 = Mathf.MoveTowards(tmp_Ballout_Time_3, Time_Ballout_Part_3_TotalScore, // Wait
+                _tmpBalloutTime3 = Mathf.MoveTowards(_tmpBalloutTime3, TimeBalloutPart3TotalScore, // Wait
                     Time.deltaTime);
-                if (tmp_Ballout_Time_3 == Time_Ballout_Part_3_TotalScore)
+                if (_tmpBalloutTime3 == TimeBalloutPart3TotalScore)
                 {
-                    tmp_Ballout_Time_3 = 0;
-                    b_Ballout_Part_3 = true;
-                    if (tmp_Life >= 1)
+                    _tmpBalloutTime3 = 0;
+                    _bBalloutPart3 = true;
+                    if (_tmpLife >= 1)
                     {
                         // If tmp_Life > 1 new ball for the player
                         PlayMultiLeds(NewBallLedAnimation);
-                        newBall(spawnBall.transform.position);
+                        NewBall(_spawnBall.transform.position);
                         if (StartGameWithBallSaver) // If StartGameWithBallSaver = true. A new ball start with BallSaver
                             F_Mode_Ball_Saver_On(StartDuration); // if value = -1 Ball saver stay enable until the player lose the ball 	
-                        Add_Info_To_Array(Txt_Game[9], 2); // display a text
-                        b_Tilt = 0; // init Tilt Mode When player lose a ball
-                        if (obj_Skillshot_Mission) // Use if you a mission to be a skillshot mission
-                            obj_Skillshot_Mission.SendMessage("Enable_Skillshot_Mission"); // The skillshot mission is enabled
+                        Add_Info_To_Array(TxtGame[9], 2); // display a text
+                        _bTilt = 0; // init Tilt Mode When player lose a ball
+                        if (_objSkillshotMission) // Use if you a mission to be a skillshot mission
+                            _objSkillshotMission.SendMessage("Enable_Skillshot_Mission"); // The skillshot mission is enabled
                         Stop_Pause_Mode(); // Stop Pause Mode for all the missions. useful if the player loses the ball because of the tilt mode
                     }
                     else
                     {
                         // -> if GameOver
                         PlayMultiLeds(AnimDemoPlayfield); // Play a loop animation until the game Start
-                        Loop_AnimDemoPlayfield = true; // enable to loop global leds animations
-                        b_Game = false;
-                        b_Tilt = 0; // init Tilt Mode When player lose a ball
+                        LoopAnimDemoPlayfield = true; // enable to loop global leds animations
+                        _bGame = false;
+                        _bTilt = 0; // init Tilt Mode When player lose a ball
                         Stop_Pause_Mode(); // Stop Pause Mode for all the missions. useful if the player loses the ball because of the tilt mode
-                        if (uiManager != null)
-                            uiManager.ShowGameOverUI();
+                        if (_uiManager != null)
+                            _uiManager.ShowGameOverUI();
                     }
                 }
             }
@@ -655,7 +675,7 @@ public class GameManager : MonoBehaviour
         }
 
         ////////////////////////////////	DEBUG
-        if (Debug_Game) Debug_Input(); // Input for debugging
+        if (_debugGame) Debug_Input(); // Input for debugging
     }
 
     private void OnDestroy()
@@ -667,50 +687,50 @@ public class GameManager : MonoBehaviour
 
     #region --- Methods ---
 
-    public void Add_Info_To_Array(string inf, float Timer)
+    public void Add_Info_To_Array(string inf, float timer)
     {
         // --> Score Text : Call This function to add text to LCD screen
-        if (uiManager != null)
-            uiManager.Add_Info_To_Array(inf, Timer);
+        if (_uiManager != null)
+            _uiManager.Add_Info_To_Array(inf, timer);
     }
 
     public void Add_Info_To_Timer(string inf)
     {
         // --> Timer Text : Call This function to add text to timer
-        if (uiManager != null)
-            uiManager.Add_Info_To_Timer(inf);
+        if (_uiManager != null)
+            _uiManager.Add_Info_To_Timer(inf);
     }
 
     public void Add_Score(int addScore)
     {
         // --> Call This function to add points
-        player_Score += addScore;
+        _playerScore += addScore;
 
-        if (player_Score > 999999999) // Max score is 999,999,999 points					
-            player_Score = 999999999;
+        if (_playerScore > 999999999) // Max score is 999,999,999 points					
+            _playerScore = 999999999;
 
         // Update UI with new score
-        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 3)
+        if (_uiManager != null && TxtGame != null && TxtGame.Length > 3)
         {
-            uiManager.UpdateScore(player_Score, Ball_num, LCD_Wait_Start_Game, tmp_Life);
-            uiManager.SetLCDWaitStartGame(LCD_Wait_Start_Game);
+            _uiManager.UpdateScore(_playerScore, _ballNum, _lcdWaitStartGame, _tmpLife);
+            _uiManager.SetLCDWaitStartGame(_lcdWaitStartGame);
         }
     }
 
     public bool Ball_Saver_State()
     {
-        return b_Ball_Saver;
+        return BBallSaver;
     }
 
 
-    public void checkGlobalAnimationEnded()
+    public void CheckGlobalAnimationEnded()
     {
         // --> Check if a global leds animation is finished. Every mission call this function when her animation is finished.  
-        globAnimCount++;
-        if (globAnimCount == leds_Multi[AnimInProgress].obj.Length - 1)
+        _globAnimCount++;
+        if (_globAnimCount == LedsMulti[_animInProgress].Obj.Length - 1)
         {
-            globAnimCount = 0;
-            if (Loop_AnimDemoPlayfield) PlayMultiLeds(AnimDemoPlayfield);
+            _globAnimCount = 0;
+            if (LoopAnimDemoPlayfield) PlayMultiLeds(AnimDemoPlayfield);
         }
     }
 
@@ -721,7 +741,7 @@ public class GameManager : MonoBehaviour
     /////////////////////////////////	SECTION : Debug : START /////////////
     public void Debug_Input()
     {
-        if (!b_Pause)
+        if (!_bPause)
         {
             /*if(Input.GetKeyDown(manager_Input_Setting.F_Start_Pause_Mode())){Start_Pause_Mode(-1);}					// Start_Pause_Mode(the_Mission_Who_Must_Keep_Active : int) Correspond au numéro de la mission du obj_Managers l'on veut stopper. -1 correspond à tout le monde en pause
         if(Input.GetKeyDown(manager_Input_Setting.F_Stop_Pause_Mode())){Stop_Pause_Mode();}
@@ -736,163 +756,163 @@ public class GameManager : MonoBehaviour
 
     public bool ExtraBall_State()
     {
-        return b_ExtraBall;
+        return BExtraBall;
     }
 
     public void F_Ball_Saver_Off()
     {
-        if (!b_Pause) F_Mode_Ball_Saver_Off();
+        if (!_bPause) F_Mode_Ball_Saver_Off();
     }
 
     public void F_Ball_Saver_On()
     {
-        if (!b_Pause) F_Mode_Ball_Saver_On(-1);
+        if (!_bPause) F_Mode_Ball_Saver_On(-1);
     }
 
     public void F_ExtraBall()
     {
-        if (!b_Pause) F_Mode_ExtraBall();
+        if (!_bPause) F_Mode_ExtraBall();
     }
 
     public void F_Init_All_Mission()
     {
-        if (!b_Pause) Init_All_Mission();
+        if (!_bPause) Init_All_Mission();
     }
 
     public void F_Init_Skillshot_Mission(GameObject obj)
     {
         // --> Call by the skillshot mission
-        obj_Skillshot_Mission = obj; // 
+        _objSkillshotMission = obj; // 
     }
 
     public void F_InsertCoin_GameStart()
     {
-        if (!b_Pause) InsertCoin_GameStart();
-        if (uiManager != null)
-            uiManager.ShowGameStartUI();
+        if (!_bPause) InsertCoin_GameStart();
+        if (_uiManager != null)
+            _uiManager.ShowGameStartUI();
     }
 
 
-    public void F_Mission_MultiBall(int index_Info, int nbr_of_Ball)
+    public void F_Mission_MultiBall(int indexInfo, int nbrOfBall)
     {
         // Use for Mission
-        ReloadNumber = nbr_of_Ball; // Choose the number of balls of you want for the multi ball
-        tmp_ReloadNumber = ReloadNumber; // init var tmp_ReloadNumber. the variable is used to determine how much ball remains before the multi-ball end.
-        tmp_index_Info = index_Info; // Save the mission that start the multi-ball
-        if (camera_Movement) camera_Movement.Camera_MultiBall_Start(); // Change the Camera view To Camera 4
-        TimeToWaitBeforeMultiBallStart = true; // add delay to start Multi-Ball. Use to prevent bug when multi ball after enter a hole. You need to add a delay to be sure multi ball start after the ball respawn from the hole
-        if (Deactivate_Obj.Length > 0) // activate Object after multiball. Only work with drop target
-            for (var i = 0; i < Deactivate_Obj.Length; i++)
-                Deactivate_Obj[i].SendMessage("Activate_Object");
+        _reloadNumber = nbrOfBall; // Choose the number of balls of you want for the multi ball
+        _tmpReloadNumber = _reloadNumber; // init var tmp_ReloadNumber. the variable is used to determine how much ball remains before the multi-ball end.
+        _tmpIndexInfo = indexInfo; // Save the mission that start the multi-ball
+        if (_cameraMovement) _cameraMovement.Camera_MultiBall_Start(); // Change the Camera view To Camera 4
+        _timeToWaitBeforeMultiBallStart = true; // add delay to start Multi-Ball. Use to prevent bug when multi ball after enter a hole. You need to add a delay to be sure multi ball start after the ball respawn from the hole
+        if (DeactivateObj.Length > 0) // activate Object after multiball. Only work with drop target
+            for (var i = 0; i < DeactivateObj.Length; i++)
+                DeactivateObj[i].SendMessage("Activate_Object");
 
-        if (Deactivate_Obj_WhenMultIsFinished.Length > 0) // activate Object after multiball. Only work with drop target
-            for (var i = 0; i < Deactivate_Obj_WhenMultIsFinished.Length; i++)
-                Deactivate_Obj_WhenMultIsFinished[i].SendMessage("Activate_Object");
+        if (DeactivateObjWhenMultIsFinished.Length > 0) // activate Object after multiball. Only work with drop target
+            for (var i = 0; i < DeactivateObjWhenMultIsFinished.Length; i++)
+                DeactivateObjWhenMultIsFinished[i].SendMessage("Activate_Object");
     }
 
     public void F_Mode_Ball_Saver_Off()
     {
         // Use for Mission. Disabled Ball saver
-        Timer_Ball_Saver = 0; // Init				
-        tmp_Ball_Saver = 0; // Init 																	
-        b_Timer_Ball_Saver = false; // init
-        b_Ball_Saver = false; // Ball Saver is disable
-        if (obj_Led_Ball_Saver) led_Ball_Saver_Renderer.F_ChangeSprite_Off(); // Switch Off a light on the playfield
+        _timerBallSaver = 0; // Init				
+        _tmpBallSaver = 0; // Init 																	
+        _bTimerBallSaver = false; // init
+        BBallSaver = false; // Ball Saver is disable
+        if (ObjLedBallSaver) _ledBallSaverRenderer.F_ChangeSprite_Off(); // Switch Off a light on the playfield
     }
 
 
     public void F_Mode_Ball_Saver_On(int value)
     {
         // Use for Mission. Enabled ball saver
-        Timer_Ball_Saver = value; // Choose the duration of the Ball Saver				
-        tmp_Ball_Saver = 0; // Init saver timer 
+        _timerBallSaver = value; // Choose the duration of the Ball Saver				
+        _tmpBallSaver = 0; // Init saver timer 
         if (value != -1) // if value = -1 Ball saver stay enable until the player lose the ball 								
-            b_Timer_Ball_Saver = true; // Ball Saver timer start
+            _bTimerBallSaver = true; // Ball Saver timer start
 
-        b_Ball_Saver = true; // Ball Saver is enable
-        if (obj_Led_Ball_Saver) led_Ball_Saver_Renderer.F_ChangeSprite_On(); // Switch On a light on the playfield
+        BBallSaver = true; // Ball Saver is enable
+        if (ObjLedBallSaver) _ledBallSaverRenderer.F_ChangeSprite_On(); // Switch On a light on the playfield
     }
 
     public void F_Mode_BONUS_Counter()
     {
         // --> BONUS
-        BONUS_Global_Hit_Counter++;
+        BonusGlobalHitCounter++;
     }
 
     public void F_Mode_ExtraBall()
     {
         // Use for Mission
-        b_ExtraBall = true;
-        if (obj_Led_ExtraBall) led_ExtraBall.F_ChangeSprite_On();
+        BExtraBall = true;
+        if (ObjLedExtraBall) _ledExtraBall.F_ChangeSprite_On();
     }
 
 
     public void F_Mode_MultiBall()
     {
         // --> MULTI BALL
-        if (Multi_Ball)
+        if (_multiBall)
         {
             //if(ball_Follow)ball_Follow.Start_BallFollow();											
-            tmp_ReloadNumber = ReloadNumber; // Muli Ball Stop
-            Multi_Ball = false;
-            multiBall.KickBack_MultiOnOff();
-            Mission_Multi_Ball_Ended = true;
+            _tmpReloadNumber = _reloadNumber; // Muli Ball Stop
+            _multiBall = false;
+            MultiBall.KickBack_MultiOnOff();
+            _missionMultiBallEnded = true;
 
-            if (Deactivate_Obj.Length > 0) // Deactivate Object after multiball. Only work with drop target
-                for (var i = 0; i < Deactivate_Obj.Length; i++)
-                    Deactivate_Obj[i].SendMessage("Desactivate_Object");
+            if (DeactivateObj.Length > 0) // Deactivate Object after multiball. Only work with drop target
+                for (var i = 0; i < DeactivateObj.Length; i++)
+                    DeactivateObj[i].SendMessage("Desactivate_Object");
         }
         else
         {
             //if(ball_Follow)ball_Follow.Stop_BallFollow();
-            Multi_Ball = true; // Muli Ball Start
-            multiBall.KickBack_MultiOnOff();
+            _multiBall = true; // Muli Ball Start
+            MultiBall.KickBack_MultiOnOff();
         }
     }
 
     public void F_MultiBall()
     {
-        if (!b_Pause) F_Mode_MultiBall();
+        if (!_bPause) F_Mode_MultiBall();
     }
 
     // Initialize multiplier when a ball is lost
     public void F_Multiplier()
     {
         // --> MULTIPLIER : use to multiply bonus score at the end of ball. Multiplier is initialize when the ball is lost. 
-        if (multiplier == 1)
+        if (Multiplier == 1)
         {
             // multiplier increase  : x2 x4 x6 x8 x10 then Mulitplier_SuperBonus
-            multiplier = 2;
-            if (obj_Multiplier_Leds.Length > 0) led_Multiplier_Renderer[0].F_ChangeSprite_On();
+            Multiplier = 2;
+            if (ObjMultiplierLeds.Length > 0) _ledMultiplierRenderer[0].F_ChangeSprite_On();
         }
-        else if (multiplier < 10)
+        else if (Multiplier < 10)
         {
             // Max multiplier is 10
-            var valueTmp = multiplier * .5f;
-            if (obj_Multiplier_Leds.Length > 0) led_Multiplier_Renderer[(int)valueTmp].F_ChangeSprite_On();
-            multiplier += 2;
+            var valueTmp = Multiplier * .5f;
+            if (ObjMultiplierLeds.Length > 0) _ledMultiplierRenderer[(int)valueTmp].F_ChangeSprite_On();
+            Multiplier += 2;
         }
-        else if (multiplier >= 10)
+        else if (Multiplier >= 10)
         {
-            Add_Score(Mulitplier_SuperBonus);
-            if (multiplier == 10) multiplier += 2;
+            Add_Score(MulitplierSuperBonus);
+            if (Multiplier == 10) Multiplier += 2;
         }
     }
 
 
     public void F_NewBall()
     {
-        if (!b_Pause) newBall(spawnBall.transform.position);
+        if (!_bPause) NewBall(_spawnBall.transform.position);
     }
 
 
     public void F_Pause_Game()
     {
-        if (uiManager != null && b_Game)
+        if (_uiManager != null && _bGame)
         {
             // If UI connected and game start
             Pause_Game(); // Toggle pause state
-            uiManager.TogglePauseUI(b_Pause, b_Game);
+            _uiManager.TogglePauseUI(_bPause, _bGame);
         }
         else
         {
@@ -903,53 +923,53 @@ public class GameManager : MonoBehaviour
 
     public void F_PlayMultiLeds()
     {
-        if (!b_Pause) PlayMultiLeds(0);
+        if (!_bPause) PlayMultiLeds(0);
     }
 
     public void F_Quit_No()
     {
         // Stop pause
         Pause_Game();
-        if (uiManager != null)
-            uiManager.ShowQuitNoUI();
+        if (_uiManager != null)
+            _uiManager.ShowQuitNoUI();
     }
 
     public void F_Quit_Yes()
     {
         // return to the main menu	
         InitGame_GoToMainMenu();
-        if (uiManager != null)
-            uiManager.ShowQuitYesUI();
+        if (_uiManager != null)
+            _uiManager.ShowQuitYesUI();
     }
 
     public int F_return_Mulitplier_SuperBonus()
     {
-        return Mulitplier_SuperBonus;
+        return MulitplierSuperBonus;
     }
 
     public int F_return_multiplier()
     {
-        return multiplier;
+        return Multiplier;
     }
 
     public void F_Start_Pause_Mode()
     {
-        if (!b_Pause) Start_Pause_Mode(-1);
+        if (!_bPause) Start_Pause_Mode(-1);
     }
 
     public void F_Stop_Pause_Mode()
     {
-        if (!b_Pause) Stop_Pause_Mode();
+        if (!_bPause) Stop_Pause_Mode();
     }
 
-    public void Flippers_Plunger_State_Tilt_Mode(string State)
+    public void Flippers_Plunger_State_Tilt_Mode(string state)
     {
         // --> Activate or Desactivate the flipper and Plunger when table is tilted
         GameObject[] gos;
         gos = GameObject.FindGameObjectsWithTag("Flipper"); // Find all game objects with tag Flipper
         foreach (var go in gos)
         {
-            if (State == "Activate")
+            if (state == "Activate")
                 go.GetComponent<Flippers>().F_Activate(); //  Activate Flippers
             else
                 go.GetComponent<Flippers>().F_Desactivate(); // Desactivate Flippers
@@ -958,7 +978,7 @@ public class GameManager : MonoBehaviour
         gos = GameObject.FindGameObjectsWithTag("Plunger"); // Find all game objects with tag Flipper
         foreach (var go in gos)
         {
-            if (State == "Activate")
+            if (state == "Activate")
                 go.GetComponent<SpringLauncher>().F_Activate_After_Tilt(); //  Activate plunger
             else
                 go.GetComponent<SpringLauncher>().Tilt_Mode(); // Desactivate plunger					
@@ -968,96 +988,94 @@ public class GameManager : MonoBehaviour
 
 
     /////////////////////////////////	SECTION : Gameplay : START /////////////
-    public void gamePlay(GameObject other)
+    public void GamePlay(GameObject other)
     {
         // -->  The player lose a ball. Call by the script Pinball_TriggerForBall.js on object Out_Hole_TriggerDestroyBall on the hierarchy. This object detect when a ball is lost										
         Destroy(other); // Destroy the ball
-        if (pivotCam) pivotCam.ChangeSmoothTimeWhenBallIsLost(); //  It avoids that the camera move too harshly when the ball respawn on the plunger  
-        Number_Of_Ball_On_Board--; // Number_Of_Ball_On_Board -1
+        if (_pivotCam) _pivotCam.ChangeSmoothTimeWhenBallIsLost(); //  It avoids that the camera move too harshly when the ball respawn on the plunger  
+        _numberOfBallOnBoard--; // Number_Of_Ball_On_Board -1
 
-        if (Mission_Multi_Ball_Ended && Number_Of_Ball_On_Board == 1)
+        if (_missionMultiBallEnded && _numberOfBallOnBoard == 1)
         {
             // Condition to stop Multi Ball : Mission_Multi_Ball_Ended && Number_Of_Ball_On_Board == 1
-            if (camera_Movement) camera_Movement.Camera_MultiBall_Stop(); // change the camera view
-            for (var i = 0; i < Missions_Index.Length; i++)
+            if (_cameraMovement) _cameraMovement.Camera_MultiBall_Stop(); // change the camera view
+            for (var i = 0; i < _missionsIndex.Length; i++)
             {
-                if (Missions_Index[i] == tmp_index_Info && tmp_index_Info != -1)
-                    obj_Managers[i].SendMessage("Mode_MultiBall_Ended"); // Stop multi ball	
+                if (_missionsIndex[i] == _tmpIndexInfo && _tmpIndexInfo != -1)
+                    _objManagers[i].SendMessage("Mode_MultiBall_Ended"); // Stop multi ball	
             }
 
-            Mission_Multi_Ball_Ended = false;
+            _missionMultiBallEnded = false;
         }
 
-        if (b_Ball_Saver && Number_Of_Ball_On_Board == 0)
+        if (BBallSaver && _numberOfBallOnBoard == 0)
         {
             // --> Condition to Activate Ball saver
             PlayMultiLeds(BallSaverLedAnimation);
-            multiBall.KickBack_MultiOnOff();
-            newBall(spawnBall.transform.position);
-            Add_Info_To_Array(Txt_Game[10], 3);
-            Respawn_Timer_BallSaver = 0;
-            b_Respawn_Timer_Ball_Saver = true;
-            b_Ball_Saver = false;
-            if (obj_Led_Ball_Saver) led_Ball_Saver_Renderer.F_ChangeSprite_Off();
+            MultiBall.KickBack_MultiOnOff();
+            NewBall(_spawnBall.transform.position);
+            Add_Info_To_Array(TxtGame[10], 3);
+            RespawnTimerBallSaver = 0;
+            BRespawnTimerBallSaver = true;
+            BBallSaver = false;
+            if (ObjLedBallSaver) _ledBallSaverRenderer.F_ChangeSprite_Off();
 
-            if (a_BallSave)
+            if (ABallSave)
             {
-                sound.clip = a_BallSave;
-                sound.Play();
+                _sound.clip = ABallSave;
+                _sound.Play();
             }
         }
-        else if (b_ExtraBall && Number_Of_Ball_On_Board == 0)
+        else if (BExtraBall && _numberOfBallOnBoard == 0)
         {
             // --> Condition to Activate Extra ball
-            Add_Info_To_Array(Txt_Game[11], 3);
-            newBall(spawnBall.transform.position);
-            b_ExtraBall = false;
-            if (obj_Led_ExtraBall) led_ExtraBall.F_ChangeSprite_Off();
+            Add_Info_To_Array(TxtGame[11], 3);
+            NewBall(_spawnBall.transform.position);
+            BExtraBall = false;
+            if (ObjLedExtraBall) _ledExtraBall.F_ChangeSprite_Off();
         }
-        else if (tmp_Life > 1 && Number_Of_Ball_On_Board == 0)
+        else if (_tmpLife > 1 && _numberOfBallOnBoard == 0)
         {
             // --> New Ball
-            Add_Info_To_Array(Txt_Game[12], 3);
-            b_Ballout_Part_1 = false;
-            if (a_LoseBall)
+            Add_Info_To_Array(TxtGame[12], 3);
+            _bBalloutPart1 = false;
+            if (ALoseBall)
             {
-                sound.clip = a_LoseBall;
-                sound.Play();
+                _sound.clip = ALoseBall;
+                _sound.Play();
             }
 
             init_Param_After_Ball_Lost();
-            tmp_Life--;
+            _tmpLife--;
             var gos = GameObject.FindGameObjectsWithTag("Missions");
             foreach (var go in gos) go.SendMessage("Mission_Intialisation_AfterBallLost"); // --> Init missions only if the mission must init after player lose the ball
             PlayMultiLeds(GameOverLedAnimation);
-            Ball_num++;
-            MobileNudge = false; // Nudge Mode on mobile is disable
+            _ballNum++;
         }
-        else if (Number_Of_Ball_On_Board <= 0)
+        else if (_numberOfBallOnBoard <= 0)
         {
             // --> Game Over
             // GAME OVER
-            if (uiManager != null) uiManager.ClearBallInfo(); // We don't want to display the ball number when there is player information on LCD Fake Screen
-            Add_Info_To_Array(Txt_Game[13], 3);
-            b_Ballout_Part_1 = false;
-            if (a_LoseBall)
+            if (_uiManager != null) _uiManager.ClearBallInfo(); // We don't want to display the ball number when there is player information on LCD Fake Screen
+            Add_Info_To_Array(TxtGame[13], 3);
+            _bBalloutPart1 = false;
+            if (ALoseBall)
             {
-                sound.clip = a_LoseBall;
-                sound.Play();
+                _sound.clip = ALoseBall;
+                _sound.Play();
             }
 
             init_Param_After_Ball_Lost();
-            tmp_Life--;
+            _tmpLife--;
             Init_All_Mission();
             PlayMultiLeds(GameOverLedAnimation);
             Save_Best_Score(); // Check if the player have beaten the best score
-            MobileNudge = false; // Nudge Mode on mobile is disable
         }
     }
 
     public int HowManyAnimation()
     {
-        return leds_Multi.Length;
+        return LedsMulti.Length;
     }
 
     public void Init_All_Mission()
@@ -1068,7 +1086,7 @@ public class GameManager : MonoBehaviour
         foreach (var go in gos)
         {
             go.SendMessage("Mission_Intialisation_StartGame"); // Init missions when the game start
-            if (tmp_Life == 0 || b_InsertCoin_GameStart)
+            if (_tmpLife == 0 || BInsertCoinGameStart)
             {
                 // When player is game Over or when a new game start
                 go.SendMessage("InitLedMission"); // Init the leds that indicate a mission is complete
@@ -1082,15 +1100,15 @@ public class GameManager : MonoBehaviour
     public void init_Param_After_Ball_Lost()
     {
         // --> INIT : init_Param_After_Ball_Lost 
-        if (multiplier > 10) multiplier = 10;
-        tmp_Bonus_Score = BONUS_Global_Hit_Counter * Bonus_Base * multiplier; // Calculate Bonus_Score
-        tmp_Multiplier = multiplier;
-        tmp_BONUS_Global_Hit_Counter = BONUS_Global_Hit_Counter;
-        BONUS_Global_Hit_Counter = 0;
-        multiplier = 1;
-        if (obj_Multiplier_Leds.Length > 0)
-            for (var i = 0; i < led_Multiplier_Renderer.Length; i++)
-                led_Multiplier_Renderer[i].F_ChangeSprite_Off(); // Switch off Multiplier Leds
+        if (Multiplier > 10) Multiplier = 10;
+        _tmpBonusScore = BonusGlobalHitCounter * BonusBase * Multiplier; // Calculate Bonus_Score
+        _tmpMultiplier = Multiplier;
+        _tmpBonusGlobalHitCounter = BonusGlobalHitCounter;
+        BonusGlobalHitCounter = 0;
+        Multiplier = 1;
+        if (ObjMultiplierLeds.Length > 0)
+            for (var i = 0; i < _ledMultiplierRenderer.Length; i++)
+                _ledMultiplierRenderer[i].F_ChangeSprite_Off(); // Switch off Multiplier Leds
 
         Flippers_Plunger_State_Tilt_Mode("Activate"); // Usefull when the main playfield is tilted. Reactivate the flippers and plunger after Tilt Mode
     }
@@ -1099,21 +1117,21 @@ public class GameManager : MonoBehaviour
     {
         // --> INIT : init_Param_After_Ball_Lost 
 
-        Multi_Ball = false;
-        Mission_Multi_Ball_Ended = false;
-        b_ExtraBall = false;
-        b_Ball_Saver = false;
-        b_Respawn_Timer_Ball_Saver = false;
-        tmp_Ball_Saver = 0;
-        b_Timer_Ball_Saver = false;
+        _multiBall = false;
+        _missionMultiBallEnded = false;
+        BExtraBall = false;
+        BBallSaver = false;
+        BRespawnTimerBallSaver = false;
+        _tmpBallSaver = 0;
+        _bTimerBallSaver = false;
 
-        if (Deactivate_Obj.Length > 0) // Deactivate Deactivate_Obj.
-            for (var i = 0; i < Deactivate_Obj.Length; i++)
-                Deactivate_Obj[i].SendMessage("Desactivate_Object");
+        if (DeactivateObj.Length > 0) // Deactivate Deactivate_Obj.
+            for (var i = 0; i < DeactivateObj.Length; i++)
+                DeactivateObj[i].SendMessage("Desactivate_Object");
 
-        if (Deactivate_Obj_WhenMultIsFinished.Length > 0) // Deactivate Deactivate_Obj.
-            for (var i = 0; i < Deactivate_Obj_WhenMultIsFinished.Length; i++)
-                Deactivate_Obj_WhenMultIsFinished[i].SendMessage("Desactivate_Object");
+        if (DeactivateObjWhenMultIsFinished.Length > 0) // Deactivate Deactivate_Obj.
+            for (var i = 0; i < DeactivateObjWhenMultIsFinished.Length; i++)
+                DeactivateObjWhenMultIsFinished[i].SendMessage("Desactivate_Object");
 
 
         GameObject[] gos;
@@ -1129,9 +1147,9 @@ public class GameManager : MonoBehaviour
         // --> Init Game when you choose No on UI Menu
         //Loop_AnimDemoPlayfield = true;												// Leds animation : start the loop animation
 
-        b_Game = false; // Game could Start
-        b_InsertCoin_GameStart = true;
-        if (b_Pause) // Stop Pause
+        _bGame = false; // Game could Start
+        BInsertCoinGameStart = true;
+        if (_bPause) // Stop Pause
             Pause_Game();
 
 
@@ -1155,41 +1173,41 @@ public class GameManager : MonoBehaviour
         foreach (var go in gos) go.GetComponent<MultiBall>().initHole(); // Pause_Mode for these objects
 
 
-        tmp_Life = 0; // Init Life
-        player_Score = 0; // Init Score
-        Ball_num = 0;
-        Number_Of_Ball_On_Board = 0;
-        tmp_Ballout_Time = 0;
-        b_Ballout_Part_1 = true;
-        tmp_Ballout_Time_2 = 0;
-        b_Ballout_Part_2 = true;
-        tmp_Ballout_Time_3 = 0;
-        b_Ballout_Part_3 = true;
-        BONUS_Global_Hit_Counter = 0;
-        multiplier = 1;
+        _tmpLife = 0; // Init Life
+        _playerScore = 0; // Init Score
+        _ballNum = 0;
+        _numberOfBallOnBoard = 0;
+        _tmpBalloutTime = 0;
+        _bBalloutPart1 = true;
+        _tmpBalloutTime2 = 0;
+        _bBalloutPart2 = true;
+        _tmpBalloutTime3 = 0;
+        _bBalloutPart3 = true;
+        BonusGlobalHitCounter = 0;
+        Multiplier = 1;
         init_Param_After_Ball_Lost();
         init_Param_After_Game_Over();
 
-        if (obj_Skillshot_Mission) // Use if you a mission to be a skillshot mission
-            obj_Skillshot_Mission.SendMessage("Disable_Skillshot_Mission"); // The skillshot mission is enabled
+        if (_objSkillshotMission) // Use if you a mission to be a skillshot mission
+            _objSkillshotMission.SendMessage("Disable_Skillshot_Mission"); // The skillshot mission is enabled
 
-        Multi_Ball = false; // init Multi Ball
-        tmp_ReloadNumber = 0;
-        Timer_Multi = 2;
-        if (camera_Movement) camera_Movement.Camera_MultiBall_Stop(); // change the camera view
-        for (var i = 0; i < Missions_Index.Length; i++)
+        _multiBall = false; // init Multi Ball
+        _tmpReloadNumber = 0;
+        _timerMulti = 2;
+        if (_cameraMovement) _cameraMovement.Camera_MultiBall_Stop(); // change the camera view
+        for (var i = 0; i < _missionsIndex.Length; i++)
         {
-            if (Missions_Index[i] == tmp_index_Info && tmp_index_Info != -1)
-                obj_Managers[i].SendMessage("Mode_MultiBall_Ended"); // Stop multi ball	
+            if (_missionsIndex[i] == _tmpIndexInfo && _tmpIndexInfo != -1)
+                _objManagers[i].SendMessage("Mode_MultiBall_Ended"); // Stop multi ball	
         }
 
-        Mission_Multi_Ball_Ended = false;
+        _missionMultiBallEnded = false;
 
         //if(spawnBall != null)newBall(spawnBall.transform.position);	
-        b_InsertCoin_GameStart = false;
+        BInsertCoinGameStart = false;
 
-        Add_Info_To_Array(Txt_Game[4], 3);
-        LCD_Wait_Start_Game = true;
+        Add_Info_To_Array(TxtGame[4], 3);
+        _lcdWaitStartGame = true;
         //if(Gui_Txt_Score)Gui_Txt_Score.text =  Txt_Game[4] + "\n" + "<size=17>" + Txt_Game[16] + PlayerPrefs.GetInt(BestScoreName).ToString() + "</size>";
 
 
@@ -1200,20 +1218,20 @@ public class GameManager : MonoBehaviour
     {
         // Deactivate Deactivate_Obj_WhenMultIsFinished when multiball mission is finished
         //Debug.Log("Here");
-        if (Deactivate_Obj_WhenMultIsFinished.Length > 0) // Deactivate Deactivate_Obj.
-            for (var i = 0; i < Deactivate_Obj_WhenMultIsFinished.Length; i++)
-                Deactivate_Obj_WhenMultIsFinished[i].SendMessage("Desactivate_Object");
+        if (DeactivateObjWhenMultIsFinished.Length > 0) // Deactivate Deactivate_Obj.
+            for (var i = 0; i < DeactivateObjWhenMultIsFinished.Length; i++)
+                DeactivateObjWhenMultIsFinished[i].SendMessage("Desactivate_Object");
     }
 
     public void InsertCoin_GameStart()
     {
         // --> Insert Coin : Initialisation when Game Start
-        LCD_Wait_Start_Game = false;
-        Loop_AnimDemoPlayfield = false; // Leds animation : Stop the loop animation
-        Add_Info_To_Array(Txt_Game[14], 3);
-        b_Game = true; // Game Start
-        b_InsertCoin_GameStart = true;
-        if (b_Pause) // Stop Pause
+        _lcdWaitStartGame = false;
+        LoopAnimDemoPlayfield = false; // Leds animation : Stop the loop animation
+        Add_Info_To_Array(TxtGame[14], 3);
+        _bGame = true; // Game Start
+        BInsertCoinGameStart = true;
+        if (_bPause) // Stop Pause
             Pause_Game();
 
 
@@ -1231,54 +1249,49 @@ public class GameManager : MonoBehaviour
         gos = GameObject.FindGameObjectsWithTag("Plunger"); // Find all game objects with tag Plunger
         foreach (var go in gos) go.GetComponent<SpringLauncher>().F_Activate(); // Activate Plunger
 
-        tmp_Life = Life; // Init Life
-        player_Score = 0; // Init Score
-        Ball_num = 0;
-        Number_Of_Ball_On_Board = 0;
-        tmp_Ballout_Time = 0;
-        b_Ballout_Part_1 = true;
-        tmp_Ballout_Time_2 = 0;
-        b_Ballout_Part_2 = true;
-        tmp_Ballout_Time_3 = 0;
-        b_Ballout_Part_3 = true;
-        BONUS_Global_Hit_Counter = 0;
-        multiplier = 1;
+        _tmpLife = Life; // Init Life
+        _playerScore = 0; // Init Score
+        _ballNum = 0;
+        _numberOfBallOnBoard = 0;
+        _tmpBalloutTime = 0;
+        _bBalloutPart1 = true;
+        _tmpBalloutTime2 = 0;
+        _bBalloutPart2 = true;
+        _tmpBalloutTime3 = 0;
+        _bBalloutPart3 = true;
+        BonusGlobalHitCounter = 0;
+        Multiplier = 1;
         init_Param_After_Ball_Lost();
         init_Param_After_Game_Over();
 
-        if (obj_Skillshot_Mission) // Use if you a mission to be a skillshot mission
-            obj_Skillshot_Mission.SendMessage("Enable_Skillshot_Mission"); // The skillshot mission is enabled
+        if (_objSkillshotMission) // Use if you a mission to be a skillshot mission
+            _objSkillshotMission.SendMessage("Enable_Skillshot_Mission"); // The skillshot mission is enabled
 
-        if (spawnBall != null) newBall(spawnBall.transform.position);
+        if (_spawnBall != null) NewBall(_spawnBall.transform.position);
         PlayMultiLeds(NewBallLedAnimation);
-        b_InsertCoin_GameStart = false;
+        BInsertCoinGameStart = false;
     }
 
-    public void newBall(Vector3 pos)
+    public void NewBall(Vector3 pos)
     {
         // --> NEW BALL . Create a ball on playfield
-        if (s_Load_Ball) sound.PlayOneShot(s_Load_Ball);
-        Instantiate(ball, pos, Quaternion.identity);
-        Number_Of_Ball_On_Board++;
+        if (SLoadBall) _sound.PlayOneShot(SLoadBall);
+        Instantiate(Ball, pos, Quaternion.identity);
+        _numberOfBallOnBoard++;
     }
 
     public void NewValueForUi(int value)
     {
-        if (uiManager != null)
-            uiManager.NewValueForUi(value);
+        if (_uiManager != null)
+            _uiManager.NewValueForUi(value);
     }
 
-
-    public void NudgeEnable(bool value)
-    {
-        MobileNudge = value;
-    }
 
     /////////////////////////////////	SECTION : Put the Game on PAUSE MODE : START /////////////
     public void Pause_Game()
     {
-        if (!b_Pause) b_Pause = true; // Pause ManagerGame 
-        else b_Pause = false;
+        if (!_bPause) _bPause = true; // Pause ManagerGame 
+        else _bPause = false;
 
         GameObject[] gos;
 
@@ -1286,7 +1299,7 @@ public class GameManager : MonoBehaviour
         gos = GameObject.FindGameObjectsWithTag("MainCamera"); // Find all game objects with tag MainCamera
         foreach (var go in gos)
         {
-            if (b_Pause)
+            if (_bPause)
             {
                 if (go.GetComponent<Camera_Movement>()) go.GetComponent<Camera_Movement>().StartPauseMode(); // Desactivate Camera Movement
             }
@@ -1299,7 +1312,7 @@ public class GameManager : MonoBehaviour
         gos = GameObject.FindGameObjectsWithTag("PivotCam"); // Find all game objects with tag PivotCam
         foreach (var go in gos)
         {
-            if (b_Pause)
+            if (_bPause)
                 go.GetComponent<CameraSmoothFollow>().StartPauseMode(); // Desactivate Camera Movement
             else
                 go.GetComponent<CameraSmoothFollow>().StopPauseMode(); // Activate Camera Movement
@@ -1321,7 +1334,7 @@ public class GameManager : MonoBehaviour
         gos = GameObject.FindGameObjectsWithTag("Flipper"); // Find all game objects with tag Flipper
         foreach (var go in gos)
         {
-            if (b_Pause)
+            if (_bPause)
                 go.GetComponent<Flippers>().F_Pause_Start(); // Desactivate Flippers
             else
                 go.GetComponent<Flippers>().F_Pause_Stop(); // Activate Flippers
@@ -1330,7 +1343,7 @@ public class GameManager : MonoBehaviour
         gos = GameObject.FindGameObjectsWithTag("Plunger"); // Find all game objects with tag Plunger
         foreach (var go in gos)
         {
-            if (b_Pause)
+            if (_bPause)
                 go.GetComponent<SpringLauncher>().F_Desactivate(); // Desactivate Plunger
             else
                 go.GetComponent<SpringLauncher>().F_Activate(); // Activate Plunger
@@ -1357,105 +1370,105 @@ public class GameManager : MonoBehaviour
         gos = GameObject.FindGameObjectsWithTag("spinner"); // Find all game objects with tag spinner
         foreach (var go in gos)
         {
-            if (b_Pause)
+            if (_bPause)
                 go.GetComponent<Spinner_Rotation>().F_Pause_Start(); // Pause_Mode for these objects
             else
                 go.GetComponent<Spinner_Rotation>().F_Pause_Stop(); // Activate spinner
         }
 
-        if (b_Pause && sound.isPlaying)
-            sound.Pause();
+        if (_bPause && _sound.isPlaying)
+            _sound.Pause();
         else
-            sound.UnPause();
+            _sound.UnPause();
     }
 
 
-    public void PlayMultiLeds(int Seq_Num)
+    public void PlayMultiLeds(int seqNum)
     {
         // --> Use play a global leds animation. this function is called by the mission. 			
-        AnimInProgress = Seq_Num;
+        _animInProgress = seqNum;
         //Debug.Log("ici");
-        for (var i = 0; i < leds_Multi[Seq_Num].obj.Length; i++) leds_Multi[Seq_Num].manager_Led_Animation[i].Play_New_Pattern(leds_Multi[Seq_Num].num_pattern[i]);
+        for (var i = 0; i < LedsMulti[seqNum].Obj.Length; i++) LedsMulti[seqNum].ManagerLedAnimation[i].Play_New_Pattern(LedsMulti[seqNum].NumPattern[i]);
     }
 
     public void Save_Best_Score()
     {
         // Check if the player have beaten the best score
 
-        PlayerPrefs.SetInt("CurrentScore", player_Score + tmp_Bonus_Score); // Use by the script LeaderBoardSystem to know the score when game end
+        PlayerPrefs.SetInt("CurrentScore", _playerScore + _tmpBonusScore); // Use by the script LeaderBoardSystem to know the score when game end
 
 
         if (PlayerPrefs.HasKey(BestScoreName))
         {
             // Check if PlayerPrefs(BestScoreName) exist
-            if (PlayerPrefs.GetInt(BestScoreName) < player_Score + tmp_Bonus_Score)
+            if (PlayerPrefs.GetInt(BestScoreName) < _playerScore + _tmpBonusScore)
                 // Check if the player beat has beaten the best score
-                PlayerPrefs.SetInt(BestScoreName, player_Score + tmp_Bonus_Score); // if true save the player_Score on PlayerPrefs(BestScoreName)
+                PlayerPrefs.SetInt(BestScoreName, _playerScore + _tmpBonusScore); // if true save the player_Score on PlayerPrefs(BestScoreName)
         }
         else
         {
             // Check if PlayerPrefs(BestScoreName) doesn't exist
-            PlayerPrefs.SetInt(BestScoreName, player_Score + tmp_Bonus_Score); // Save the player_Score on PlayerPrefs(BestScoreName)
+            PlayerPrefs.SetInt(BestScoreName, _playerScore + _tmpBonusScore); // Save the player_Score on PlayerPrefs(BestScoreName)
         }
 
         // Update UI with final score
-        if (uiManager != null)
+        if (_uiManager != null)
         {
-            uiManager.UpdateCanvasScore(player_Score + tmp_Bonus_Score);
-            uiManager.UpdateCanvasBestScore(PlayerPrefs.GetInt(BestScoreName));
+            _uiManager.UpdateCanvasScore(_playerScore + _tmpBonusScore);
+            _uiManager.UpdateCanvasBestScore(PlayerPrefs.GetInt(BestScoreName));
         }
     }
 
     public void SelectLastButton()
     {
         // Delegate to UiManager
-        if (uiManager != null)
-            uiManager.SelectLastButton();
+        if (_uiManager != null)
+            _uiManager.SelectLastButton();
     }
 
-    public void Shake_AddForce_ToBall(Vector3 Direction)
+    public void Shake_AddForce_ToBall(Vector3 direction)
     {
         // --> Add force to ball when the the player shake the flipper
         GameObject[] gos;
         gos = GameObject.FindGameObjectsWithTag("Ball"); // Find all game objects with tag Ball
-        foreach (var go in gos) go.GetComponent<Ball>().Ball_Shake(Direction); // Add force to the ball
+        foreach (var go in gos) go.GetComponent<Ball>().Ball_Shake(direction); // Add force to the ball
     }
 
 
-    public void Start_Pause_Mode(int KeepAlive)
+    public void Start_Pause_Mode(int keepAlive)
     {
         // --> Pause all the mission unless the mission with Index = KeepAlive. this function is called by the mission. 		
-        for (var i = 0; i < obj_Managers.Length; i++)
+        for (var i = 0; i < _objManagers.Length; i++)
         {
-            if (KeepAlive != Missions_Index[i])
-                pause_Mission[i].Start_Pause_Mission();
+            if (keepAlive != _missionsIndex[i])
+                _pauseMission[i].Start_Pause_Mission();
         }
     }
 
     public void Stop_Pause_Mode()
     {
         // --> Stop Pause all the mission. this function is called by the mission. 
-        for (var i = 0; i < obj_Managers.Length; i++) pause_Mission[i].Stop_Pause_Mission();
+        for (var i = 0; i < _objManagers.Length; i++) _pauseMission[i].Stop_Pause_Mission();
     }
 
 
     public void Total_Ball_Score()
     {
-        player_Score += tmp_Bonus_Score;
+        _playerScore += _tmpBonusScore;
     }
 
     private IEnumerator InitGameWaitForFrame()
     {
         yield return new WaitForEndOfFrame();
-        if (camera_Movement) camera_Movement.PlayIdle();
-        Loop_AnimDemoPlayfield = true; // Leds animation : start the loop animation
+        if (_cameraMovement) _cameraMovement.PlayIdle();
+        LoopAnimDemoPlayfield = true; // Leds animation : start the loop animation
         PlayMultiLeds(AnimDemoPlayfield);
     }
 
     private IEnumerator WaitToInit()
     {
         yield return new WaitForEndOfFrame();
-        if (Loop_AnimDemoPlayfield) PlayMultiLeds(AnimDemoPlayfield); // Play a loop animation until the game Start. 
+        if (LoopAnimDemoPlayfield) PlayMultiLeds(AnimDemoPlayfield); // Play a loop animation until the game Start. 
     }
 
     #endregion

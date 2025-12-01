@@ -94,7 +94,7 @@ public class Manager_Led_Animation : MonoBehaviour
                 {
                     // Init Animation
                     //Debug.Log("End of the animation : " + this.name);
-                    if (gameManager != null) gameManager.checkGlobalAnimationEnded();
+                    if (gameManager != null) gameManager.CheckGlobalAnimationEnded();
                     count = 0;
                     target = 0;
                     Timer = 0;
@@ -106,10 +106,10 @@ public class Manager_Led_Animation : MonoBehaviour
                     else if (b_extraBall_or_BallSaver && gameManager != null)
                     {
                         // Special Condition to initialize the BallSaver and Extraball leds after a pattern. 	
-                        if (gameManager.b_ExtraBall) Led_Renderer[0].F_ChangeSprite_On(); // We check BallSaver and ExtraBall states directly from ManagerGame.js script
+                        if (gameManager.BExtraBall) Led_Renderer[0].F_ChangeSprite_On(); // We check BallSaver and ExtraBall states directly from ManagerGame.js script
                         else Led_Renderer[0].F_ChangeSprite_Off();
 
-                        if (gameManager.b_Ball_Saver && gameManager != null) Led_Renderer[1].F_ChangeSprite_On();
+                        if (gameManager.BBallSaver && gameManager != null) Led_Renderer[1].F_ChangeSprite_On();
                         else Led_Renderer[1].F_ChangeSprite_Off();
                     }
                     else if (b_Multiplier)
@@ -183,7 +183,7 @@ public class Manager_Led_Animation : MonoBehaviour
         // Special Condition to initialize the Multiplier leds  
         if (gameManager != null)
         {
-            var tmp_multi = gameManager.multiplier; // We check Multiplier states directly from ManagerGame.js script 
+            var tmp_multi = gameManager.Multiplier; // We check Multiplier states directly from ManagerGame.js script 
             tmp_multi = tmp_multi / 2;
             if (tmp_multi < 1) // multiplier = 1 so all the leds are switch off
                 for (var i = 0; i < obj_Led.Length; i++)
@@ -210,8 +210,10 @@ public class Manager_Led_Animation : MonoBehaviour
 
         Led_Renderer = new ChangeSpriteRenderer[obj_Led.Length];
         for (var k = 0; k < obj_Led.Length; k++)
+        {
             if (obj_Led[k] != null)
                 Led_Renderer[k] = obj_Led[k].GetComponent<ChangeSpriteRenderer>();
+        }
 
 
         if (list_Led_Pattern[0].pattern.Length == 0)

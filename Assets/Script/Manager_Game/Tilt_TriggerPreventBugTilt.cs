@@ -31,8 +31,9 @@ public class Tilt_TriggerPreventBugTilt : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // --> Function OnTriggerEnter
-        if (other.transform.tag == "Ball") // If it's a ball 
-            gameManager.NudgeEnable(b_Enable); // Send Message to the obj_Game_Manager.  
+        // Touch support removed - nudge mode no longer available
+        // if (other.transform.tag == "Ball") // If it's a ball 
+        //     gameManager.NudgeEnable(b_Enable); // Send Message to the obj_Game_Manager.  
     }
 
     #endregion

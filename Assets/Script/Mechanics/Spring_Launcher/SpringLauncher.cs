@@ -1,8 +1,6 @@
 ﻿// SpringLauncher: Manages the spring launcher (plunger) using Unity's new Input System
 
 using UnityEngine;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
-using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class SpringLauncher : MonoBehaviour
 {
@@ -79,9 +77,6 @@ public class SpringLauncher : MonoBehaviour
         if (rb_Ball)
         {
             if (Mobile_Collider_zl && !Mobile_Collider_zl.activeInHierarchy) Mobile_Collider_zl.SetActive(true);
-
-            // Update touch state
-            UpdateTouchInput();
 
             // Auto Mode: press to launch
             if (Activate && Auto_Mode)
@@ -295,35 +290,6 @@ public class SpringLauncher : MonoBehaviour
         return inputManager.IsPlungerHeld();
     }
 
-    private void UpdateTouchInput()
-    {
-        var touchActive = false;
-
-        foreach (var touch in Touch.activeTouches)
-        {
-            if (touch.phase == TouchPhase.Began)
-            {
-                var ray = Camera.main.ScreenPointToRay(touch.screenPosition);
-                if (Physics.Raycast(ray, out var hit, 100))
-                    if (hit.transform.name == "Mobile_Collider" || hit.transform.name == "Mobile_Collider_zl")
-                        touchActive = true;
-            }
-            else if (touch.phase == TouchPhase.Moved ||
-                     touch.phase == TouchPhase.Stationary)
-            {
-                // Keep touch active while held
-                if (b_touch) touchActive = true;
-            }
-        }
-
-        // Also check PinballInputManager for generic plunger touch area
-        if (inputManager != null && inputManager.PlungerTouched) touchActive = true;
-
-        b_touch = touchActive;
-
-        // Reset when no touches
-        if (Touch.activeTouches.Count == 0) b_touch = false;
-    }
 
     private bool WasPlungerPressed()
     {

@@ -1,8 +1,6 @@
 // PinballInputManager: Central manager for all pinball input using Unity's new Input System
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.EnhancedTouch;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class PinballInputManager : MonoBehaviour
 {
@@ -25,23 +23,6 @@ public class PinballInputManager : MonoBehaviour
     public InputAction ShakeUp { get; private set; }
     public InputAction NavigateHorizontal { get; private set; }
 
-    // Touch state - updated each frame
-    public bool LeftFlipperTouched { get; private set; }
-    public bool RightFlipperTouched { get; private set; }
-    public bool PlungerTouched { get; private set; }
-    public bool LeftFlipperTouchBegan { get; private set; }
-    public bool RightFlipperTouchBegan { get; private set; }
-    public bool PlungerTouchBegan { get; private set; }
-
-    [Header("Touch Settings")]
-    [Tooltip("Vertical threshold (0-1) below which touch activates flippers")]
-    [SerializeField] private float flipperTouchHeightThreshold = 0.6f;
-
-    [Header("Debug")]
-    [SerializeField] private bool debugTouchInput;
-
-    private bool enhancedTouchEnabled;
-
     private void Awake()
     {
         // Singleton setup
@@ -51,13 +32,6 @@ public class PinballInputManager : MonoBehaviour
             return;
         }
         Instance = this;
-
-        // Enable Enhanced Touch for mobile support
-        if (!EnhancedTouchSupport.enabled)
-        {
-            EnhancedTouchSupport.Enable();
-            enhancedTouchEnabled = true;
-        }
 
         InitializeActions();
     }
@@ -109,93 +83,16 @@ public class PinballInputManager : MonoBehaviour
         {
             Instance = null;
         }
-
-        if (enhancedTouchEnabled && EnhancedTouchSupport.enabled)
-        {
-            EnhancedTouchSupport.Disable();
-        }
-    }
-
-    private void Update()
-    {
-        UpdateTouchState();
-    }
-
-    private void UpdateTouchState()
-    {
-        // Reset touch began states (they're only true for one frame)
-        LeftFlipperTouchBegan = false;
-        RightFlipperTouchBegan = false;
-        PlungerTouchBegan = false;
-
-        // Reset held states
-        bool leftTouched = false;
-        bool rightTouched = false;
-        bool plungerTouched = false;
-
-        foreach (var touch in Touch.activeTouches)
-        {
-            Vector2 screenPos = touch.screenPosition;
-            float normalizedX = screenPos.x / Screen.width;
-            float normalizedY = screenPos.y / Screen.height;
-
-            // Check for plunger touch (right side, upper area or specific collider)
-            // Plunger detection will be handled by raycast in SpringLauncher for precision
-            // Here we just track if right side bottom is touched (where plunger usually is)
-            bool isPlungerArea = normalizedX > 0.7f && normalizedY < 0.4f;
-
-            // Check flipper areas (lower portion of screen, left/right halves)
-            bool isFlipperArea = normalizedY < flipperTouchHeightThreshold;
-            bool isLeftSide = normalizedX < 0.5f;
-            bool isRightSide = normalizedX >= 0.5f;
-
-            if (isPlungerArea)
-            {
-                if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
-                {
-                    PlungerTouchBegan = true;
-                }
-                plungerTouched = true;
-            }
-            else if (isFlipperArea)
-            {
-                if (isLeftSide)
-                {
-                    if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
-                    {
-                        LeftFlipperTouchBegan = true;
-                    }
-                    leftTouched = true;
-                }
-                else if (isRightSide)
-                {
-                    if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
-                    {
-                        RightFlipperTouchBegan = true;
-                    }
-                    rightTouched = true;
-                }
-            }
-
-            if (debugTouchInput && touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
-            {
-                Debug.Log($"Touch at ({normalizedX:F2}, {normalizedY:F2}) - Left: {isLeftSide && isFlipperArea}, Right: {isRightSide && isFlipperArea}, Plunger: {isPlungerArea}");
-            }
-        }
-
-        LeftFlipperTouched = leftTouched;
-        RightFlipperTouched = rightTouched;
-        PlungerTouched = plungerTouched;
     }
 
     #region Helper Methods for Common Input Checks
 
     /// <summary>
-    /// Returns true if the left flipper input is currently held (keyboard, gamepad, or touch)
+    /// Returns true if the left flipper input is currently held (keyboard or gamepad)
     /// </summary>
     public bool IsLeftFlipperHeld()
     {
-        return (FlipperLeft != null && FlipperLeft.IsPressed()) || LeftFlipperTouched;
+        return FlipperLeft != null && FlipperLeft.IsPressed();
     }
 
     /// <summary>
@@ -203,15 +100,15 @@ public class PinballInputManager : MonoBehaviour
     /// </summary>
     public bool WasLeftFlipperPressed()
     {
-        return (FlipperLeft != null && FlipperLeft.WasPressedThisFrame()) || LeftFlipperTouchBegan;
+        return FlipperLeft != null && FlipperLeft.WasPressedThisFrame();
     }
 
     /// <summary>
-    /// Returns true if the right flipper input is currently held (keyboard, gamepad, or touch)
+    /// Returns true if the right flipper input is currently held (keyboard or gamepad)
     /// </summary>
     public bool IsRightFlipperHeld()
     {
-        return (FlipperRight != null && FlipperRight.IsPressed()) || RightFlipperTouched;
+        return FlipperRight != null && FlipperRight.IsPressed();
     }
 
     /// <summary>
@@ -219,7 +116,7 @@ public class PinballInputManager : MonoBehaviour
     /// </summary>
     public bool WasRightFlipperPressed()
     {
-        return (FlipperRight != null && FlipperRight.WasPressedThisFrame()) || RightFlipperTouchBegan;
+        return FlipperRight != null && FlipperRight.WasPressedThisFrame();
     }
 
     /// <summary>
@@ -227,7 +124,7 @@ public class PinballInputManager : MonoBehaviour
     /// </summary>
     public bool IsPlungerHeld()
     {
-        return (Plunger != null && Plunger.IsPressed()) || PlungerTouched;
+        return Plunger != null && Plunger.IsPressed();
     }
 
     /// <summary>
@@ -235,7 +132,7 @@ public class PinballInputManager : MonoBehaviour
     /// </summary>
     public bool WasPlungerPressed()
     {
-        return (Plunger != null && Plunger.WasPressedThisFrame()) || PlungerTouchBegan;
+        return Plunger != null && Plunger.WasPressedThisFrame();
     }
 
     /// <summary>
