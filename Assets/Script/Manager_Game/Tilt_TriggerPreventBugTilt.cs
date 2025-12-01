@@ -12,7 +12,7 @@ public class Tilt_TriggerPreventBugTilt : MonoBehaviour
 
     #region --- Private Fields ---
 
-    private ManagerGame gameManager; // access ManagerGame component from ManagerGame GameObject on the hierarchy
+    private GameManager gameManager; // access ManagerGame component from ManagerGame GameObject on the hierarchy
 
     #endregion
 
@@ -21,7 +21,7 @@ public class Tilt_TriggerPreventBugTilt : MonoBehaviour
     private void Start()
     {
         // --> Function Start
-        gameManager = ManagerGame.Instance; // Access ManagerGame gameComponent from singleton
+        gameManager = GameManager.Instance; // Access ManagerGame gameComponent from singleton
     }
 
     #endregion

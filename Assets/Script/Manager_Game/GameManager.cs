@@ -3,19 +3,11 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
-public class ManagerGame : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    #region --- Singleton ---
-
-    public static ManagerGame Instance { get; private set; }
-
-    #endregion
-
     #region --- Nested Types ---
 
     [Serializable]
@@ -29,6 +21,12 @@ public class ManagerGame : MonoBehaviour
 
         #endregion
     }
+
+    #endregion
+
+    #region --- Statics ---
+
+    public static GameManager Instance { get; private set; }
 
     #endregion
 
@@ -220,6 +218,7 @@ public class ManagerGame : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
     }
 
@@ -230,7 +229,7 @@ public class ManagerGame : MonoBehaviour
         uiManager = UiManager.Instance;
 
         if (inputManager == null) Debug.LogWarning("ManagerGame: PinballInputManager not found. Make sure it exists in the scene.");
-        if (uiManager == null) Debug.LogWarning("ManagerGame: UiManager not found. Make sure it exists in the scene.");
+        if (uiManager    == null) Debug.LogWarning("ManagerGame: UiManager not found. Make sure it exists in the scene.");
 
         // Initialize UiManager with text array and best score name
         if (uiManager != null)
@@ -506,10 +505,7 @@ public class ManagerGame : MonoBehaviour
 
             /////////////////////////////////	SECTION : INFO : START /////////////
             // Update default LCD display when no special message is showing
-            if (uiManager != null && Txt_Game != null)
-            {
-                uiManager.UpdateDefaultDisplay(player_Score, Ball_num, LCD_Wait_Start_Game, tmp_Life, PlayerPrefs.GetInt(BestScoreName));
-            }
+            if (uiManager != null && Txt_Game != null) uiManager.UpdateDefaultDisplay(player_Score, Ball_num, LCD_Wait_Start_Game, tmp_Life, PlayerPrefs.GetInt(BestScoreName));
 
             /////////////////////////////////	SECTION END 	/////////////
 
@@ -599,9 +595,9 @@ public class ManagerGame : MonoBehaviour
                     tmp_Ballout_Time = 0;
                     b_Ballout_Part_1 = true;
                     b_Ballout_Part_2 = false; // start Part 2
-                    Add_Info_To_Array(Txt_Game[5]                                                               + "\n" // display a text
-                                                                                                                + tmp_BONUS_Global_Hit_Counter + Txt_Game[6] + Bonus_Base
-                                                                                                                + " x "                        + "\n"        + tmp_Multiplier + Txt_Game[7], Time_Ballout_Part_2_Bonus);
+                    Add_Info_To_Array(Txt_Game[5]                                + "\n" // display a text
+                                                                                 + tmp_BONUS_Global_Hit_Counter + Txt_Game[6] + Bonus_Base
+                                                                                 + " x "                        + "\n"        + tmp_Multiplier + Txt_Game[7], Time_Ballout_Part_2_Bonus);
                     Total_Ball_Score(); // Add Bonus Points to player_Score
                 }
             }
@@ -660,6 +656,11 @@ public class ManagerGame : MonoBehaviour
 
         ////////////////////////////////	DEBUG
         if (Debug_Game) Debug_Input(); // Input for debugging
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
     }
 
     #endregion
@@ -979,8 +980,11 @@ public class ManagerGame : MonoBehaviour
             // Condition to stop Multi Ball : Mission_Multi_Ball_Ended && Number_Of_Ball_On_Board == 1
             if (camera_Movement) camera_Movement.Camera_MultiBall_Stop(); // change the camera view
             for (var i = 0; i < Missions_Index.Length; i++)
+            {
                 if (Missions_Index[i] == tmp_index_Info && tmp_index_Info != -1)
                     obj_Managers[i].SendMessage("Mode_MultiBall_Ended"); // Stop multi ball	
+            }
+
             Mission_Multi_Ball_Ended = false;
         }
 
@@ -1174,8 +1178,11 @@ public class ManagerGame : MonoBehaviour
         Timer_Multi = 2;
         if (camera_Movement) camera_Movement.Camera_MultiBall_Stop(); // change the camera view
         for (var i = 0; i < Missions_Index.Length; i++)
+        {
             if (Missions_Index[i] == tmp_index_Info && tmp_index_Info != -1)
                 obj_Managers[i].SendMessage("Mode_MultiBall_Ended"); // Stop multi ball	
+        }
+
         Mission_Multi_Ball_Ended = false;
 
         //if(spawnBall != null)newBall(spawnBall.transform.position);	
@@ -1449,14 +1456,6 @@ public class ManagerGame : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         if (Loop_AnimDemoPlayfield) PlayMultiLeds(AnimDemoPlayfield); // Play a loop animation until the game Start. 
-    }
-
-    private void OnDestroy()
-    {
-        if (Instance == this)
-        {
-            Instance = null;
-        }
     }
 
     #endregion

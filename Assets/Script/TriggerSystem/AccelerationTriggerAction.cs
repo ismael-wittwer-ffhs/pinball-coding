@@ -7,15 +7,21 @@ namespace TriggerSystem
     public class AccelerationTriggerAction : TriggerAction
     {
         [Header("Acceleration Settings")]
+        [Tooltip("Accelerate the ball when it enters the trigger")]
         public bool accelerateOnEnter = true;
+        [Tooltip("Accelerate the ball when it exits the trigger")]
         public bool accelerateOnExit = false;
+        [Tooltip("Accelerate the ball continuously while it stays in the trigger")]
         public bool accelerateOnStay = false;
         
         [Header("Force Settings")]
+        [Tooltip("The force applied to accelerate the ball in its velocity direction")]
         public float accelerationForce = 10f;
+        [Tooltip("The force mode used to apply the acceleration")]
         public ForceMode forceMode = ForceMode.VelocityChange;
         
         [Header("Minimum Velocity")]
+        [Tooltip("Minimum velocity magnitude required for acceleration to be applied. Prevents accelerating stationary balls.")]
         public float minimumVelocity = 0.1f;
 
         public override void Execute(TriggerContext context)

@@ -9,12 +9,12 @@ public class UI_Call_A_Function : MonoBehaviour
     #region --- Exposed Fields ---
 
     public Camera_Movement camera_Movement;
+
+    public GameManager manager_Game;
     public GameObject BlackScreen;
     public GameObject obj_PauseMobile;
     public GameObject obj_UI;
     public GameObject obj_UI2;
-
-    public ManagerGame manager_Game;
 
     #endregion
 
@@ -28,7 +28,7 @@ public class UI_Call_A_Function : MonoBehaviour
 
     private void Start()
     {
-        manager_Game = ManagerGame.Instance;
+        manager_Game = GameManager.Instance;
 
 
         tmp = GameObject.Find("G_UI_Game_Interface_Mobile");
@@ -50,8 +50,10 @@ public class UI_Call_A_Function : MonoBehaviour
         {
             var children = tmp.GetComponentsInChildren<Transform>(true);
             foreach (var child in children)
+            {
                 if (child.name == "btn_Mobile_Pause")
                     obj_PauseMobile = child.gameObject;
+            }
         }
     }
 

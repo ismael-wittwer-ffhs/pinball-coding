@@ -1,75 +1,97 @@
-﻿
-// Slingshot : Description : Mange slingshot mechanics.
-using System.Collections;
-using System.Collections.Generic;
+﻿// Slingshot : Description : Mange slingshot mechanics.
+
 using UnityEngine;
 
-public class Slingshot : MonoBehaviour {
+public class Slingshot : MonoBehaviour
+{
+    #region --- Exposed Fields ---
 
-	[Header ("Infos to missions")]
-	public int index;							// choose a number. Used to create script mission.
-	public GameObject[] Parent_Manager;					// Connect on the inspector the missions that use this object
-	public string functionToCall = "Counter";			// Call a function when OnCollisionEnter -> true;
+    [Header("Sound fx")]
+    public AudioClip Sfx_Hit; // Sound when ball hit the slingshot		
 
-	[Header ("Force parameters")]	
-	public float Slingshot_force = 10;					// change the slingshot force added to a ball
-	public float ForceMinimum = 1;  				// Minimum contact velocity between ball and slingshot to apply force
-	public float relativeVelocityMax = 1;					// The maximum force apply to the ball
+    public float ForceMinimum = 1; // Minimum contact velocity between ball and slingshot to apply force
+    public float relativeVelocityMax = 1; // The maximum force apply to the ball
 
-	[Header ("Sound fx")]	
-	public AudioClip Sfx_Hit;					// Sound when ball hit the slingshot		
-	private AudioSource  sound_;					// Audio Component
+    [Header("Force parameters")]
+    public float Slingshot_force = 10; // change the slingshot force added to a ball
 
-	[Header ("Points when the slingshot is hit")]
-	public int Points = 1000;					// Points you win when the object is hitting 
-	private ManagerGame gameManager;
+    [Header("Connect a led")]
+    public GameObject obj_Led; // Usefull if you want a led blinked when the slingshot is hitting
 
-	[Header ("Connect a led")]
-	public GameObject obj_Led;					// Usefull if you want a led blinked when the slingshot is hitting
-	private ChangeSpriteRenderer Led_Renderer;
+    [Header("Toy connected to the Slingshot")] // Connect a GameObject or paticule system with the script Toys.js attached
+    public GameObject obj_Toy; // Usefull if you want a led blinked when the slingshot is hitting
 
-	[Header ("Toy connected to the Slingshot")	]				// Connect a GameObject or paticule system with the script Toys.js attached
-	public GameObject obj_Toy;					// Usefull if you want a led blinked when the slingshot is hitting
-	private Toys toy;
-	public int animNumber = 0;
+    public GameObject[] Parent_Manager; // Connect on the inspector the missions that use this object
+    public int animNumber;
+
+    [Header("Infos to missions")]
+    public int index; // choose a number. Used to create script mission.
+
+    [Header("Points when the slingshot is hit")]
+    public int Points = 1000; // Points you win when the object is hitting 
+
+    public string functionToCall = "Counter"; // Call a function when OnCollisionEnter -> true;
+
+    #endregion
+
+    #region --- Private Fields ---
+
+    private AudioSource sound_; // Audio Component
+    private ChangeSpriteRenderer Led_Renderer;
+    private GameManager gameManager;
+    private Toys toy;
+
+    #endregion
+
+    #region --- Unity Methods ---
+
+    private void Start()
+    {
+        //	--> Init
+        gameManager = GameManager.Instance; // Access ManagerGame from singleton
+        sound_ = GetComponent<AudioSource>(); // Access AudioSource Component
+
+        if (obj_Led) Led_Renderer = obj_Led.GetComponent<ChangeSpriteRenderer>(); // Access led component if needed
+
+        if (obj_Toy) toy = obj_Toy.GetComponent<Toys>(); // Access led component if needed
+    }
+
+    #endregion
+
+    #region --- Callbacks ---
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // --> OnCollisionEnter with the ball
+        var rb = collision.gameObject.GetComponent<Rigidbody>();
+
+        if (rb != null && collision.relativeVelocity.magnitude > ForceMinimum)
+        {
+            if (collision.relativeVelocity.magnitude < relativeVelocityMax)
+            {
+                //Debug.Log("Yipo");
+                var t = collision.relativeVelocity.magnitude;
+                if (!rb.isKinematic) rb.linearVelocity = new Vector3(rb.linearVelocity.x * .5f, rb.linearVelocity.y * .5f, rb.linearVelocity.z * .5f); // reduce the velocity at the impact. Better feeling with the slingshot
+                rb.AddForce(transform.forward * Slingshot_force * t, ForceMode.VelocityChange); // add force
+            }
+            else
+            {
+                rb.AddForce(transform.forward * Slingshot_force * relativeVelocityMax, ForceMode.VelocityChange);
+            }
 
 
-	void Start(){																	//	--> Init
-		gameManager = ManagerGame.Instance;											// Access ManagerGame from singleton
-		sound_ = GetComponent<AudioSource>();											// Access AudioSource Component
+            if (Sfx_Hit) sound_.PlayOneShot(Sfx_Hit); // Play a sound if needed
 
-		if(obj_Led)Led_Renderer = obj_Led.GetComponent<ChangeSpriteRenderer>();		// Access led component if needed
+            for (var j = 0; j < Parent_Manager.Length; j++) Parent_Manager[j].SendMessage(functionToCall, index); // Call Parents Mission script
 
-		if(obj_Toy)toy = obj_Toy.GetComponent<Toys>();									// Access led component if needed
-	}
+            if (gameManager) gameManager.F_Mode_BONUS_Counter(); // add one to the BONUS_Counter
+            if (gameManager) gameManager.Add_Score(Points); // add points
 
-	void OnCollisionEnter(Collision collision) {									// --> OnCollisionEnter with the ball
-		Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>();
+            if (obj_Led) Led_Renderer.Led_On_With_Timer(.2f); // blinking
 
-		if (rb != null && collision.relativeVelocity.magnitude > ForceMinimum){
-			if(collision.relativeVelocity.magnitude < relativeVelocityMax){
-				//Debug.Log("Yipo");
-				float t = collision.relativeVelocity.magnitude;
-				if (!rb.isKinematic) rb.linearVelocity = new Vector3(rb.linearVelocity.x*.5f,rb.linearVelocity.y*.5f,rb.linearVelocity.z*.5f);			// reduce the velocity at the impact. Better feeling with the slingshot
-				rb.AddForce(transform.forward*Slingshot_force*t,ForceMode.VelocityChange);			// add force
-			}
-			else
-				rb.AddForce(transform.forward*Slingshot_force*relativeVelocityMax,ForceMode.VelocityChange);
+            if (obj_Toy) toy.PlayAnimationNumber(animNumber); // play animation
+        }
+    }
 
-
-			if(Sfx_Hit)sound_.PlayOneShot(Sfx_Hit);										// Play a sound if needed
-
-			for(var j = 0;j<Parent_Manager.Length;j++){
-				Parent_Manager[j].SendMessage(functionToCall,index);					// Call Parents Mission script
-			}
-
-			if(gameManager)gameManager.F_Mode_BONUS_Counter();											// add one to the BONUS_Counter
-			if(gameManager)gameManager.Add_Score(Points);												// add points
-
-			if(obj_Led)Led_Renderer.Led_On_With_Timer(.2f);								// blinking
-
-			if(obj_Toy)toy.PlayAnimationNumber(animNumber);								// play animation
-		}
-	}
-
+    #endregion
 }
