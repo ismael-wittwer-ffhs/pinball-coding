@@ -1,0 +1,35 @@
+Key,Id,English(en),German(de)
+
+"Txt_ScorePrefix",661649956864,"Score: ","Punkte: "
+
+"Txt_BallPrefix",661691899904,"Ball: ","Ball: "
+
+"Txt_GameOver",661700288512,"Game Over","Spiel beendet"
+
+"Txt_InsertCoin",661700288513,"Insert Coin","Münze einwerfen"
+
+"Txt_InitialWelcome",661700288514,"Ready","Bereit"
+
+"Txt_BestScorePrefix",661700288515,"Best Score: ","Bester Score: "
+
+"Txt_Tilt",661700288516,"TILT","KIPPER"
+
+"Txt_TiltWarning",661700288517,"Warning","Warnung"
+
+"Txt_BonusHits",661700288518,"Bonus","Bonus"
+
+"Txt_BonusBase",661700288519,"",""
+
+"Txt_BonusMultiplier",661700288520," = "," = "
+
+"Txt_TotalScore",661700288521,"Total Score","Gesamtpunktzahl"
+
+"Txt_NextBall",661700288522,"Next Ball","Nächster Ball"
+
+"Txt_BallSaver",661700288523,"Ball Saved","Ball gerettet"
+
+"Txt_ExtraBall",661700288524,"Extra Ball","Extra Ball"
+
+"Txt_NewBall",661700288525,"New Ball","Neuer Ball"
+
+"Txt_GameStart",661700288526,"Game Start","Spiel starten"

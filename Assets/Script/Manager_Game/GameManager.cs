@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     [Serializable]
     public class LedsPatternMulti
     {
+        #region --- Exposed Fields ---
+
         [FormerlySerializedAs("obj")]
         public GameObject[] Obj = new GameObject[1];
 
@@ -20,6 +22,8 @@ public class GameManager : MonoBehaviour
 
         [FormerlySerializedAs("manager_Led_Animation")]
         public Manager_Led_Animation[] ManagerLedAnimation = new Manager_Led_Animation[1];
+
+        #endregion
     }
 
     #endregion
@@ -144,9 +148,6 @@ public class GameManager : MonoBehaviour
     [Header("Score is saved with this name")]
     public string BestScoreName = "BestScore";
 
-    [FormerlySerializedAs("Txt_Game")]
-    [Header("Text used during game")]
-    public string[] TxtGame;
 
     [FormerlySerializedAs("ball")]
     [Header("Ball")]
@@ -223,6 +224,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
     }
 
@@ -268,365 +270,7 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    #region --- Initialization ---
-
-    private void InitializeManagers()
-    {
-        _managerInputSetting = GetComponent<ManagerInputSetting>();
-        _inputManager = PinballInputManager.Instance;
-        _uiManager = UiManager.Instance;
-
-        if (_inputManager == null) Debug.LogWarning("ManagerGame: PinballInputManager not found.");
-        if (_uiManager == null) Debug.LogWarning("ManagerGame: UiManager not found.");
-
-        if (_uiManager != null)
-        {
-            _uiManager.Txt_Game = TxtGame;
-            _uiManager.BestScoreName = BestScoreName;
-        }
-    }
-
-    private void InitializeCamera()
-    {
-        var cameras = GameObject.FindGameObjectsWithTag("MainCamera");
-        foreach (var cam in cameras)
-        {
-            var camMovement = cam.GetComponent<Camera_Movement>();
-            if (camMovement) _cameraMovement = camMovement;
-        }
-    }
-
-    private void InitializeComponents()
-    {
-        if (ObjLauncherMultiBall)
-            MultiBall = ObjLauncherMultiBall.GetComponent<MultiBall>();
-
-        _sound = GetComponent<AudioSource>();
-
-        if (_spawnBall == null)
-            _spawnBall = GameObject.Find("Plunger_Spawn");
-
-        // Initialize plungers
-        var plungers = GameObject.FindGameObjectsWithTag("Plunger");
-        SpringLauncher = new SpringLauncher[plungers.Length];
-        for (int i = 0; i < plungers.Length; i++)
-            SpringLauncher[i] = plungers[i].GetComponent<SpringLauncher>();
-
-        // Initialize missions
-        var missions = GameObject.FindGameObjectsWithTag("Missions");
-        _objManagers = new GameObject[missions.Length];
-        _missionsIndex = new int[missions.Length];
-
-        for (int i = 0; i < missions.Length; i++)
-        {
-            _objManagers[i] = missions[i];
-            _missionsIndex[i] = missions[i].GetComponent<MissionIndex>().F_index();
-        }
-
-        _pauseMission = new Pause_Mission[_objManagers.Length];
-        for (int i = 0; i < _objManagers.Length; i++)
-            _pauseMission[i] = _objManagers[i].GetComponent<Pause_Mission>();
-    }
-
-    private void InitializeLeds()
-    {
-        if (ObjLedExtraBall)
-            _ledExtraBall = ObjLedExtraBall.GetComponent<ChangeSpriteRenderer>();
-        if (ObjLedBallSaver)
-            _ledBallSaverRenderer = ObjLedBallSaver.GetComponent<ChangeSpriteRenderer>();
-
-        if (ObjMultiplierLeds.Length > 0)
-        {
-            _ledMultiplierRenderer = new ChangeSpriteRenderer[ObjMultiplierLeds.Length];
-            for (int i = 0; i < ObjMultiplierLeds.Length; i++)
-                _ledMultiplierRenderer[i] = ObjMultiplierLeds[i].GetComponent<ChangeSpriteRenderer>();
-        }
-    }
-
-    private void InitializeLedsPatterns()
-    {
-        if (LedsMulti[0].Obj[0] == null)
-        {
-            // Auto-create LED pattern from tagged objects
-            var missionObjs = GameObject.FindGameObjectsWithTag("Missions");
-            _objTmpMission = new GameObject[missionObjs.Length];
-            for (int i = 0; i < missionObjs.Length; i++)
-                _objTmpMission[i] = missionObjs[i];
-
-            var ledGroupObjs = GameObject.FindGameObjectsWithTag("Leds_Groups");
-            _objTmpLedsGroups = new GameObject[ledGroupObjs.Length];
-            for (int i = 0; i < ledGroupObjs.Length; i++)
-                _objTmpLedsGroups[i] = ledGroupObjs[i];
-
-            int totalCount = _objTmpMission.Length + _objTmpLedsGroups.Length;
-            LedsMulti[0].Obj = new GameObject[totalCount];
-            LedsMulti[0].NumPattern = new int[totalCount];
-
-            int idx = 0;
-            for (int i = 0; i < _objTmpMission.Length; i++)
-            {
-                LedsMulti[0].Obj[i] = _objTmpMission[i];
-                LedsMulti[0].NumPattern[idx] = 0;
-                idx++;
-            }
-
-            for (int i = 0; i < _objTmpLedsGroups.Length; i++)
-            {
-                LedsMulti[0].Obj[idx] = _objTmpLedsGroups[i];
-                LedsMulti[0].NumPattern[idx] = 0;
-                idx++;
-            }
-        }
-
-        for (int j = 0; j < LedsMulti.Length; j++)
-        {
-            LedsMulti[j].ManagerLedAnimation = new Manager_Led_Animation[LedsMulti[j].Obj.Length];
-            for (int k = 0; k < LedsMulti[j].Obj.Length; k++)
-                LedsMulti[j].ManagerLedAnimation[k] = LedsMulti[j].Obj[k].GetComponent<Manager_Led_Animation>();
-        }
-    }
-
-    #endregion
-
-    #region --- Update Handlers ---
-
-    private void HandleUINavigation()
-    {
-        if (_inputManager == null || _uiManager == null) return;
-
-        if (_uiManager.IsUIActive() && (Mathf.Abs(_inputManager.GetNavigateHorizontal()) == 1 || _inputManager.WasPlungerPressed()))
-            _uiManager.SelectLastButton();
-
-        if (_inputManager.WasPausePressed())
-            F_Pause_Game();
-
-        if (_inputManager.WasCameraChangePressed() && _cameraMovement)
-            _cameraMovement.Selected_Cam();
-    }
-
-    private void HandleGameStart()
-    {
-        if (_inputManager == null) return;
-        if (_uiManager != null && _uiManager.IsUIActive()) return;
-
-        if (_inputManager.WasPlungerPressed() && !_bGame)
-            F_InsertCoin_GameStart();
-    }
-
-    private void HandleTiltTimer()
-    {
-        if (_bTilt != 1) return;
-
-        _tiltTimer = Mathf.MoveTowards(_tiltTimer, MinTimeTilt, Time.deltaTime);
-        if (_tiltTimer == MinTimeTilt)
-        {
-            _bTilt = 0;
-            _tiltTimer = 0;
-        }
-    }
-
-    private void HandleShakeInput()
-    {
-        if (_inputManager == null || !_bGame) return;
-
-        if (_inputManager.WasShakeRightPressed())
-            ProcessShake(new Vector3(-1, 0, 0), 1);
-        else if (_inputManager.WasShakeLeftPressed())
-            ProcessShake(new Vector3(1, 0, 0), 2);
-        else if (_inputManager.WasShakeUpPressed())
-            ProcessShake(new Vector3(0, 0, 1), 3);
-    }
-
-    private void ProcessShake(Vector3 forceDirection, int cameraShakeType)
-    {
-        if (_bTilt == 1)
-        {
-            // Activate tilt mode
-            ActivateTiltMode(cameraShakeType);
-        }
-        else if (_bTilt == 0)
-        {
-            // First warning
-            ShowTiltWarning(forceDirection, cameraShakeType);
-        }
-    }
-
-    private void ActivateTiltMode(int cameraShakeType)
-    {
-        Start_Pause_Mode(-1);
-        if (_cameraMovement) _cameraMovement.Shake_Cam(cameraShakeType);
-        if (STilt) _sound.PlayOneShot(STilt);
-        if (_uiManager != null && TxtGame != null && TxtGame.Length > 0)
-            _uiManager.Add_Info_To_Array(TxtGame[0], 3);
-
-        _bTilt = 2;
-        _tiltTimer = 0;
-        F_Mode_Ball_Saver_Off();
-        BExtraBall = false;
-        if (ObjLedExtraBall) _ledExtraBall.F_ChangeSprite_Off();
-        Flippers_Plunger_State_Tilt_Mode("Desactivate");
-    }
-
-    private void ShowTiltWarning(Vector3 forceDirection, int cameraShakeType)
-    {
-        if (_uiManager != null && TxtGame != null && TxtGame.Length > 1)
-            _uiManager.Add_Info_To_Array(TxtGame[1], 1);
-        if (SWarning) _sound.PlayOneShot(SWarning);
-        if (_cameraMovement) _cameraMovement.Shake_Cam(cameraShakeType);
-        Shake_AddForce_ToBall(forceDirection);
-        _bTilt = 1;
-    }
-
-    private void UpdateDefaultDisplay()
-    {
-        if (_uiManager != null && TxtGame != null)
-            _uiManager.UpdateDefaultDisplay(_playerScore, _ballNum, _lcdWaitStartGame, _tmpLife, PlayerPrefs.GetInt(BestScoreName));
-    }
-
-    private void HandleMultiBall()
-    {
-        if (!_multiBall) return;
-
-        if (_numberOfBallOnBoard < 3 && _timerMulti > 1 && _tmpReloadNumber > 0)
-        {
-            NewBall(_spawnBall.transform.position);
-            _timerMulti = 0;
-            _tmpReloadNumber--;
-        }
-
-        _timerMulti += Time.deltaTime;
-
-        if (_tmpReloadNumber == 0 && _timerMulti > 1)
-            F_Mode_MultiBall();
-    }
-
-    private void HandleBallSaver()
-    {
-        // Respawn timer for ball saver
-        if (BRespawnTimerBallSaver)
-        {
-            RespawnTimerBallSaver = Mathf.MoveTowards(RespawnTimerBallSaver, 1, Time.deltaTime);
-            if (RespawnTimerBallSaver == 1)
-            {
-                BRespawnTimerBallSaver = false;
-                MultiBall.KickBack_MultiOnOff();
-            }
-        }
-
-        // Ball saver duration timer
-        if (_bTimerBallSaver)
-        {
-            _tmpBallSaver = Mathf.MoveTowards(_tmpBallSaver, _timerBallSaver, Time.deltaTime);
-            if (_timerBallSaver == _tmpBallSaver)
-            {
-                _bTimerBallSaver = false;
-                _tmpBallSaver = 0;
-                F_Mode_Ball_Saver_Off();
-            }
-        }
-
-        // Delay before multi-ball start
-        if (_timeToWaitBeforeMultiBallStart)
-        {
-            _timerMultiBall = Mathf.MoveTowards(_timerMultiBall, TimeToWaitMulti, Time.deltaTime);
-            if (_timerMultiBall == TimeToWaitMulti)
-            {
-                _timerMultiBall = 0;
-                _timeToWaitBeforeMultiBallStart = false;
-                F_Mode_MultiBall();
-            }
-        }
-    }
-
-    private void HandleBallOutSequence()
-    {
-        if (_bBalloutPart1 && _bBalloutPart2 && _bBalloutPart3) return;
-
-        _bTilt = 2; // Disable tilt mode when player loses a ball
-
-        for (int i = 0; i < SpringLauncher.Length; i++)
-            SpringLauncher[i].F_Desactivate();
-
-        if (_objSkillshotMission)
-            _objSkillshotMission.SendMessage("Disable_Skillshot_Mission");
-
-        // Part 1: Ball Lost
-        if (!_bBalloutPart1)
-        {
-            _tmpBalloutTime = Mathf.MoveTowards(_tmpBalloutTime, TimeBalloutPart1BallOut, Time.deltaTime);
-            if (_tmpBalloutTime == TimeBalloutPart1BallOut)
-            {
-                if (ABonusScreen)
-                {
-                    _sound.clip = ABonusScreen;
-                    _sound.Play();
-                }
-
-                _tmpBalloutTime = 0;
-                _bBalloutPart1 = true;
-                _bBalloutPart2 = false;
-                Add_Info_To_Array(TxtGame[5] + "\n" + _tmpBonusGlobalHitCounter + TxtGame[6] + BonusBase + " x " + "\n" + _tmpMultiplier + TxtGame[7], TimeBalloutPart2Bonus);
-                Total_Ball_Score();
-            }
-        }
-
-        // Part 2: Bonus Calculation
-        if (!_bBalloutPart2)
-        {
-            _tmpBalloutTime2 = Mathf.MoveTowards(_tmpBalloutTime2, TimeBalloutPart2Bonus, Time.deltaTime);
-            if (_tmpBalloutTime2 == TimeBalloutPart2Bonus)
-            {
-                _tmpBalloutTime2 = 0;
-                _bBalloutPart2 = true;
-                _bBalloutPart3 = false;
-                Add_Info_To_Array(TxtGame[8] + "\n" + _playerScore, TimeBalloutPart3TotalScore);
-            }
-        }
-
-        // Part 3: Next Ball or Game Over
-        if (!_bBalloutPart3)
-        {
-            _tmpBalloutTime3 = Mathf.MoveTowards(_tmpBalloutTime3, TimeBalloutPart3TotalScore, Time.deltaTime);
-            if (_tmpBalloutTime3 == TimeBalloutPart3TotalScore)
-            {
-                _tmpBalloutTime3 = 0;
-                _bBalloutPart3 = true;
-                ProcessBallOutResult();
-            }
-        }
-    }
-
-    private void ProcessBallOutResult()
-    {
-        if (_tmpLife >= 1)
-        {
-            // Player has remaining lives - spawn new ball
-            PlayMultiLeds(NewBallLedAnimation);
-            NewBall(_spawnBall.transform.position);
-            if (StartGameWithBallSaver)
-                F_Mode_Ball_Saver_On(StartDuration);
-            Add_Info_To_Array(TxtGame[9], 2);
-            _bTilt = 0;
-            if (_objSkillshotMission)
-                _objSkillshotMission.SendMessage("Enable_Skillshot_Mission");
-            Stop_Pause_Mode();
-        }
-        else
-        {
-            // Game Over
-            PlayMultiLeds(AnimDemoPlayfield);
-            LoopAnimDemoPlayfield = true;
-            _bGame = false;
-            _bTilt = 0;
-            Stop_Pause_Mode();
-            if (_uiManager != null)
-                _uiManager.ShowGameOverUI();
-        }
-    }
-
-    #endregion
-
-    #region --- Public API ---
+    #region --- Methods ---
 
     public void Add_Info_To_Array(string inf, float timer)
     {
@@ -647,22 +291,17 @@ public class GameManager : MonoBehaviour
         if (_playerScore > 999999999)
             _playerScore = 999999999;
 
-        if (_uiManager != null && TxtGame != null && TxtGame.Length > 3)
+        if (_uiManager != null)
         {
             _uiManager.UpdateScore(_playerScore, _ballNum, _lcdWaitStartGame, _tmpLife);
             _uiManager.SetLCDWaitStartGame(_lcdWaitStartGame);
         }
     }
 
-    public bool Ball_Saver_State() => BBallSaver;
-
-    public bool ExtraBall_State() => BExtraBall;
-
-    public int F_return_multiplier() => Multiplier;
-
-    public int F_return_Mulitplier_SuperBonus() => MulitplierSuperBonus;
-
-    public int HowManyAnimation() => LedsMulti.Length;
+    public bool Ball_Saver_State()
+    {
+        return BBallSaver;
+    }
 
     public void CheckGlobalAnimationEnded()
     {
@@ -672,6 +311,16 @@ public class GameManager : MonoBehaviour
             _globAnimCount = 0;
             if (LoopAnimDemoPlayfield) PlayMultiLeds(AnimDemoPlayfield);
         }
+    }
+
+    public void Debug_Input()
+    {
+        // Debug input placeholder - enable debug functionality as needed
+    }
+
+    public bool ExtraBall_State()
+    {
+        return BExtraBall;
     }
 
     public void F_Init_Skillshot_Mission(GameObject obj)
@@ -755,7 +404,7 @@ public class GameManager : MonoBehaviour
         }
         else if (Multiplier < 10)
         {
-            int valueTmp = (int)(Multiplier * 0.5f);
+            var valueTmp = (int)(Multiplier * 0.5f);
             if (ObjMultiplierLeds.Length > 0) _ledMultiplierRenderer[valueTmp].F_ChangeSprite_On();
             Multiplier += 2;
         }
@@ -764,6 +413,13 @@ public class GameManager : MonoBehaviour
             Add_Score(MulitplierSuperBonus);
             if (Multiplier == 10) Multiplier += 2;
         }
+    }
+
+    // Helper for debug/UI functions
+    public void F_NewBall()
+    {
+        if (_spawnBall != null)
+            NewBall(_spawnBall.transform.position);
     }
 
     public void F_Pause_Game()
@@ -793,9 +449,19 @@ public class GameManager : MonoBehaviour
             _uiManager.ShowQuitYesUI();
     }
 
+    public int F_return_Mulitplier_SuperBonus()
+    {
+        return MulitplierSuperBonus;
+    }
+
+    public int F_return_multiplier()
+    {
+        return Multiplier;
+    }
+
     public void Flippers_Plunger_State_Tilt_Mode(string state)
     {
-        bool activate = state == "Activate";
+        var activate = state == "Activate";
 
         var flippers = GameObject.FindGameObjectsWithTag("Flipper");
         foreach (var flipper in flippers)
@@ -834,6 +500,11 @@ public class GameManager : MonoBehaviour
         ProcessBallLost();
     }
 
+    public int HowManyAnimation()
+    {
+        return LedsMulti.Length;
+    }
+
     public void Init_All_Mission()
     {
         var missions = GameObject.FindGameObjectsWithTag("Missions");
@@ -846,6 +517,7 @@ public class GameManager : MonoBehaviour
                 init_Param_After_Game_Over();
             }
         }
+
         Stop_Pause_Mode();
     }
 
@@ -859,10 +531,8 @@ public class GameManager : MonoBehaviour
         Multiplier = 1;
 
         if (ObjMultiplierLeds.Length > 0)
-        {
-            for (int i = 0; i < _ledMultiplierRenderer.Length; i++)
+            for (var i = 0; i < _ledMultiplierRenderer.Length; i++)
                 _ledMultiplierRenderer[i].F_ChangeSprite_Off();
-        }
 
         Flippers_Plunger_State_Tilt_Mode("Activate");
     }
@@ -903,7 +573,8 @@ public class GameManager : MonoBehaviour
         ResetMultiBallState();
 
         BInsertCoinGameStart = false;
-        Add_Info_To_Array(TxtGame[4], 3);
+        if (_uiManager != null)
+            Add_Info_To_Array(_uiManager.Txt_InsertCoin.GetLocalizedString(), 3);
         _lcdWaitStartGame = true;
 
         StartCoroutine(InitGameWaitForFrame());
@@ -921,29 +592,17 @@ public class GameManager : MonoBehaviour
         _numberOfBallOnBoard++;
     }
 
-    // Helper for debug/UI functions
-    public void F_NewBall()
-    {
-        if (_spawnBall != null)
-            NewBall(_spawnBall.transform.position);
-    }
-
-    public void NewValueForUi(int value)
-    {
-        if (_uiManager != null)
-            _uiManager.NewValueForUi(value);
-    }
 
     public void PlayMultiLeds(int seqNum)
     {
         _animInProgress = seqNum;
-        for (int i = 0; i < LedsMulti[seqNum].Obj.Length; i++)
+        for (var i = 0; i < LedsMulti[seqNum].Obj.Length; i++)
             LedsMulti[seqNum].ManagerLedAnimation[i].Play_New_Pattern(LedsMulti[seqNum].NumPattern[i]);
     }
 
     public void Save_Best_Score()
     {
-        int finalScore = _playerScore + _tmpBonusScore;
+        var finalScore = _playerScore + _tmpBonusScore;
         PlayerPrefs.SetInt("CurrentScore", finalScore);
 
         if (!PlayerPrefs.HasKey(BestScoreName) || PlayerPrefs.GetInt(BestScoreName) < finalScore)
@@ -956,12 +615,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SelectLastButton()
-    {
-        if (_uiManager != null)
-            _uiManager.SelectLastButton();
-    }
-
     public void Shake_AddForce_ToBall(Vector3 direction)
     {
         var balls = GameObject.FindGameObjectsWithTag("Ball");
@@ -971,7 +624,7 @@ public class GameManager : MonoBehaviour
 
     public void Start_Pause_Mode(int keepAlive)
     {
-        for (int i = 0; i < _objManagers.Length; i++)
+        for (var i = 0; i < _objManagers.Length; i++)
         {
             if (keepAlive != _missionsIndex[i])
                 _pauseMission[i].Start_Pause_Mission();
@@ -980,7 +633,7 @@ public class GameManager : MonoBehaviour
 
     public void Stop_Pause_Mode()
     {
-        for (int i = 0; i < _objManagers.Length; i++)
+        for (var i = 0; i < _objManagers.Length; i++)
             _pauseMission[i].Stop_Pause_Mission();
     }
 
@@ -989,15 +642,321 @@ public class GameManager : MonoBehaviour
         _playerScore += _tmpBonusScore;
     }
 
-    #endregion
+    private void ActivateDeactivateObjects(GameObject[] objects, bool activate)
+    {
+        if (objects == null || objects.Length == 0) return;
 
-    #region --- Game State Management ---
+        var message = activate ? "Activate_Object" : "Desactivate_Object";
+        for (var i = 0; i < objects.Length; i++)
+            objects[i].SendMessage(message);
+    }
+
+    private void ActivateTiltMode(int cameraShakeType)
+    {
+        Start_Pause_Mode(-1);
+        if (_cameraMovement) _cameraMovement.Shake_Cam(cameraShakeType);
+        if (STilt) _sound.PlayOneShot(STilt);
+        if (_uiManager != null)
+            _uiManager.Add_Info_To_Array(_uiManager.Txt_Tilt.GetLocalizedString(), 3);
+
+        _bTilt = 2;
+        _tiltTimer = 0;
+        F_Mode_Ball_Saver_Off();
+        BExtraBall = false;
+        if (ObjLedExtraBall) _ledExtraBall.F_ChangeSprite_Off();
+        Flippers_Plunger_State_Tilt_Mode("Desactivate");
+    }
+
+    private void HandleBallOutSequence()
+    {
+        if (_bBalloutPart1 && _bBalloutPart2 && _bBalloutPart3) return;
+
+        _bTilt = 2; // Disable tilt mode when player loses a ball
+
+        for (var i = 0; i < SpringLauncher.Length; i++)
+            SpringLauncher[i].F_Desactivate();
+
+        if (_objSkillshotMission)
+            _objSkillshotMission.SendMessage("Disable_Skillshot_Mission");
+
+        // Part 1: Ball Lost
+        if (!_bBalloutPart1)
+        {
+            _tmpBalloutTime = Mathf.MoveTowards(_tmpBalloutTime, TimeBalloutPart1BallOut, Time.deltaTime);
+            if (_tmpBalloutTime == TimeBalloutPart1BallOut)
+            {
+                if (ABonusScreen)
+                {
+                    _sound.clip = ABonusScreen;
+                    _sound.Play();
+                }
+
+                _tmpBalloutTime = 0;
+                _bBalloutPart1 = true;
+                _bBalloutPart2 = false;
+                if (_uiManager != null)
+                {
+                    var bonusText = _uiManager.Txt_BonusHits.GetLocalizedString() + "\n" + _tmpBonusGlobalHitCounter + 
+                                    _uiManager.Txt_BonusBase.GetLocalizedString() + BonusBase + " x " + "\n" + 
+                                    _tmpMultiplier + _uiManager.Txt_BonusMultiplier.GetLocalizedString();
+                    Add_Info_To_Array(bonusText, TimeBalloutPart2Bonus);
+                }
+                Total_Ball_Score();
+            }
+        }
+
+        // Part 2: Bonus Calculation
+        if (!_bBalloutPart2)
+        {
+            _tmpBalloutTime2 = Mathf.MoveTowards(_tmpBalloutTime2, TimeBalloutPart2Bonus, Time.deltaTime);
+            if (_tmpBalloutTime2 == TimeBalloutPart2Bonus)
+            {
+                _tmpBalloutTime2 = 0;
+                _bBalloutPart2 = true;
+                _bBalloutPart3 = false;
+                if (_uiManager != null)
+                    Add_Info_To_Array(_uiManager.Txt_TotalScore.GetLocalizedString() + "\n" + _playerScore, TimeBalloutPart3TotalScore);
+            }
+        }
+
+        // Part 3: Next Ball or Game Over
+        if (!_bBalloutPart3)
+        {
+            _tmpBalloutTime3 = Mathf.MoveTowards(_tmpBalloutTime3, TimeBalloutPart3TotalScore, Time.deltaTime);
+            if (_tmpBalloutTime3 == TimeBalloutPart3TotalScore)
+            {
+                _tmpBalloutTime3 = 0;
+                _bBalloutPart3 = true;
+                ProcessBallOutResult();
+            }
+        }
+    }
+
+    private void HandleBallSaver()
+    {
+        // Respawn timer for ball saver
+        if (BRespawnTimerBallSaver)
+        {
+            RespawnTimerBallSaver = Mathf.MoveTowards(RespawnTimerBallSaver, 1, Time.deltaTime);
+            if (RespawnTimerBallSaver == 1)
+            {
+                BRespawnTimerBallSaver = false;
+                MultiBall.KickBack_MultiOnOff();
+            }
+        }
+
+        // Ball saver duration timer
+        if (_bTimerBallSaver)
+        {
+            _tmpBallSaver = Mathf.MoveTowards(_tmpBallSaver, _timerBallSaver, Time.deltaTime);
+            if (_timerBallSaver == _tmpBallSaver)
+            {
+                _bTimerBallSaver = false;
+                _tmpBallSaver = 0;
+                F_Mode_Ball_Saver_Off();
+            }
+        }
+
+        // Delay before multi-ball start
+        if (_timeToWaitBeforeMultiBallStart)
+        {
+            _timerMultiBall = Mathf.MoveTowards(_timerMultiBall, TimeToWaitMulti, Time.deltaTime);
+            if (_timerMultiBall == TimeToWaitMulti)
+            {
+                _timerMultiBall = 0;
+                _timeToWaitBeforeMultiBallStart = false;
+                F_Mode_MultiBall();
+            }
+        }
+    }
+
+    private void HandleGameStart()
+    {
+        if (_uiManager != null && _uiManager.IsUIActive()) return;
+
+        if (_inputManager.WasPlungerPressed() && !_bGame)
+            F_InsertCoin_GameStart();
+    }
+
+    private void HandleMultiBall()
+    {
+        if (!_multiBall) return;
+
+        if (_numberOfBallOnBoard < 3 && _timerMulti > 1 && _tmpReloadNumber > 0)
+        {
+            NewBall(_spawnBall.transform.position);
+            _timerMulti = 0;
+            _tmpReloadNumber--;
+        }
+
+        _timerMulti += Time.deltaTime;
+
+        if (_tmpReloadNumber == 0 && _timerMulti > 1)
+            F_Mode_MultiBall();
+    }
+
+    private void HandleShakeInput()
+    {
+        if (_inputManager == null || !_bGame) return;
+
+        if (_inputManager.WasShakeRightPressed())
+            ProcessShake(new Vector3(-1, 0, 0), 1);
+        else if (_inputManager.WasShakeLeftPressed())
+            ProcessShake(new Vector3(1, 0, 0), 2);
+        else if (_inputManager.WasShakeUpPressed())
+            ProcessShake(new Vector3(0, 0, 1), 3);
+    }
+
+    private void HandleTiltTimer()
+    {
+        if (_bTilt != 1) return;
+
+        _tiltTimer = Mathf.MoveTowards(_tiltTimer, MinTimeTilt, Time.deltaTime);
+        if (_tiltTimer == MinTimeTilt)
+        {
+            _bTilt = 0;
+            _tiltTimer = 0;
+        }
+    }
+
+    private void HandleUINavigation()
+    {
+        if (_inputManager.WasPausePressed())
+            F_Pause_Game();
+
+        if (_inputManager.WasCameraChangePressed() && _cameraMovement)
+            _cameraMovement.Selected_Cam();
+    }
+
+    private IEnumerator InitGameWaitForFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        if (_cameraMovement) _cameraMovement.PlayIdle();
+        LoopAnimDemoPlayfield = true;
+        PlayMultiLeds(AnimDemoPlayfield);
+    }
+
+    private void InitializeCamera()
+    {
+        var cameras = GameObject.FindGameObjectsWithTag("MainCamera");
+        foreach (var cam in cameras)
+        {
+            var camMovement = cam.GetComponent<Camera_Movement>();
+            if (camMovement) _cameraMovement = camMovement;
+        }
+    }
+
+    private void InitializeComponents()
+    {
+        if (ObjLauncherMultiBall)
+            MultiBall = ObjLauncherMultiBall.GetComponent<MultiBall>();
+
+        _sound = GetComponent<AudioSource>();
+
+        if (_spawnBall == null)
+            _spawnBall = GameObject.Find("Plunger_Spawn");
+
+        // Initialize plungers
+        var plungers = GameObject.FindGameObjectsWithTag("Plunger");
+        SpringLauncher = new SpringLauncher[plungers.Length];
+        for (var i = 0; i < plungers.Length; i++)
+            SpringLauncher[i] = plungers[i].GetComponent<SpringLauncher>();
+
+        // Initialize missions
+        var missions = GameObject.FindGameObjectsWithTag("Missions");
+        _objManagers = new GameObject[missions.Length];
+        _missionsIndex = new int[missions.Length];
+
+        for (var i = 0; i < missions.Length; i++)
+        {
+            _objManagers[i] = missions[i];
+            _missionsIndex[i] = missions[i].GetComponent<MissionIndex>().F_index();
+        }
+
+        _pauseMission = new Pause_Mission[_objManagers.Length];
+        for (var i = 0; i < _objManagers.Length; i++)
+            _pauseMission[i] = _objManagers[i].GetComponent<Pause_Mission>();
+    }
+
+    private void InitializeLeds()
+    {
+        if (ObjLedExtraBall)
+            _ledExtraBall = ObjLedExtraBall.GetComponent<ChangeSpriteRenderer>();
+        if (ObjLedBallSaver)
+            _ledBallSaverRenderer = ObjLedBallSaver.GetComponent<ChangeSpriteRenderer>();
+
+        if (ObjMultiplierLeds.Length > 0)
+        {
+            _ledMultiplierRenderer = new ChangeSpriteRenderer[ObjMultiplierLeds.Length];
+            for (var i = 0; i < ObjMultiplierLeds.Length; i++)
+                _ledMultiplierRenderer[i] = ObjMultiplierLeds[i].GetComponent<ChangeSpriteRenderer>();
+        }
+    }
+
+    private void InitializeLedsPatterns()
+    {
+        if (LedsMulti[0].Obj[0] == null)
+        {
+            // Auto-create LED pattern from tagged objects
+            var missionObjs = GameObject.FindGameObjectsWithTag("Missions");
+            _objTmpMission = new GameObject[missionObjs.Length];
+            for (var i = 0; i < missionObjs.Length; i++)
+                _objTmpMission[i] = missionObjs[i];
+
+            var ledGroupObjs = GameObject.FindGameObjectsWithTag("Leds_Groups");
+            _objTmpLedsGroups = new GameObject[ledGroupObjs.Length];
+            for (var i = 0; i < ledGroupObjs.Length; i++)
+                _objTmpLedsGroups[i] = ledGroupObjs[i];
+
+            var totalCount = _objTmpMission.Length + _objTmpLedsGroups.Length;
+            LedsMulti[0].Obj = new GameObject[totalCount];
+            LedsMulti[0].NumPattern = new int[totalCount];
+
+            var idx = 0;
+            for (var i = 0; i < _objTmpMission.Length; i++)
+            {
+                LedsMulti[0].Obj[i] = _objTmpMission[i];
+                LedsMulti[0].NumPattern[idx] = 0;
+                idx++;
+            }
+
+            for (var i = 0; i < _objTmpLedsGroups.Length; i++)
+            {
+                LedsMulti[0].Obj[idx] = _objTmpLedsGroups[i];
+                LedsMulti[0].NumPattern[idx] = 0;
+                idx++;
+            }
+        }
+
+        for (var j = 0; j < LedsMulti.Length; j++)
+        {
+            LedsMulti[j].ManagerLedAnimation = new Manager_Led_Animation[LedsMulti[j].Obj.Length];
+            for (var k = 0; k < LedsMulti[j].Obj.Length; k++)
+                LedsMulti[j].ManagerLedAnimation[k] = LedsMulti[j].Obj[k].GetComponent<Manager_Led_Animation>();
+        }
+    }
+
+    private void InitializeManagers()
+    {
+        _managerInputSetting = GetComponent<ManagerInputSetting>();
+        _inputManager = PinballInputManager.Instance;
+        _uiManager = UiManager.Instance;
+
+        if (_inputManager == null) Debug.LogWarning("ManagerGame: PinballInputManager not found.");
+        if (_uiManager    == null) Debug.LogWarning("ManagerGame: UiManager not found.");
+
+        if (_uiManager != null)
+        {
+            _uiManager.BestScoreName = BestScoreName;
+        }
+    }
 
     private void InsertCoin_GameStart()
     {
         _lcdWaitStartGame = false;
         LoopAnimDemoPlayfield = false;
-        Add_Info_To_Array(TxtGame[14], 3);
+        if (_uiManager != null)
+            Add_Info_To_Array(_uiManager.Txt_GameStart.GetLocalizedString(), 3);
         _bGame = true;
         BInsertCoinGameStart = true;
         if (_bPause) Pause_Game();
@@ -1012,129 +971,12 @@ public class GameManager : MonoBehaviour
         BInsertCoinGameStart = false;
     }
 
-    private void ResetGameState()
-    {
-        var balls = GameObject.FindGameObjectsWithTag("Ball");
-        foreach (var ball in balls) Destroy(ball);
-
-        var ledAnims = GameObject.FindGameObjectsWithTag("Led_animation");
-        foreach (var led in ledAnims)
-            led.GetComponent<Anim_On_LCD>().DestoyAnimGameobject();
-
-        Init_All_Mission();
-
-        var flippers = GameObject.FindGameObjectsWithTag("Flipper");
-        foreach (var flipper in flippers)
-            flipper.GetComponent<Flippers>().F_Activate();
-
-        var plungers = GameObject.FindGameObjectsWithTag("Plunger");
-        foreach (var plunger in plungers)
-            plunger.GetComponent<SpringLauncher>().F_Activate();
-
-        _tmpLife = BInsertCoinGameStart && !_bGame ? 0 : Life;
-        _playerScore = 0;
-        _ballNum = 0;
-        _numberOfBallOnBoard = 0;
-        _tmpBalloutTime = 0;
-        _bBalloutPart1 = true;
-        _tmpBalloutTime2 = 0;
-        _bBalloutPart2 = true;
-        _tmpBalloutTime3 = 0;
-        _bBalloutPart3 = true;
-        BonusGlobalHitCounter = 0;
-        Multiplier = 1;
-        init_Param_After_Ball_Lost();
-        init_Param_After_Game_Over();
-    }
-
-    private void ResetMultiBallState()
-    {
-        _multiBall = false;
-        _tmpReloadNumber = 0;
-        _timerMulti = 2;
-        if (_cameraMovement) _cameraMovement.Camera_MultiBall_Stop();
-        NotifyMissionMultiBallEnded();
-        _missionMultiBallEnded = false;
-
-        var holes = GameObject.FindGameObjectsWithTag("Hole");
-        foreach (var hole in holes)
-            hole.GetComponent<Hole>().initHole();
-
-        var multiHoles = GameObject.FindGameObjectsWithTag("Hole_Multi");
-        foreach (var hole in multiHoles)
-            hole.GetComponent<MultiBall>().initHole();
-    }
-
     private void NotifyMissionMultiBallEnded()
     {
-        for (int i = 0; i < _missionsIndex.Length; i++)
+        for (var i = 0; i < _missionsIndex.Length; i++)
         {
             if (_missionsIndex[i] == _tmpIndexInfo && _tmpIndexInfo != -1)
                 _objManagers[i].SendMessage("Mode_MultiBall_Ended");
-        }
-    }
-
-    private void ProcessBallLost()
-    {
-        if (BBallSaver && _numberOfBallOnBoard == 0)
-        {
-            // Ball Saver activated
-            PlayMultiLeds(BallSaverLedAnimation);
-            MultiBall.KickBack_MultiOnOff();
-            NewBall(_spawnBall.transform.position);
-            Add_Info_To_Array(TxtGame[10], 3);
-            RespawnTimerBallSaver = 0;
-            BRespawnTimerBallSaver = true;
-            BBallSaver = false;
-            if (ObjLedBallSaver) _ledBallSaverRenderer.F_ChangeSprite_Off();
-
-            if (ABallSave)
-            {
-                _sound.clip = ABallSave;
-                _sound.Play();
-            }
-        }
-        else if (BExtraBall && _numberOfBallOnBoard == 0)
-        {
-            // Extra ball activated
-            Add_Info_To_Array(TxtGame[11], 3);
-            NewBall(_spawnBall.transform.position);
-            BExtraBall = false;
-            if (ObjLedExtraBall) _ledExtraBall.F_ChangeSprite_Off();
-        }
-        else if (_tmpLife > 1 && _numberOfBallOnBoard == 0)
-        {
-            // New ball (player has lives remaining)
-            Add_Info_To_Array(TxtGame[12], 3);
-            _bBalloutPart1 = false;
-            PlayLoseBallSound();
-            init_Param_After_Ball_Lost();
-            _tmpLife--;
-            NotifyMissionsAfterBallLost();
-            PlayMultiLeds(GameOverLedAnimation);
-            _ballNum++;
-        }
-        else if (_numberOfBallOnBoard <= 0)
-        {
-            // Game Over
-            if (_uiManager != null) _uiManager.ClearBallInfo();
-            Add_Info_To_Array(TxtGame[13], 3);
-            _bBalloutPart1 = false;
-            PlayLoseBallSound();
-            init_Param_After_Ball_Lost();
-            _tmpLife--;
-            Init_All_Mission();
-            PlayMultiLeds(GameOverLedAnimation);
-            Save_Best_Score();
-        }
-    }
-
-    private void PlayLoseBallSound()
-    {
-        if (ALoseBall)
-        {
-            _sound.clip = ALoseBall;
-            _sound.Play();
         }
     }
 
@@ -1144,10 +986,6 @@ public class GameManager : MonoBehaviour
         foreach (var mission in missions)
             mission.SendMessage("Mission_Intialisation_AfterBallLost");
     }
-
-    #endregion
-
-    #region --- Pause System ---
 
     private void Pause_Game()
     {
@@ -1259,34 +1097,182 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    #endregion
-
-    #region --- Helpers ---
-
-    private void ActivateDeactivateObjects(GameObject[] objects, bool activate)
+    private void PlayLoseBallSound()
     {
-        if (objects == null || objects.Length == 0) return;
-
-        string message = activate ? "Activate_Object" : "Desactivate_Object";
-        for (int i = 0; i < objects.Length; i++)
-            objects[i].SendMessage(message);
+        if (ALoseBall)
+        {
+            _sound.clip = ALoseBall;
+            _sound.Play();
+        }
     }
 
-    public void Debug_Input()
+    private void ProcessBallLost()
     {
-        // Debug input placeholder - enable debug functionality as needed
+        if (BBallSaver && _numberOfBallOnBoard == 0)
+        {
+            // Ball Saver activated
+            PlayMultiLeds(BallSaverLedAnimation);
+            MultiBall.KickBack_MultiOnOff();
+            NewBall(_spawnBall.transform.position);
+            if (_uiManager != null)
+                Add_Info_To_Array(_uiManager.Txt_BallSaver.GetLocalizedString(), 3);
+            RespawnTimerBallSaver = 0;
+            BRespawnTimerBallSaver = true;
+            BBallSaver = false;
+            if (ObjLedBallSaver) _ledBallSaverRenderer.F_ChangeSprite_Off();
+
+            if (ABallSave)
+            {
+                _sound.clip = ABallSave;
+                _sound.Play();
+            }
+        }
+        else if (BExtraBall && _numberOfBallOnBoard == 0)
+        {
+            // Extra ball activated
+            if (_uiManager != null)
+                Add_Info_To_Array(_uiManager.Txt_ExtraBall.GetLocalizedString(), 3);
+            NewBall(_spawnBall.transform.position);
+            BExtraBall = false;
+            if (ObjLedExtraBall) _ledExtraBall.F_ChangeSprite_Off();
+        }
+        else if (_tmpLife > 1 && _numberOfBallOnBoard == 0)
+        {
+            // New ball (player has lives remaining)
+            if (_uiManager != null)
+                Add_Info_To_Array(_uiManager.Txt_NewBall.GetLocalizedString(), 3);
+            _bBalloutPart1 = false;
+            PlayLoseBallSound();
+            init_Param_After_Ball_Lost();
+            _tmpLife--;
+            NotifyMissionsAfterBallLost();
+            PlayMultiLeds(GameOverLedAnimation);
+            _ballNum++;
+        }
+        else if (_numberOfBallOnBoard <= 0)
+        {
+            // Game Over
+            if (_uiManager != null)
+            {
+                _uiManager.ClearBallInfo();
+                Add_Info_To_Array(_uiManager.Txt_GameOver.GetLocalizedString(), 3);
+            }
+            _bBalloutPart1 = false;
+            PlayLoseBallSound();
+            init_Param_After_Ball_Lost();
+            _tmpLife--;
+            Init_All_Mission();
+            PlayMultiLeds(GameOverLedAnimation);
+            Save_Best_Score();
+        }
     }
 
-    #endregion
-
-    #region --- Coroutines ---
-
-    private IEnumerator InitGameWaitForFrame()
+    private void ProcessBallOutResult()
     {
-        yield return new WaitForEndOfFrame();
-        if (_cameraMovement) _cameraMovement.PlayIdle();
-        LoopAnimDemoPlayfield = true;
-        PlayMultiLeds(AnimDemoPlayfield);
+        if (_tmpLife >= 1)
+        {
+            // Player has remaining lives - spawn new ball
+            PlayMultiLeds(NewBallLedAnimation);
+            NewBall(_spawnBall.transform.position);
+            if (StartGameWithBallSaver)
+                F_Mode_Ball_Saver_On(StartDuration);
+            if (_uiManager != null)
+                Add_Info_To_Array(_uiManager.Txt_NextBall.GetLocalizedString(), 2);
+            _bTilt = 0;
+            if (_objSkillshotMission)
+                _objSkillshotMission.SendMessage("Enable_Skillshot_Mission");
+            Stop_Pause_Mode();
+        }
+        else
+        {
+            // Game Over
+            PlayMultiLeds(AnimDemoPlayfield);
+            LoopAnimDemoPlayfield = true;
+            _bGame = false;
+            _bTilt = 0;
+            Stop_Pause_Mode();
+            if (_uiManager != null)
+                _uiManager.ShowGameOverUI();
+        }
+    }
+
+    private void ProcessShake(Vector3 forceDirection, int cameraShakeType)
+    {
+        if (_bTilt == 1)
+            // Activate tilt mode
+            ActivateTiltMode(cameraShakeType);
+        else if (_bTilt == 0)
+            // First warning
+            ShowTiltWarning(forceDirection, cameraShakeType);
+    }
+
+    private void ResetGameState()
+    {
+        var balls = GameObject.FindGameObjectsWithTag("Ball");
+        foreach (var ball in balls) Destroy(ball);
+
+        var ledAnims = GameObject.FindGameObjectsWithTag("Led_animation");
+        foreach (var led in ledAnims)
+            led.GetComponent<Anim_On_LCD>().DestoyAnimGameobject();
+
+        Init_All_Mission();
+
+        var flippers = GameObject.FindGameObjectsWithTag("Flipper");
+        foreach (var flipper in flippers)
+            flipper.GetComponent<Flippers>().F_Activate();
+
+        var plungers = GameObject.FindGameObjectsWithTag("Plunger");
+        foreach (var plunger in plungers)
+            plunger.GetComponent<SpringLauncher>().F_Activate();
+
+        _tmpLife = BInsertCoinGameStart && !_bGame ? 0 : Life;
+        _playerScore = 0;
+        _ballNum = 0;
+        _numberOfBallOnBoard = 0;
+        _tmpBalloutTime = 0;
+        _bBalloutPart1 = true;
+        _tmpBalloutTime2 = 0;
+        _bBalloutPart2 = true;
+        _tmpBalloutTime3 = 0;
+        _bBalloutPart3 = true;
+        BonusGlobalHitCounter = 0;
+        Multiplier = 1;
+        init_Param_After_Ball_Lost();
+        init_Param_After_Game_Over();
+    }
+
+    private void ResetMultiBallState()
+    {
+        _multiBall = false;
+        _tmpReloadNumber = 0;
+        _timerMulti = 2;
+        if (_cameraMovement) _cameraMovement.Camera_MultiBall_Stop();
+        NotifyMissionMultiBallEnded();
+        _missionMultiBallEnded = false;
+
+        var holes = GameObject.FindGameObjectsWithTag("Hole");
+        foreach (var hole in holes)
+            hole.GetComponent<Hole>().initHole();
+
+        var multiHoles = GameObject.FindGameObjectsWithTag("Hole_Multi");
+        foreach (var hole in multiHoles)
+            hole.GetComponent<MultiBall>().initHole();
+    }
+
+    private void ShowTiltWarning(Vector3 forceDirection, int cameraShakeType)
+    {
+        if (_uiManager != null)
+            _uiManager.Add_Info_To_Array(_uiManager.Txt_TiltWarning.GetLocalizedString(), 1);
+        if (SWarning) _sound.PlayOneShot(SWarning);
+        if (_cameraMovement) _cameraMovement.Shake_Cam(cameraShakeType);
+        Shake_AddForce_ToBall(forceDirection);
+        _bTilt = 1;
+    }
+
+    private void UpdateDefaultDisplay()
+    {
+        if (_uiManager != null)
+            _uiManager.UpdateDefaultDisplay(_playerScore, _ballNum, _lcdWaitStartGame, _tmpLife, PlayerPrefs.GetInt(BestScoreName));
     }
 
     private IEnumerator WaitToInit()

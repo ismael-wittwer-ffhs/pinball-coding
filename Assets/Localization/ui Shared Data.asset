@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: ui Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: ui
+  m_TableCollectionNameGuidString: c1708cec3e798d341a9ad644e2e2f744
+  m_Entries:
+  - m_Id: 661649956864
+    m_Key: Txt_ScorePrefix
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661691899904
+    m_Key: Txt_BallPrefix
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288512
+    m_Key: Txt_GameOver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288513
+    m_Key: Txt_InsertCoin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288514
+    m_Key: Txt_InitialWelcome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288515
+    m_Key: Txt_BestScorePrefix
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288516
+    m_Key: Txt_Tilt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288517
+    m_Key: Txt_TiltWarning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288518
+    m_Key: Txt_BonusHits
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288519
+    m_Key: Txt_BonusBase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288520
+    m_Key: Txt_BonusMultiplier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288521
+    m_Key: Txt_TotalScore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288522
+    m_Key: Txt_NextBall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288523
+    m_Key: Txt_BallSaver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288524
+    m_Key: Txt_ExtraBall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288525
+    m_Key: Txt_NewBall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 661700288526
+    m_Key: Txt_GameStart
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4669448898762506525
+  references:
+    version: 2
+    RefIds:
+    - rid: 4669448898762506525
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1764615538739
