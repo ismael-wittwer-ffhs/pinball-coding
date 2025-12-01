@@ -6,75 +6,62 @@ namespace TriggerSystem
 {
     public class SlowMotionTriggerAction : TriggerAction
     {
-        [Header("Slow Motion Settings")]
-        [SerializeField] private float slowMotionTimeScale = 0.5f;
-        [SerializeField] private bool slowOnEnter = true;
-        [SerializeField] private bool resetOnExit = true;
+        #region --- Private Fields ---
+
+        [SerializeField]
+        private bool resetOnExit = true;
+
+        [SerializeField]
+        private bool slowOnEnter = true;
 
         private float originalTimeScale;
-        private bool hasOriginalTimeScale = false;
+
+        [Header("Slow Motion Settings")]
+        [SerializeField]
+        private float slowMotionTimeScale = 0.5f;
+
+        #endregion
+
+        #region --- Unity Methods ---
 
         private void Awake()
         {
-            if (!hasOriginalTimeScale)
-            {
-                originalTimeScale = Time.timeScale;
-                hasOriginalTimeScale = true;
-            }
+            originalTimeScale = Time.timeScale;
         }
+
+        private void OnDestroy()
+        {
+            Time.timeScale = originalTimeScale;
+        }
+
+        #endregion
+
+        #region --- Methods ---
 
         public override void Execute(TriggerContext context)
         {
             if (context is CollisionContext collisionContext)
-            {
                 switch (collisionContext.Type)
                 {
                     case TriggerType.Enter:
-                        if (slowOnEnter)
-                        {
-                            ApplySlowMotion();
-                        }
+                        if (slowOnEnter) ApplySlowMotion();
                         break;
                     case TriggerType.Exit:
-                        if (resetOnExit)
-                        {
-                            ResetTimeScale();
-                        }
+                        if (resetOnExit) ResetTimeScale();
                         break;
                 }
-            }
         }
 
         private void ApplySlowMotion()
         {
-            if (!hasOriginalTimeScale)
-            {
-                originalTimeScale = Time.timeScale;
-                hasOriginalTimeScale = true;
-            }
             Time.timeScale = slowMotionTimeScale;
         }
 
         private void ResetTimeScale()
         {
-            if (hasOriginalTimeScale)
-            {
-                Time.timeScale = originalTimeScale;
-            }
-            else
-            {
-                Time.timeScale = 1f;
-            }
+            Time.timeScale = originalTimeScale;
         }
 
-        private void OnDestroy()
-        {
-            // Ensure time scale is reset when component is destroyed
-            if (hasOriginalTimeScale)
-            {
-                Time.timeScale = originalTimeScale;
-            }
-        }
+        #endregion
     }
 }
-
