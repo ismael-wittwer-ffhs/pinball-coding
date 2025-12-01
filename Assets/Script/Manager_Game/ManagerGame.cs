@@ -52,8 +52,6 @@ public class ManagerGame : MonoBehaviour
     [Header("Bonus Ball Saver")] // --> Bonus Ball Saver
     public bool StartGameWithBallSaver; // If true : player start a new ball with BallSaver
 
-    public EventSystem eventSystem;
-
     [Header("Tilt Mode")] // --> Tilt Mode
     public float MinTimeTilt = 1; // minimum time in seconds between two shake 
 
@@ -67,23 +65,12 @@ public class ManagerGame : MonoBehaviour
 
     public float Time_Ballout_Part_3_TotalScore = 2; // Part 3 : Next Ball or GameOver : Choose the duration of this part		
     public float TimeToWaitMulti = 3; // Time To Wait before the multi ball start 
-    public float[] PosGameUI; // Choose the different UI position
-
-    [Header("UI ")] // --> Global Leds pattern manager
-    public GameObject Game_UI; // Connect the parent UI
-
-    public GameObject Game_UI2; // Connect the parent UI Part2 Contain button Start and quit
-    public GameObject Mobile_Cam_Txt; // Use to deactivate Mobile Change Camera text if you use the Mobile System of pause and change camera
-    public GameObject Mobile_PauseAndCam; // Use to deactivate Mobile pause and Mobile Change Camera button if you use the Mobile System of pause and change camera
-
 
     [Header("Mode Multi Ball")] // --> Mode Multi Ball
     public GameObject obj_Launcher_MultiBall; // Object that manage the multi-ball on playfield. Manage how the ball is ejected on playfield
 
     public GameObject obj_Led_Ball_Saver; // Connect here a Led
-    public GameObject obj_Led_ExtraBall; // Connect here a Led
-
-    public GameObject[] btn_UI; // Connect the UI button 
+    public GameObject obj_Led_ExtraBall; // Connect here a Led 
     public GameObject[] Deactivate_Obj; // Deactivate Target when multiball start
 
     public GameObject[] Deactivate_Obj_WhenMultIsFinished = { }; // Deactivate Target when multiball start
@@ -120,8 +107,6 @@ public class ManagerGame : MonoBehaviour
     [Header("Score is saved with this name")]
     public string BestScoreName = "BestScore";
 
-    public string[] arr_Info_Txt /*= new string ()*/; // Use to display text on LCD screen
-
     [Header("Text used during game")] // --> Text used during game
     public string[] Txt_Game; // Array : All the text use by the game Manager
 
@@ -144,7 +129,6 @@ public class ManagerGame : MonoBehaviour
     private bool b_Timer_Ball_Saver;
     private bool b_touch_TiltLeft; // use for mobile device
     private bool b_touch_TiltRight; // use for mobile device
-    private bool b_Txt_Info = true; // Use to display text on LCD screen
     private bool Debug_Game;
     private bool LCD_Wait_Start_Game = true; // use to switch between best score and insert coin
 
@@ -163,7 +147,6 @@ public class ManagerGame : MonoBehaviour
     private ChangeSpriteRenderer led_ExtraBall; // Access ChangeSpriteRenderer component from obj_Led_ExtraBall if a led is connected
     private ChangeSpriteRenderer[] led_Multiplier_Renderer; // Access ChangeSpriteRenderer component from obj_Multiplier_Leds if leds are connected
     private float Tilt_Timer; // timer to know if we need to start tilt mode
-    private float TimeBetweenTwoInfo; // Use to display text on LCD screen
     private float Timer_Ball_Saver = 2; // Ball Saver duration					
     private float Timer_Multi = 1; // ejection time between two balls 
     private float TimerMultiBall;
@@ -171,8 +154,6 @@ public class ManagerGame : MonoBehaviour
     private float tmp_Ballout_Time;
     private float tmp_Ballout_Time_2;
     private float tmp_Ballout_Time_3;
-
-    private float tmp_Time; // Use to display text on LCD screen
 
     private GameObject obj_Skillshot_Mission; // (auto connected) with the function F_Init_Skillshot_Mission(obj : GameObject)
     // Use for Tilting mode
@@ -207,7 +188,6 @@ public class ManagerGame : MonoBehaviour
     private int AnimInProgress; // Use to know the name of global Leds animation is being played
     private int b_Tilt; // 0 : Tilt Desactivate	 	1 : Player shakes the playfield			2 : Tilt Mode Enable  
     private int Ball_num; // the number of ball played by the player
-    private int count_LCD;
     private int globAnimCount; // Use to know if all the leds animation on playfield are finish
     private int Number_Of_Ball_On_Board; // Know the number of board. 
     private int player_Score; // player score
@@ -226,14 +206,7 @@ public class ManagerGame : MonoBehaviour
     private ManagerInputSetting manager_Input_Setting;
     private Pause_Mission[] pause_Mission; // (connected automatically) Access the Pause_Mission component for all the mission on playfield
     private PinballInputManager inputManager;
-    private Text Gui_Txt_Info_Ball; // Connect a UI.Text
-    private Text Gui_Txt_Score; // Connect a UI.Text
-
-    [Header("LCD Text")] // --> LCD Text
-    private Text Gui_Txt_Timer; // Connect a UI.Text
-
-    private Text Obj_UI_BestScore; // Display the best score
-    private Text Obj_UI_Score; // Display game score
+    private UiManager uiManager;
 
     #endregion
 
@@ -254,77 +227,16 @@ public class ManagerGame : MonoBehaviour
     {
         manager_Input_Setting = GetComponent<ManagerInputSetting>();
         inputManager = PinballInputManager.Instance;
+        uiManager = UiManager.Instance;
 
         if (inputManager == null) Debug.LogWarning("ManagerGame: PinballInputManager not found. Make sure it exists in the scene.");
-        var tmp_Gui = GameObject.Find("txt_Timer"); // Connect UI.text to the LCD screen
-        if (tmp_Gui) Gui_Txt_Timer = tmp_Gui.GetComponent<Text>();
-        tmp_Gui = GameObject.Find("txt_Ball");
-        if (tmp_Gui) Gui_Txt_Info_Ball = tmp_Gui.GetComponent<Text>();
-        tmp_Gui = GameObject.Find("txt_Score");
-        if (tmp_Gui) Gui_Txt_Score = tmp_Gui.GetComponent<Text>();
-        if (Gui_Txt_Score) Gui_Txt_Score.text = Txt_Game[15]; // Display text on LCD screen when the scene start
+        if (uiManager == null) Debug.LogWarning("ManagerGame: UiManager not found. Make sure it exists in the scene.");
 
-
-        var _tmp = GameObject.Find("UI_Game_Interface_v2_Lightweight_LCD"); // Find if there is a Text_Camera on hierarchy
-        if (_tmp == null) _tmp = GameObject.Find("UI_Game_Interface_v2");
-        if (_tmp != null)
+        // Initialize UiManager with text array and best score name
+        if (uiManager != null)
         {
-            /*for (child in _tmp.transform) {
-                var Typedchild : Transform = child as Transform;
-                if(Typedchild.name == "Text_Camera")Mobile_Cam_Txt = Typedchild.gameObject;
-            }*/
-
-            var children = _tmp.GetComponentsInChildren<Transform>(true);
-
-            foreach (var child in children)
-                if (child.name == "Text_Camera")
-                    Mobile_Cam_Txt = child.gameObject;
-        }
-
-        _tmp = GameObject.Find("G_UI_Game_Interface_Mobile"); // Find if there is a UI interface on hierarchy
-        if (_tmp != null) Game_UI = _tmp;
-
-        _tmp = GameObject.Find("G_UI_Game_Interface_Mobile_Part2"); // Find if there is a UI interface on hierarchy
-        if (_tmp != null) Game_UI2 = _tmp;
-
-
-        _tmp = GameObject.Find("PauseAndView"); // Find if there is a btn_Mobile_Pause on hierarchy
-        if (_tmp)
-        {
-            /*for (child in _tmp.transform) {
-                var Typedchild2 : Transform = child as Transform;
-                if(Typedchild2.name == "btn_Mobile_Pause")Mobile_PauseAndCam = Typedchild2.gameObject;
-            }*/
-
-            var children = _tmp.GetComponentsInChildren<Transform>(true);
-
-            foreach (var child in children)
-                if (child.name == "btn_Mobile_Pause")
-                    Mobile_PauseAndCam = child.gameObject;
-        }
-
-        if (eventSystem == null)
-        {
-            var tmpEvent = GameObject.Find("EventSystem");
-            if (tmpEvent)
-                eventSystem = tmpEvent.GetComponent<EventSystem>();
-        }
-
-        if (Game_UI)
-        {
-            // If There is a UI interface connected.
-            tmp_Gui = GameObject.Find("btn_InsertCoin"); // Find Button
-            btn_UI[0] = tmp_Gui;
-            tmp_Gui = GameObject.Find("btn_Resume_Game"); // Find Button
-            btn_UI[1] = tmp_Gui;
-            tmp_Gui = GameObject.Find("btn_Restart_Yes"); // Find Button
-            btn_UI[2] = tmp_Gui;
-            if (eventSystem.currentSelectedGameObject != null) eventSystem.SetSelectedGameObject(btn_UI[0]); // Select the Insert coin button
-            tmp_Gui = GameObject.Find("Txt_Best_Score_1"); // Find Text Best Score
-            if (tmp_Gui) Obj_UI_BestScore = tmp_Gui.GetComponent<Text>();
-            tmp_Gui = GameObject.Find("Txt_Game_Score_1"); // Find Text Score
-            if (tmp_Gui) Obj_UI_Score = tmp_Gui.GetComponent<Text>();
-            if (Obj_UI_BestScore) Obj_UI_BestScore.text = PlayerPrefs.GetInt(BestScoreName).ToString(); //Display Best score
+            uiManager.Txt_Game = Txt_Game;
+            uiManager.BestScoreName = BestScoreName;
         }
 
 
@@ -447,12 +359,11 @@ public class ManagerGame : MonoBehaviour
     private void Update()
     {
         // UI Navigation and global controls
-        if (inputManager != null)
+        if (inputManager != null && uiManager != null)
         {
             // UI: Select a button if nothing is selected
-            if (Game_UI && Game_UI.activeInHierarchy && eventSystem.currentSelectedGameObject == null
-                && (Mathf.Abs(inputManager.GetNavigateHorizontal()) == 1 || inputManager.WasPlungerPressed()))
-                SelectLastButton();
+            if (uiManager.IsUIActive() && (Mathf.Abs(inputManager.GetNavigateHorizontal()) == 1 || inputManager.WasPlungerPressed()))
+                uiManager.SelectLastButton();
 
             // Pause Mode
             if (inputManager.WasPausePressed()) F_Pause_Game();
@@ -468,7 +379,7 @@ public class ManagerGame : MonoBehaviour
         {
             /////////////////////////////////	SECTION : Player Input : START /////////////
             // New Game Start
-            if (inputManager != null && !Game_UI && inputManager.WasPlungerPressed())
+            if (inputManager != null && (uiManager == null || !uiManager.IsUIActive()) && inputManager.WasPlungerPressed())
                 if (!b_Game)
                     F_InsertCoin_GameStart();
 
@@ -516,7 +427,7 @@ public class ManagerGame : MonoBehaviour
                         Start_Pause_Mode(-1);
                         if (camera_Movement) camera_Movement.Shake_Cam(1);
                         if (s_Tilt) sound.PlayOneShot(s_Tilt);
-                        if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[0], 3);
+                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 0) uiManager.Add_Info_To_Array(Txt_Game[0], 3);
                         b_Tilt = 2;
                         Tilt_Timer = 0;
                         F_Mode_Ball_Saver_Off();
@@ -528,7 +439,7 @@ public class ManagerGame : MonoBehaviour
                     else if (b_Tilt == 0)
                     {
                         // First warning
-                        if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[1], 1);
+                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 1) uiManager.Add_Info_To_Array(Txt_Game[1], 1);
                         if (s_Warning) sound.PlayOneShot(s_Warning);
                         if (camera_Movement) camera_Movement.Shake_Cam(1);
                         Shake_AddForce_ToBall(new Vector3(-1, 0, 0));
@@ -545,7 +456,7 @@ public class ManagerGame : MonoBehaviour
                         Start_Pause_Mode(-1);
                         if (camera_Movement) camera_Movement.Shake_Cam(2);
                         if (s_Tilt) sound.PlayOneShot(s_Tilt);
-                        if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[0], 3);
+                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 0) uiManager.Add_Info_To_Array(Txt_Game[0], 3);
                         b_Tilt = 2;
                         Tilt_Timer = 0;
                         F_Mode_Ball_Saver_Off();
@@ -556,7 +467,7 @@ public class ManagerGame : MonoBehaviour
                     }
                     else if (b_Tilt == 0)
                     {
-                        if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[1], 1);
+                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 1) uiManager.Add_Info_To_Array(Txt_Game[1], 1);
                         if (s_Warning) sound.PlayOneShot(s_Warning);
                         if (camera_Movement) camera_Movement.Shake_Cam(2);
                         Shake_AddForce_ToBall(new Vector3(1, 0, 0));
@@ -573,7 +484,7 @@ public class ManagerGame : MonoBehaviour
                         Start_Pause_Mode(-1);
                         if (camera_Movement) camera_Movement.Shake_Cam(3);
                         if (s_Tilt) sound.PlayOneShot(s_Tilt);
-                        if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[0], 3);
+                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 0) uiManager.Add_Info_To_Array(Txt_Game[0], 3);
                         b_Tilt = 2;
                         Tilt_Timer = 0;
                         F_Mode_Ball_Saver_Off();
@@ -584,7 +495,7 @@ public class ManagerGame : MonoBehaviour
                     else if (b_Tilt == 0)
                     {
                         if (s_Warning) sound.PlayOneShot(s_Warning);
-                        if (Gui_Txt_Score) Add_Info_To_Array(Txt_Game[1], 1);
+                        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 1) uiManager.Add_Info_To_Array(Txt_Game[1], 1);
                         if (camera_Movement) camera_Movement.Shake_Cam(3);
                         Shake_AddForce_ToBall(new Vector3(0, 0, 1));
                         b_Tilt = 1;
@@ -594,40 +505,10 @@ public class ManagerGame : MonoBehaviour
             /////////////////////////////////	SECTION END /////////////
 
             /////////////////////////////////	SECTION : INFO : START /////////////
-            if (!b_Txt_Info)
+            // Update default LCD display when no special message is showing
+            if (uiManager != null && Txt_Game != null)
             {
-                // --> the text is displayed during "TimeBetweenTwoInfo"
-                tmp_Time = Mathf.MoveTowards(tmp_Time, TimeBetweenTwoInfo,
-                    Time.deltaTime);
-                if (tmp_Time == TimeBetweenTwoInfo)
-                {
-                    // Display something when there nothing else to display
-                    b_Txt_Info = true;
-                    tmp_Time = 0;
-                    if (!LCD_Wait_Start_Game)
-                    {
-                        if (tmp_Life > 0)
-                        {
-                            // 
-                            if (Gui_Txt_Score) Gui_Txt_Score.text = Txt_Game[2]         + player_Score; // display player score
-                            if (Gui_Txt_Info_Ball) Gui_Txt_Info_Ball.text = Txt_Game[3] + (Ball_num + 1); // display the ball number
-                        }
-                        else
-                        {
-                            // if GameOver
-                            if (Gui_Txt_Score) Gui_Txt_Score.text = Txt_Game[4]; // display player score
-                        }
-                    }
-                    else
-                    {
-                        if (count_LCD == 0)
-                            Add_Info_To_Array(Txt_Game[16] + "\n" + PlayerPrefs.GetInt(BestScoreName), 3);
-                        else
-                            Add_Info_To_Array(Txt_Game[4], 3);
-                        count_LCD++;
-                        count_LCD = count_LCD % 2;
-                    }
-                }
+                uiManager.UpdateDefaultDisplay(player_Score, Ball_num, LCD_Wait_Start_Game, tmp_Life, PlayerPrefs.GetInt(BestScoreName));
             }
 
             /////////////////////////////////	SECTION END 	/////////////
@@ -769,25 +650,8 @@ public class ManagerGame : MonoBehaviour
                         b_Game = false;
                         b_Tilt = 0; // init Tilt Mode When player lose a ball
                         Stop_Pause_Mode(); // Stop Pause Mode for all the missions. useful if the player loses the ball because of the tilt mode
-                        if (Game_UI)
-                        {
-                            if (!Game_UI.activeInHierarchy) Game_UI.SetActive(true);
-
-
-                            Game_UI.GetComponent<RectTransform>().pivot = new Vector2(Game_UI.GetComponent<RectTransform>().pivot.x, PosGameUI[0]);
-                            //Game_UI.transform.localPosition.y = PosGameUI[3];						// If UI coneected Display Restart option Yes No
-
-                            GameObject tmpLeadSaveName_ButtonNext;
-                            tmpLeadSaveName_ButtonNext = GameObject.Find("Button_Next_Lead");
-                            if (tmpLeadSaveName_ButtonNext)
-                                eventSystem.SetSelectedGameObject(tmpLeadSaveName_ButtonNext); // Select the button Next letter on Leaderboard save name Panel.
-                            else
-                                eventSystem.SetSelectedGameObject(btn_UI[2]); // Select the button No.
-
-
-                            if (Mobile_PauseAndCam) Mobile_PauseAndCam.SetActive(false); // Use to deactivate Mobile pause and Mobile Change Camera button if you use the Mobile System of pause and change camera
-                            if (Mobile_Cam_Txt) Mobile_Cam_Txt.SetActive(false);
-                        }
+                        if (uiManager != null)
+                            uiManager.ShowGameOverUI();
                     }
                 }
             }
@@ -804,18 +668,16 @@ public class ManagerGame : MonoBehaviour
 
     public void Add_Info_To_Array(string inf, float Timer)
     {
-        // --> Score Text : Call This function to add text to arr_Info_Txt
-        if (Gui_Txt_Score) Gui_Txt_Score.text = inf;
-        if (Gui_Txt_Info_Ball) Gui_Txt_Info_Ball.text = ""; // We don't want to display the ball number when there is player information on LCD Fake Screen
-        tmp_Time = 0;
-        TimeBetweenTwoInfo = Timer;
-        b_Txt_Info = false;
+        // --> Score Text : Call This function to add text to LCD screen
+        if (uiManager != null)
+            uiManager.Add_Info_To_Array(inf, Timer);
     }
 
     public void Add_Info_To_Timer(string inf)
     {
-        // --> Timer Text : Call This function to add text to Gui_Txt_Timer
-        if (Gui_Txt_Timer) Gui_Txt_Timer.text = inf;
+        // --> Timer Text : Call This function to add text to timer
+        if (uiManager != null)
+            uiManager.Add_Info_To_Timer(inf);
     }
 
     public void Add_Score(int addScore)
@@ -826,11 +688,11 @@ public class ManagerGame : MonoBehaviour
         if (player_Score > 999999999) // Max score is 999,999,999 points					
             player_Score = 999999999;
 
-        if (b_Txt_Info)
+        // Update UI with new score
+        if (uiManager != null && Txt_Game != null && Txt_Game.Length > 3)
         {
-            // write score on LCD display if nothing else is playing on lCD Screen.
-            if (Gui_Txt_Score) Gui_Txt_Score.text = Txt_Game[2]         + player_Score; // display player score
-            if (Gui_Txt_Info_Ball) Gui_Txt_Info_Ball.text = Txt_Game[3] + (Ball_num + 1); // display the ball number
+            uiManager.UpdateScore(player_Score, Ball_num, LCD_Wait_Start_Game, tmp_Life);
+            uiManager.SetLCDWaitStartGame(LCD_Wait_Start_Game);
         }
     }
 
@@ -905,15 +767,8 @@ public class ManagerGame : MonoBehaviour
     public void F_InsertCoin_GameStart()
     {
         if (!b_Pause) InsertCoin_GameStart();
-        if (Game_UI)
-        {
-            Game_UI.GetComponent<RectTransform>().pivot = new Vector2(
-                Game_UI.GetComponent<RectTransform>().pivot.x,
-                PosGameUI[0]
-            );
-            //Game_UI.transform.localPosition.y = PosGameUI[0];						// Change UI Position
-            eventSystem.SetSelectedGameObject(null); // Change selected button
-        }
+        if (uiManager != null)
+            uiManager.ShowGameStartUI();
     }
 
 
@@ -1032,51 +887,13 @@ public class ManagerGame : MonoBehaviour
 
     public void F_Pause_Game()
     {
-        if (Game_UI && b_Game)
+        if (uiManager != null && b_Game)
         {
             // If UI connected and game start
-            if (Mobile_PauseAndCam && !Mobile_PauseAndCam.activeSelf)
-            {
-                if (Mobile_PauseAndCam) Mobile_PauseAndCam.SetActive(true);
-                if (Mobile_Cam_Txt) Mobile_Cam_Txt.SetActive(true);
-                if (Game_UI) Game_UI.SetActive(false);
-            }
-            else
-            {
-                if (Mobile_PauseAndCam) Mobile_PauseAndCam.SetActive(false);
-                if (Mobile_Cam_Txt) Mobile_Cam_Txt.SetActive(false);
-                if (Game_UI) Game_UI.SetActive(true);
-            }
-
-            if (Game_UI.GetComponent<RectTransform>().pivot.y == PosGameUI[0])
-            {
-                // Pause Start
-                //Game_UI.transform.localPosition.y = PosGameUI[1];					// Change UI Position
-                Game_UI.GetComponent<RectTransform>().pivot = new Vector2(
-                    Game_UI.GetComponent<RectTransform>().pivot.x,
-                    PosGameUI[1]
-                );
-
-                //Game_UI.GetComponent<RectTransform>().pivot.y = PosGameUI[1];
-                if (Game_UI.activeInHierarchy) eventSystem.SetSelectedGameObject(btn_UI[1]); // Change selected button
-            }
-            else
-            {
-                // Pause Stop
-                //Game_UI.transform.localPosition.y = PosGameUI[0];					// Change UI Position
-
-                Game_UI.GetComponent<RectTransform>().pivot = new Vector2(
-                    Game_UI.GetComponent<RectTransform>().pivot.x,
-                    PosGameUI[0]
-                );
-
-                //Game_UI.GetComponent<RectTransform>().pivot.y = PosGameUI[0];
-                if (Game_UI.activeInHierarchy) eventSystem.SetSelectedGameObject(null); // Change selected button
-            }
-
-            Pause_Game(); // Pause
+            Pause_Game(); // Toggle pause state
+            uiManager.TogglePauseUI(b_Pause, b_Game);
         }
-        else if (!Game_UI)
+        else
         {
             // If no UI connected
             Pause_Game();
@@ -1092,35 +909,16 @@ public class ManagerGame : MonoBehaviour
     {
         // Stop pause
         Pause_Game();
-        if (Game_UI)
-        {
-            //Game_UI.transform.localPosition.y = PosGameUI[0];						// Change UI Position
-            Game_UI.GetComponent<RectTransform>().pivot = new Vector2(
-                Game_UI.GetComponent<RectTransform>().pivot.x,
-                PosGameUI[0]
-            );
-
-            //Game_UI.GetComponent<RectTransform>().pivot.y = PosGameUI[0];
-            eventSystem.SetSelectedGameObject(null); // Change selected button
-        }
+        if (uiManager != null)
+            uiManager.ShowQuitNoUI();
     }
 
     public void F_Quit_Yes()
     {
         // return to the main menu	
         InitGame_GoToMainMenu();
-        if (Game_UI)
-        {
-            //Game_UI.transform.localPosition.y = PosGameUI[2];						// Change UI Position
-            Game_UI.GetComponent<RectTransform>().pivot = new Vector2(
-                Game_UI.GetComponent<RectTransform>().pivot.x,
-                PosGameUI[2]
-            );
-
-            //Game_UI.GetComponent<RectTransform>().pivot.y = PosGameUI[2];
-            if (Game_UI2) Game_UI2.SetActive(true);
-            eventSystem.SetSelectedGameObject(btn_UI[0]); // Change selected button
-        }
+        if (uiManager != null)
+            uiManager.ShowQuitYesUI();
     }
 
     public int F_return_Mulitplier_SuperBonus()
@@ -1235,7 +1033,7 @@ public class ManagerGame : MonoBehaviour
         {
             // --> Game Over
             // GAME OVER
-            if (Gui_Txt_Info_Ball) Gui_Txt_Info_Ball.text = ""; // We don't want to display the ball number when there is player information on LCD Fake Screen
+            if (uiManager != null) uiManager.ClearBallInfo(); // We don't want to display the ball number when there is player information on LCD Fake Screen
             Add_Info_To_Array(Txt_Game[13], 3);
             b_Ballout_Part_1 = false;
             if (a_LoseBall)
@@ -1459,20 +1257,8 @@ public class ManagerGame : MonoBehaviour
 
     public void NewValueForUi(int value)
     {
-        if (value == 0)
-        {
-            PosGameUI[0] = 14;
-            PosGameUI[1] = 22;
-            PosGameUI[2] = 0;
-            PosGameUI[3] = 34;
-        }
-        else
-        {
-            PosGameUI[0] = -6.04f;
-            PosGameUI[1] = -3.05f;
-            PosGameUI[2] = .05f;
-            //		PosGameUI[3] = 1460;
-        }
+        if (uiManager != null)
+            uiManager.NewValueForUi(value);
     }
 
 
@@ -1605,28 +1391,19 @@ public class ManagerGame : MonoBehaviour
             PlayerPrefs.SetInt(BestScoreName, player_Score + tmp_Bonus_Score); // Save the player_Score on PlayerPrefs(BestScoreName)
         }
 
-        //if(Obj_UI_BestScore)Obj_UI_BestScore.text = PlayerPrefs.GetInt(BestScoreName).ToString();
-        if (Obj_UI_Score) Obj_UI_Score.text = (player_Score + tmp_Bonus_Score).ToString();
+        // Update UI with final score
+        if (uiManager != null)
+        {
+            uiManager.UpdateCanvasScore(player_Score + tmp_Bonus_Score);
+            uiManager.UpdateCanvasBestScore(PlayerPrefs.GetInt(BestScoreName));
+        }
     }
 
     public void SelectLastButton()
     {
-        /*if(Game_UI.transform.localPosition.y == PosGameUI[2])
-        eventSystem.current.SetSelectedGameObject(btn_UI[0]);
-
-    if(Game_UI.transform.localPosition.y == PosGameUI[1])
-        eventSystem.current.SetSelectedGameObject(btn_UI[1]);
-
-    if(Game_UI.transform.localPosition.y == PosGameUI[3])
-        eventSystem.current.SetSelectedGameObject(btn_UI[2]);	*/
-        if (Game_UI.GetComponent<RectTransform>().pivot.y == PosGameUI[2])
-            eventSystem.SetSelectedGameObject(btn_UI[0]);
-
-        if (Game_UI.GetComponent<RectTransform>().pivot.y == PosGameUI[1])
-            eventSystem.SetSelectedGameObject(btn_UI[1]);
-
-        /*if(Game_UI.GetComponent.<RectTransform>().pivot.y == PosGameUI[3])
-        eventSystem.current.SetSelectedGameObject(btn_UI[2]);	*/
+        // Delegate to UiManager
+        if (uiManager != null)
+            uiManager.SelectLastButton();
     }
 
     public void Shake_AddForce_ToBall(Vector3 Direction)
