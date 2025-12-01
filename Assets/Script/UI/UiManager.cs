@@ -23,31 +23,34 @@ public class UiManager : MonoBehaviour
     [Header("UI GameObjects")]
     public GameObject UI_GameOverScreen; // Connect the parent UI
 
+    public GameObject UI_PauseScreen; // Connect the pause screen UI
+
     [FormerlySerializedAs("Game_UI2")]
     public GameObject UI_StartScreen; // Connect the parent UI Part2 Contain button Start and quit
 
-    public string BestScoreName = "BestScore"; // Score is saved with this name
+    public LocalizedString Txt_BallPrefix; // "Ball: " prefix for ball number
+    public LocalizedString Txt_BallSaver; // Ball saver text (TxtGame[10])
+    public LocalizedString Txt_BestScorePrefix; // "Best Score: " prefix for best score
+    public LocalizedString Txt_BonusBase; // Bonus base part (TxtGame[6])
+    public LocalizedString Txt_BonusHits; // Bonus hits part (TxtGame[5])
+    public LocalizedString Txt_BonusMultiplier; // Bonus multiplier part (TxtGame[7])
+    public LocalizedString Txt_ExtraBall; // Extra ball text (TxtGame[11])
+    public LocalizedString Txt_GameOver; // "Game Over" text
+    public LocalizedString Txt_GameStart; // Game start text (TxtGame[14])
+    public LocalizedString Txt_InitialWelcome; // Initial welcome/start text
+    public LocalizedString Txt_InsertCoin; // "Insert Coin" text
+    public LocalizedString Txt_NewBall; // New ball text (TxtGame[12])
+    public LocalizedString Txt_NextBall; // Next ball text (TxtGame[9])
 
     [Header("Localized Strings")]
     public LocalizedString Txt_ScorePrefix; // "Score: " prefix for player score
-    public LocalizedString Txt_BallPrefix; // "Ball: " prefix for ball number
-    public LocalizedString Txt_GameOver; // "Game Over" text
-    public LocalizedString Txt_InsertCoin; // "Insert Coin" text
-    public LocalizedString Txt_InitialWelcome; // Initial welcome/start text
-    public LocalizedString Txt_BestScorePrefix; // "Best Score: " prefix for best score
-    
+
     // GameManager localized strings
     public LocalizedString Txt_Tilt; // Tilt text (TxtGame[0])
     public LocalizedString Txt_TiltWarning; // Tilt warning text (TxtGame[1])
-    public LocalizedString Txt_BonusHits; // Bonus hits part (TxtGame[5])
-    public LocalizedString Txt_BonusBase; // Bonus base part (TxtGame[6])
-    public LocalizedString Txt_BonusMultiplier; // Bonus multiplier part (TxtGame[7])
     public LocalizedString Txt_TotalScore; // Total score text (TxtGame[8])
-    public LocalizedString Txt_NextBall; // Next ball text (TxtGame[9])
-    public LocalizedString Txt_BallSaver; // Ball saver text (TxtGame[10])
-    public LocalizedString Txt_ExtraBall; // Extra ball text (TxtGame[11])
-    public LocalizedString Txt_NewBall; // New ball text (TxtGame[12])
-    public LocalizedString Txt_GameStart; // Game start text (TxtGame[14])
+
+    public string BestScoreName = "BestScore"; // Score is saved with this name
 
     #endregion
 
@@ -95,6 +98,7 @@ public class UiManager : MonoBehaviour
     private void Start()
     {
         InitializeUI();
+        InitializeScreenStates();
     }
 
     private void Update()
@@ -144,26 +148,31 @@ public class UiManager : MonoBehaviour
 
     public void ShowGameOverUI()
     {
-        if (UI_GameOverScreen)
-        {
-            if (!UI_GameOverScreen.activeInHierarchy) UI_GameOverScreen.SetActive(true);
+        UI_GameOverScreen?.SetActive(true);
 
-            var tmpLeadSaveName_ButtonNext = GameObject.Find("Button_Next_Lead");
-            if (tmpLeadSaveName_ButtonNext && eventSystem != null)
-                eventSystem.SetSelectedGameObject(tmpLeadSaveName_ButtonNext); // Select the button Next letter on Leaderboard save name Panel.
-            else if (btn_RestartYes && eventSystem != null)
-                eventSystem.SetSelectedGameObject(btn_RestartYes); // Select the button No.
+        // Hide other screens
+        UI_StartScreen?.SetActive(false);
+        UI_PauseScreen?.SetActive(false);
 
-            if (Mobile_PauseAndCam) Mobile_PauseAndCam.SetActive(false);
-            if (Mobile_Cam_Txt) Mobile_Cam_Txt.SetActive(false);
-        }
+        var tmpLeadSaveName_ButtonNext = GameObject.Find("Button_Next_Lead");
+        if (tmpLeadSaveName_ButtonNext && eventSystem != null)
+            eventSystem.SetSelectedGameObject(tmpLeadSaveName_ButtonNext); // Select the button Next letter on Leaderboard save name Panel.
+        else if (btn_RestartYes && eventSystem != null)
+            eventSystem.SetSelectedGameObject(btn_RestartYes); // Select the button No.
+
+        Mobile_PauseAndCam?.SetActive(false);
+        Mobile_Cam_Txt?.SetActive(false);
     }
 
     public void ShowGameStartUI()
     {
-        if (UI_GameOverScreen)
-            if (eventSystem != null)
-                eventSystem.SetSelectedGameObject(null); // Change selected button
+        // Hide StartScreen when game starts
+        UI_StartScreen?.SetActive(false);
+        UI_GameOverScreen?.SetActive(false);
+        UI_PauseScreen?.SetActive(false);
+
+        if (eventSystem != null)
+            eventSystem.SetSelectedGameObject(null); // Change selected button
     }
 
     public void ShowQuitNoUI()
@@ -175,33 +184,36 @@ public class UiManager : MonoBehaviour
 
     public void ShowQuitYesUI()
     {
-        if (UI_GameOverScreen)
-        {
-            if (UI_StartScreen) UI_StartScreen.SetActive(true);
-            if (btn_InsertCoin && eventSystem != null)
-                eventSystem.SetSelectedGameObject(btn_InsertCoin); // Change selected button
-        }
+        // Show StartScreen and hide others when quitting
+        UI_StartScreen?.SetActive(true);
+        UI_GameOverScreen?.SetActive(false);
+        UI_PauseScreen?.SetActive(false);
+
+        if (btn_InsertCoin && eventSystem != null)
+            eventSystem.SetSelectedGameObject(btn_InsertCoin); // Change selected button
     }
 
     public void TogglePauseUI(bool isPaused, bool isGameActive)
     {
-        if (UI_GameOverScreen && isGameActive)
+        if (isGameActive)
         {
-            if (Mobile_PauseAndCam && !Mobile_PauseAndCam.activeSelf)
+            if (isPaused)
             {
-                if (Mobile_PauseAndCam) Mobile_PauseAndCam.SetActive(true);
-                if (Mobile_Cam_Txt) Mobile_Cam_Txt.SetActive(true);
-                if (UI_GameOverScreen) UI_GameOverScreen.SetActive(false);
-            }
-            else
-            {
-                if (Mobile_PauseAndCam) Mobile_PauseAndCam.SetActive(false);
-                if (Mobile_Cam_Txt) Mobile_Cam_Txt.SetActive(false);
-                if (UI_GameOverScreen) UI_GameOverScreen.SetActive(true);
+                // Show pause screen
+                UI_PauseScreen?.SetActive(true);
+                Mobile_PauseAndCam?.SetActive(false);
+                Mobile_Cam_Txt?.SetActive(false);
 
                 // Select resume button when pausing
                 if (btn_ResumeGame && eventSystem != null)
                     eventSystem.SetSelectedGameObject(btn_ResumeGame);
+            }
+            else
+            {
+                // Hide pause screen
+                UI_PauseScreen?.SetActive(false);
+                Mobile_PauseAndCam?.SetActive(true);
+                Mobile_Cam_Txt?.SetActive(true);
             }
         }
     }
@@ -255,6 +267,14 @@ public class UiManager : MonoBehaviour
             if (Gui_Txt_Score) Gui_Txt_Score.text = Txt_ScorePrefix.GetLocalizedString()        + playerScore; // display player score
             if (Gui_Txt_Info_Ball) Gui_Txt_Info_Ball.text = Txt_BallPrefix.GetLocalizedString() + (ballNum + 1); // display the ball number
         }
+    }
+
+    private void InitializeScreenStates()
+    {
+        // On game start, show StartScreen and hide others
+        UI_StartScreen?.SetActive(true);
+        UI_GameOverScreen?.SetActive(false);
+        UI_PauseScreen?.SetActive(false);
     }
 
     private void InitializeUI()

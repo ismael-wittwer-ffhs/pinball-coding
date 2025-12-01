@@ -553,7 +553,7 @@
                     "name": "PauseGame",
                     "type": "Button",
                     "id": "f4a5b6c7-d8e9-0123-def0-234567890123",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -645,6 +645,28 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "PauseGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "747754e5-29c6-425b-af8e-d99d61aad9d7",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2d7a115a-42da-4da9-b979-8b43a692dd42",
+                    "path": "<Keyboard>/pause",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "PauseGame",
                     "isComposite": false,
                     "isPartOfComposite": false

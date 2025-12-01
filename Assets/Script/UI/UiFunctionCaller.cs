@@ -10,9 +10,6 @@ public class UiFunctionCaller : MonoBehaviour
 
     public Camera_Movement camera_Movement;
     public GameObject BlackScreen;
-    public GameObject obj_PauseMobile;
-    public GameObject obj_UI;
-    public GameObject obj_UI2;
 
     #endregion
 
@@ -31,52 +28,22 @@ public class UiFunctionCaller : MonoBehaviour
         manager_Game = GameManager.Instance;
 
 
-        tmp = GameObject.Find("G_UI_Game_Interface_Mobile");
-        if (tmp != null) obj_UI = tmp;
-
-        tmp = GameObject.Find("G_UI_Game_Interface_Mobile_Part2");
-        if (tmp != null) obj_UI2 = tmp;
-
-
         tmp = GameObject.Find("Main Camera");
 
 
         if (tmp != null) camera_Movement = tmp.GetComponent<Camera_Movement>();
-
-        tmp = GameObject.Find("PauseAndView");
-
-
-        if (tmp != null)
-        {
-            var children = tmp.GetComponentsInChildren<Transform>(true);
-            foreach (var child in children)
-            {
-                if (child.name == "btn_Mobile_Pause")
-                    obj_PauseMobile = child.gameObject;
-            }
-        }
     }
 
     #endregion
 
     #region --- Methods ---
 
-    public void ActivateButtonPausemobile()
-    {
-        if (obj_PauseMobile) obj_PauseMobile.SetActive(true);
-    }
-
-    public void ActivateCameraViewButton()
-    {
-    }
-
-
     public void DeactivateEventSystem()
     {
         // Deactivate UIs when you don't need them
-        if (obj_PauseMobile) obj_PauseMobile.SetActive(true);
-        if (obj_UI) obj_UI.SetActive(false);
-        if (obj_UI2) obj_UI2.SetActive(false);
+        //if (obj_PauseMobile) obj_PauseMobile.SetActive(true);
+        //if (obj_UI) obj_UI.SetActive(false);
+        //if (obj_UI2) obj_UI2.SetActive(false);
     }
 
     public void Debug_Ball_Saver_Off() { manager_Game.F_Mode_Ball_Saver_Off(); }
