@@ -56,6 +56,7 @@ namespace TriggerSystem
                 }
         }
 
+
         private void ApplySlowMotion()
         {
             Time.timeScale = SlowMotionTimeScale;

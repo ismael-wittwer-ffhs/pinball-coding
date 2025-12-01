@@ -1,4 +1,4 @@
-// AccelerationTriggerAction.cs : Description : Accelerates the ball in its velocity direction
+// AccelerationTriggerAction.cs : Description : Accelerates the ball in the collider's forward direction
 
 using UnityEngine;
 
@@ -15,14 +15,10 @@ namespace TriggerSystem
         public bool accelerateOnStay = false;
         
         [Header("Force Settings")]
-        [Tooltip("The force applied to accelerate the ball in its velocity direction")]
+        [Tooltip("The force applied to accelerate the ball in the collider's forward direction")]
         public float accelerationForce = 10f;
         [Tooltip("The force mode used to apply the acceleration")]
         public ForceMode forceMode = ForceMode.VelocityChange;
-        
-        [Header("Minimum Velocity")]
-        [Tooltip("Minimum velocity magnitude required for acceleration to be applied. Prevents accelerating stationary balls.")]
-        public float minimumVelocity = 0.1f;
 
         public override void Execute(TriggerContext context)
         {
@@ -57,17 +53,11 @@ namespace TriggerSystem
             Rigidbody rb = ballObject.GetComponent<Rigidbody>();
             if (rb == null || rb.isKinematic) return;
 
-            Vector3 velocity = rb.linearVelocity;
-            float velocityMagnitude = velocity.magnitude;
+            // Get the forward direction of the collider (this transform)
+            Vector3 forwardDirection = transform.forward;
 
-            // Only accelerate if the ball has a minimum velocity
-            if (velocityMagnitude < minimumVelocity) return;
-
-            // Get the direction of the velocity
-            Vector3 velocityDirection = velocity.normalized;
-
-            // Apply acceleration in the velocity direction
-            rb.AddForce(velocityDirection * accelerationForce, forceMode);
+            // Apply acceleration in the collider's forward direction
+            rb.AddForce(forwardDirection * accelerationForce, forceMode);
         }
     }
 }

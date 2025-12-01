@@ -1,8 +1,8 @@
-﻿// LCD_Screen : Description : LCD : Choose the LCD Screen position relative to object cam. Usefull when screen resolution change.
+﻿// LCD_Screen : Description : LCD : Choose the LCD Screen position relative to object cam. Useful when screen resolution change.
 
 using UnityEngine;
 
-public class LCD_Screen : MonoBehaviour
+public class LcdScreen : MonoBehaviour
 {
     #region --- Exposed Fields ---
 

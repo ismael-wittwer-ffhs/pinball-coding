@@ -1,4 +1,4 @@
-﻿// ManagerGame : Description 
+// ManagerGame : Description 
 
 using System;
 using System.Collections;
