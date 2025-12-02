@@ -12687,7 +12687,6 @@ MonoBehaviour:
     ManagerLedAnimation: []
   MultiBall: {fileID: 0}
   SpringLauncher: []
-  BestScoreName: BestScore
   Ball: {fileID: 455632, guid: 6f4336652821d4b52b0f7653aafae734, type: 3}
 --- !u!114 &152512167
 MonoBehaviour:
@@ -30508,6 +30507,56 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Game_Interface
       objectReference: {fileID: 0}
+    - target: {fileID: 114066884606715368, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206015224351234, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206015224351234, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114227200568003282, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114680716537995840, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734812462025822, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804605367898490, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804605367898490, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809760139405894, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114809760139405894, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 223154321697424132, guid: 5923ffd598693497abfdf9d2402debed,
         type: 3}
       propertyPath: m_Camera
@@ -30613,7 +30662,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114169803620964662, guid: 5923ffd598693497abfdf9d2402debed, type: 3}
+    - {fileID: 114434717053390460, guid: 5923ffd598693497abfdf9d2402debed, type: 3}
+    - {fileID: 114794007661862450, guid: 5923ffd598693497abfdf9d2402debed, type: 3}
+    - {fileID: 114607466861679380, guid: 5923ffd598693497abfdf9d2402debed, type: 3}
+    - {fileID: 114558187135572314, guid: 5923ffd598693497abfdf9d2402debed, type: 3}
+    - {fileID: 114010785057665716, guid: 5923ffd598693497abfdf9d2402debed, type: 3}
+    - {fileID: 114487156301588416, guid: 5923ffd598693497abfdf9d2402debed, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -139135,8 +139191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UiManager
-  Mobile_Cam_Txt: {fileID: 0}
-  Mobile_PauseAndCam: {fileID: 0}
+  BlackScreen: {fileID: 0}
   UI_GameOverScreen: {fileID: 249617748}
   UI_PauseScreen: {fileID: 1700677024}
   UI_StartScreen: {fileID: 672483867}
