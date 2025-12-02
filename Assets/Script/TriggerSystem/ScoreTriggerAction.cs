@@ -6,28 +6,48 @@ namespace TriggerSystem
 {
     public class ScoreTriggerAction : TriggerAction
     {
-        [Header("Score Settings")]
-        [Tooltip("Award score when the ball enters the trigger")]
-        [SerializeField] private bool scoreOnEnter = true;
-        [Tooltip("Award score when the ball exits the trigger")]
-        [SerializeField] private bool scoreOnExit = false;
-        [Tooltip("Award score continuously while the ball stays in the trigger")]
-        [SerializeField] private bool scoreOnStay = false;
-        
-        [Header("Points")]
-        [Tooltip("The number of points to award")]
-        [SerializeField] private int points = 1000;
-        
+        #region --- Private Fields ---
+
         [Header("Bonus Counter")]
         [Tooltip("Increment the bonus counter when awarding score")]
-        [SerializeField] private bool incrementBonusCounter = true;
+        [SerializeField]
+        private bool incrementBonusCounter = true;
+
+        [Header("Score Settings")]
+        [Tooltip("Award score when the ball enters the trigger")]
+        [SerializeField]
+        private bool scoreOnEnter = true;
+
+        [Tooltip("Award score when the ball exits the trigger")]
+        [SerializeField]
+        private bool scoreOnExit;
+
+        [Tooltip("Award score continuously while the ball stays in the trigger")]
+        [SerializeField]
+        private bool scoreOnStay;
 
         private GameManager gameManager;
 
-        private void Awake()
+        [Header("Points")]
+        [Tooltip("The number of points to award")]
+        [SerializeField]
+        private int points = 1000;
+
+        private UiManager uiManager;
+
+        #endregion
+
+        #region --- Unity Methods ---
+
+        private void Start()
         {
             gameManager = GameManager.Instance;
+            uiManager = UiManager.Instance;
         }
+
+        #endregion
+
+        #region --- Methods ---
 
         public override void Execute(TriggerContext context)
         {
@@ -35,7 +55,7 @@ namespace TriggerSystem
 
             if (context is CollisionContext collisionContext)
             {
-                bool shouldAwardScore = false;
+                var shouldAwardScore = false;
 
                 switch (collisionContext.Type)
                 {
@@ -52,20 +72,34 @@ namespace TriggerSystem
 
                 if (shouldAwardScore)
                 {
-                    AwardScore();
+                    var position = GetScoreTextPosition(collisionContext);
+                    AwardScore(position);
                 }
             }
         }
 
-        private void AwardScore()
+        private void AwardScore(Vector3 position)
         {
-            if (incrementBonusCounter)
-            {
-                gameManager.F_Mode_BONUS_Counter();
-            }
-            
+            if (incrementBonusCounter) gameManager.F_Mode_BONUS_Counter();
+
             gameManager.Add_Score(points);
+
+            // Show score text popup
+            if (uiManager != null) uiManager.ShowScoreText(points, position);
         }
+
+        private Vector3 GetScoreTextPosition(CollisionContext context)
+        {
+            // Try to get position from collision contact point if available
+            if (context.CollisionData != null && context.CollisionData.contactCount > 0) return context.CollisionData.contacts[0].point;
+
+            // Fall back to triggering object position
+            if (context.TriggeringObject != null) return context.TriggeringObject.transform.position;
+
+            // Last resort: use this transform's position
+            return transform.position;
+        }
+
+        #endregion
     }
 }
-

@@ -1021,6 +1021,11 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 905617519}
+    - target: {fileID: 2403088895979277955, guid: fa22e71a27cd54e45b7a9cd700af12ee,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -103370,6 +103375,29 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1416831259}
   m_Mesh: {fileID: 4300000, guid: a3c94662c32eb8842b700e884e10c858, type: 3}
+--- !u!1 &1420493664 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8301761529994340586, guid: d3c9c0cbbdce58a4fa3deacd1f5633be,
+    type: 3}
+  m_PrefabInstance: {fileID: 4583625815922719419}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1420493673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420493664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54be701005b4a2c489ab71045045dfe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerSystem.ScoreTriggerAction
+  incrementBonusCounter: 1
+  scoreOnEnter: 1
+  scoreOnExit: 0
+  scoreOnStay: 0
+  points: 1000
 --- !u!1 &1421208250
 GameObject:
   m_ObjectHideFlags: 0
@@ -139266,6 +139294,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UiManager
   BlackScreen: {fileID: 0}
+  scoreTextPrefab: {fileID: 2464312213997427508, guid: 522baa8ec3780aa43971521c5d051324,
+    type: 3}
   UI_GameOverScreen: {fileID: 249617748}
   UI_PauseScreen: {fileID: 1700677024}
   UI_StartScreen: {fileID: 672483867}
@@ -139422,7 +139452,6 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  BestScoreName: BestScore
   references:
     version: 2
     RefIds: []
@@ -145434,7 +145463,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8301761529994340586, guid: d3c9c0cbbdce58a4fa3deacd1f5633be,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1420493673}
   m_SourcePrefab: {fileID: 100100000, guid: d3c9c0cbbdce58a4fa3deacd1f5633be, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
