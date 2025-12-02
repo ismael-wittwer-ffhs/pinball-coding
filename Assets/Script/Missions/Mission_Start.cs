@@ -209,8 +209,8 @@ public class Mission_Start : MonoBehaviour
     //////// Mission_Intialisation : START ////////
     private bool init_Ended;
     private bool Rollover_StopMoving = true;
-    private Bumper_js[] Bumper_Grp_1; // Used to Access Bumper_js component 
-    private Bumper_js[] Bumper_Grp_2; // Used to Access Bumper_js component 
+    private Bumper[] Bumper_Grp_1; // Used to Access Bumper_js component 
+    private Bumper[] Bumper_Grp_2; // Used to Access Bumper_js component 
     private ChangeSpriteRenderer led_Mission_InProgress_; // This Led is not connected with the animation system of this mission. But you could add the led to a Group_Leds Prefab (Project->Prefabs->Grp_Leds->Group_Leds) 
     private ChangeSpriteRenderer Led_Mission_Renderer;
     private ChangeSpriteRenderer led_Part1_InProgress_; // This Led is not connected with the animation system of this mission. But you could add the led to a Group_Leds Prefab (Project->Prefabs->Grp_Leds->Group_Leds) 
@@ -511,15 +511,15 @@ public class Mission_Start : MonoBehaviour
     public void F_First_Bumper_Grp1()
     {
         // --> Init Bumper Grp1
-        Bumper_Grp_1 = new Bumper_js[obj_Grp_1.Length];
-        for (var i = 0; i < obj_Grp_1.Length; i++) Bumper_Grp_1[i] = obj_Grp_1[i].GetComponent<Bumper_js>(); // Connect the Mission to obj_Grp_1[i].GetComponent<Bumper_js>();	 component
+        Bumper_Grp_1 = new Bumper[obj_Grp_1.Length];
+        for (var i = 0; i < obj_Grp_1.Length; i++) Bumper_Grp_1[i] = obj_Grp_1[i].GetComponent<Bumper>(); // Connect the Mission to obj_Grp_1[i].GetComponent<Bumper_js>();	 component
     }
 
     public void F_First_Bumper_Grp2()
     {
         // --> Init Bumper Grp2
-        Bumper_Grp_2 = new Bumper_js[obj_Grp_2.Length];
-        for (var i = 0; i < obj_Grp_2.Length; i++) Bumper_Grp_2[i] = obj_Grp_2[i].GetComponent<Bumper_js>(); // Connect the Mission to obj_Grp_1[i].GetComponent<Bumper_js>();	 component
+        Bumper_Grp_2 = new Bumper[obj_Grp_2.Length];
+        for (var i = 0; i < obj_Grp_2.Length; i++) Bumper_Grp_2[i] = obj_Grp_2[i].GetComponent<Bumper>(); // Connect the Mission to obj_Grp_1[i].GetComponent<Bumper_js>();	 component
     }
 
     public void F_First_Hole_Grp1()
@@ -1412,8 +1412,8 @@ public class Mission_Start : MonoBehaviour
         if (Step < HowManyTime_Gpr1)
             for (var i = 0; i < obj_Grp_1.Length; i++)
             {
-                if (Rollover_Grp_1.Length == 1                                                       && obj_Grp_1_Leds.Length          > 0 // -> Case 1
-                                                                                                     && Rollover_No_Order_Grp_1 && Rollover_Grp_1[i].index_info() == num)
+                if (Rollover_Grp_1.Length == 1                            && obj_Grp_1_Leds.Length          > 0 // -> Case 1
+                                                                          && Rollover_No_Order_Grp_1 && Rollover_Grp_1[i].index_info() == num)
                 {
                     if (arr_led_State.Count > F_Led_Gpr1_num(Step % obj_Grp_1.Length))
                     {
@@ -1426,8 +1426,8 @@ public class Mission_Start : MonoBehaviour
 
                     if (SpecificText) Txt_Rollover_type_3(); // Write a text on LCD Screen
                     else if (Mission_Txt.Length > 4 && Mission_Txt[4] != "")
-                        gameManager.Add_Info_To_Array(Mission_Txt_name                                   + "\n"
-                                                                                                         + Mission_Txt[4] + (HowManyTime_Gpr1 - Step), 3);
+                        gameManager.Add_Info_To_Array(Mission_Txt_name                  + "\n"
+                                                                                        + Mission_Txt[4] + (HowManyTime_Gpr1 - Step), 3);
 
                     if (Step < HowManyTime_Gpr1) Play_LedAnim_ObjAnim_LCDAnim_Part1(); // Play led animation, toy animation or lcd animation
 
@@ -1470,8 +1470,8 @@ public class Mission_Start : MonoBehaviour
 
                     if (SpecificText) Txt_Rollover_type_3(); // Write a text on LCD Screen
                     else if (Mission_Txt.Length > 4 && Mission_Txt[4] != "")
-                        gameManager.Add_Info_To_Array(Mission_Txt_name                                   + "\n"
-                                                                                                         + Mission_Txt[4] + (HowManyTime_Gpr1 - Step), 3);
+                        gameManager.Add_Info_To_Array(Mission_Txt_name                  + "\n"
+                                                                                        + Mission_Txt[4] + (HowManyTime_Gpr1 - Step), 3);
                     if (Step < HowManyTime_Gpr1)
                     {
                         arr_obj_Grp_1_State[Step % obj_Grp_1.Length] = 0;
@@ -1505,8 +1505,8 @@ public class Mission_Start : MonoBehaviour
                     Step++; // Next step	
                     if (SpecificText) Txt_Rollover_type_3(); // Write a text on LCD Screen
                     else if (Mission_Txt.Length > 4 && Mission_Txt[4] != "")
-                        gameManager.Add_Info_To_Array(Mission_Txt_name                                   + "\n"
-                                                                                                         + Mission_Txt[4] + (HowManyTime_Gpr1 - Step), 3);
+                        gameManager.Add_Info_To_Array(Mission_Txt_name                  + "\n"
+                                                                                        + Mission_Txt[4] + (HowManyTime_Gpr1 - Step), 3);
 
                     if (Step < HowManyTime_Gpr1) Play_LedAnim_ObjAnim_LCDAnim_Part1(); // Play led animation, toy animation or lcd animation
 
@@ -1541,8 +1541,8 @@ public class Mission_Start : MonoBehaviour
 
                     if (Mission_Txt.Length > 4 && Mission_Txt[4] != "")
                         // Write a text on LCD Screen
-                        gameManager.Add_Info_To_Array(Mission_Txt_name                                   + "\n"
-                                                                                                         + Mission_Txt[4] + (HowManyTime_Gpr1 - Step), 3);
+                        gameManager.Add_Info_To_Array(Mission_Txt_name                  + "\n"
+                                                                                        + Mission_Txt[4] + (HowManyTime_Gpr1 - Step), 3);
 
                     if (Step < HowManyTime_Gpr1) Play_LedAnim_ObjAnim_LCDAnim_Part1(); // Play led animation, toy animation or lcd animation
 
@@ -2082,8 +2082,8 @@ public class Mission_Start : MonoBehaviour
                         Step++; // Next step
 
                         if (Mission_Txt.Length > 5 && Mission_Txt[5] != "") // Write a text on LCD Screen
-                            gameManager.Add_Info_To_Array(Mission_Txt_name                                   + "\n"
-                                                                                                             + Mission_Txt[5] + (HowManyTime_Gpr1 + HowManyTime_Gpr2 + 1 - Step), 3);
+                            gameManager.Add_Info_To_Array(Mission_Txt_name                  + "\n"
+                                                                                            + Mission_Txt[5] + (HowManyTime_Gpr1 + HowManyTime_Gpr2 + 1 - Step), 3);
 
                         if (Step < HowManyTime_Gpr1 + HowManyTime_Gpr2)
                             Play_LedAnim_ObjAnim_LCDAnim_Part3(); // Play led animation, toy animation or lcd animation
@@ -2098,8 +2098,8 @@ public class Mission_Start : MonoBehaviour
                         Step++; // Next step
 
                         if (Mission_Txt.Length > 5 && Mission_Txt[5] != "") // Write a text on LCD Screen
-                            gameManager.Add_Info_To_Array(Mission_Txt_name                                   + "\n"
-                                                                                                             + Mission_Txt[5] + (HowManyTime_Gpr1 + HowManyTime_Gpr2 + 1 - Step), 3);
+                            gameManager.Add_Info_To_Array(Mission_Txt_name                  + "\n"
+                                                                                            + Mission_Txt[5] + (HowManyTime_Gpr1 + HowManyTime_Gpr2 + 1 - Step), 3);
 
                         if (Step < HowManyTime_Gpr1 + HowManyTime_Gpr2)
                             Play_LedAnim_ObjAnim_LCDAnim_Part3(); // Play led animation, toy animation or lcd animation
@@ -2121,8 +2121,8 @@ public class Mission_Start : MonoBehaviour
                         Step++; // Next step
 
                         if (Mission_Txt.Length > 5 && Mission_Txt[5] != "") // Write a text on LCD Screen
-                            gameManager.Add_Info_To_Array(Mission_Txt_name                                   + "\n"
-                                                                                                             + Mission_Txt[5] + (HowManyTime_Gpr1 + HowManyTime_Gpr2 + 1 - Step), 3);
+                            gameManager.Add_Info_To_Array(Mission_Txt_name                  + "\n"
+                                                                                            + Mission_Txt[5] + (HowManyTime_Gpr1 + HowManyTime_Gpr2 + 1 - Step), 3);
                         // Play led animation, toy animation or lcd animation
 
                         if (obj_Grp_2_Leds.Length > (Step - 1 - HowManyTime_Gpr1) % obj_Grp_2.Length)
@@ -2165,8 +2165,8 @@ public class Mission_Start : MonoBehaviour
 
                     if (Mission_Txt.Length > 5 && Mission_Txt[5] != "")
                         // Write a text on LCD Screen
-                        gameManager.Add_Info_To_Array(Mission_Txt_name                                   + "\n"
-                                                                                                         + Mission_Txt[5] + (HowManyTime_Gpr1 + HowManyTime_Gpr2 + 1 - Step), 3);
+                        gameManager.Add_Info_To_Array(Mission_Txt_name                  + "\n"
+                                                                                        + Mission_Txt[5] + (HowManyTime_Gpr1 + HowManyTime_Gpr2 + 1 - Step), 3);
 
                     if (Step < HowManyTime_Gpr1 + HowManyTime_Gpr2)
                         Play_LedAnim_ObjAnim_LCDAnim_Part3(); // Play led animation, toy animation or lcd animation

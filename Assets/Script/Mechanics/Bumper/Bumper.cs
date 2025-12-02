@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-public class Bumper_js : MonoBehaviour
+public class Bumper : MonoBehaviour
 {
     #region --- Exposed Fields ---
 
