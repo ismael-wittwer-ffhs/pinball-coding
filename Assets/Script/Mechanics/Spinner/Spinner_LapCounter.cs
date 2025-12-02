@@ -68,7 +68,12 @@ public class Spinner_LapCounter : MonoBehaviour
         for (var j = 0; j < Parent_Manager.Length; j++) Parent_Manager[j].SendMessage(functionToCall, index); // Call Parents Mission script
         if (Sfx_Rotation) sound_.PlayOneShot(Sfx_Rotation); // Play soiund if needed
         if (gameManager) gameManager.F_Mode_BONUS_Counter(); // Send Message to the gameManager(ManagerGame.js) Add 1 to BONUS_Global_Hit_Counter
-        if (gameManager) gameManager.Add_Score(Points); // Send Message to the gameManager(ManagerGame.js) Add Points to Add_Score
+        if (gameManager)
+        {
+            // Use ball position or transform position for trigger-based mechanics
+            var position = other.transform != null ? other.transform.position : transform.position;
+            gameManager.Add_Score(Points, position); // Send Message to the gameManager(ManagerGame.js) Add Points to Add_Score
+        }
     }
 
     #endregion

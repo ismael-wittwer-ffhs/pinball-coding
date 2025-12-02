@@ -85,7 +85,12 @@ public class Slingshot : MonoBehaviour
             for (var j = 0; j < Parent_Manager.Length; j++) Parent_Manager[j].SendMessage(functionToCall, index); // Call Parents Mission script
 
             if (gameManager) gameManager.F_Mode_BONUS_Counter(); // add one to the BONUS_Counter
-            if (gameManager) gameManager.Add_Score(Points); // add points
+            if (gameManager)
+            {
+                // Get position from collision contact point
+                var position = collision.contactCount > 0 ? collision.contacts[0].point : transform.position;
+                gameManager.Add_Score(Points, position); // add points
+            }
 
             if (obj_Led) Led_Renderer.Led_On_With_Timer(.2f); // blinking
 

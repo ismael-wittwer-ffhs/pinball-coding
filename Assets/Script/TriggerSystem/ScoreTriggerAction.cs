@@ -33,8 +33,6 @@ namespace TriggerSystem
         [SerializeField]
         private int points = 1000;
 
-        private UiManager uiManager;
-
         #endregion
 
         #region --- Unity Methods ---
@@ -42,7 +40,6 @@ namespace TriggerSystem
         private void Start()
         {
             gameManager = GameManager.Instance;
-            uiManager = UiManager.Instance;
         }
 
         #endregion
@@ -82,10 +79,8 @@ namespace TriggerSystem
         {
             if (incrementBonusCounter) gameManager.F_Mode_BONUS_Counter();
 
-            gameManager.Add_Score(points);
-
-            // Show score text popup
-            if (uiManager != null) uiManager.ShowScoreText(points, position);
+            // Add_Score with position will automatically show the score text popup
+            gameManager.Add_Score(points, position);
         }
 
         private Vector3 GetScoreTextPosition(CollisionContext context)

@@ -48,7 +48,12 @@ public class switchMech : MonoBehaviour
             if (!sound_.isPlaying && Sfx_Hit) sound_.PlayOneShot(Sfx_Hit); // Play a sound
 
             if (gameManager) gameManager.F_Mode_BONUS_Counter(); // Add Points to bonus counter
-            if (gameManager) gameManager.Add_Score(Points); // Add point to score
+            if (gameManager)
+            {
+                // Get position from collision contact point
+                var position = collision.contactCount > 0 ? collision.contacts[0].point : transform.position;
+                gameManager.Add_Score(Points, position); // Add point to score
+            }
         }
     }
 

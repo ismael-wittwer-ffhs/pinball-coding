@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Localization;
@@ -21,10 +20,6 @@ public class UiManager : MonoBehaviour
     #region --- Exposed Fields ---
 
     public GameObject BlackScreen; // Black screen overlay for scene transitions
-
-    [Header("Score Popup")]
-    [Tooltip("Prefab with TextMeshPro text object to instantiate when score is awarded")]
-    public GameObject scoreTextPrefab; // Prefab holding a TextMeshPro text object
 
     [FormerlySerializedAs("Game_UI")]
     [Header("UI GameObjects")]
@@ -214,58 +209,6 @@ public class UiManager : MonoBehaviour
 
         if (btn_InsertCoin && eventSystem != null)
             eventSystem.SetSelectedGameObject(btn_InsertCoin); // Change selected button
-    }
-
-    public void ShowScoreText(int score, Vector3 worldPosition)
-    {
-        // Instantiate score text prefab at world position
-        if (scoreTextPrefab == null) return;
-
-        var scoreTextInstance = Instantiate(scoreTextPrefab, worldPosition, Quaternion.identity);
-
-        // Try to find TextMeshPro component (world space) in the prefab or its children
-        var tmpText = scoreTextInstance.GetComponent<TextMeshPro>();
-        if (tmpText == null)
-            tmpText = scoreTextInstance.GetComponentInChildren<TextMeshPro>();
-
-        // If not found, try TextMeshProUGUI (UI space) - needs to be on Canvas
-        if (tmpText == null)
-        {
-            var tmpTextUI = scoreTextInstance.GetComponent<TextMeshProUGUI>();
-            if (tmpTextUI == null)
-                tmpTextUI = scoreTextInstance.GetComponentInChildren<TextMeshProUGUI>();
-
-            if (tmpTextUI != null)
-            {
-                // If it's a UI text, find or create a Canvas parent
-                var canvas = FindObjectOfType<Canvas>();
-                if (canvas != null)
-                {
-                    scoreTextInstance.transform.SetParent(canvas.transform, false);
-                    // Convert world position to screen position for UI
-                    var mainCamera = Camera.main;
-                    if (mainCamera != null)
-                    {
-                        var screenPos = mainCamera.WorldToScreenPoint(worldPosition);
-                        var rectTransform = scoreTextInstance.GetComponent<RectTransform>();
-                        if (rectTransform != null)
-                        {
-                            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                                canvas.GetComponent<RectTransform>(),
-                                screenPos,
-                                canvas.worldCamera,
-                                out var localPoint);
-                            rectTransform.localPosition = localPoint;
-                        }
-                    }
-                }
-
-                tmpTextUI.text = score.ToString();
-                return;
-            }
-        }
-
-        if (tmpText != null) tmpText.text = score.ToString();
     }
 
     public void TogglePauseUI(bool isPaused, bool isGameActive)

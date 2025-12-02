@@ -292,7 +292,9 @@ public class Hole : MonoBehaviour
             if (gameManager != null)
             {
                 gameManager.F_Mode_BONUS_Counter(); // Add +1 to the Bonus counter. Manage by the ManagerGame game object on the hierarchy
-                gameManager.Add_Score(Points); // Add points. Manage by the ManagerGame game object on the hierarchy
+                // Get position from collision contact point
+                var position = collision.contactCount > 0 ? collision.contacts[0].point : transform.position;
+                gameManager.Add_Score(Points, position); // Add points. Manage by the ManagerGame game object on the hierarchy
             }
 
             if (Toy_Enter) toyEnter.PlayAnimationNumber(AnimNunEnter); // Play Toy if connected

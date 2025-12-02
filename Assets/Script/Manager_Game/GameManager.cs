@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -145,6 +146,9 @@ public class GameManager : MonoBehaviour
     [FormerlySerializedAs("spring_Launcher")]
     public SpringLauncher[] SpringLauncher;
 
+    [Header("Score Popup")]
+    [Tooltip("Prefab with TextMeshPro text object to instantiate when score is awarded")]
+    public GameObject scoreTextPrefab; // Prefab holding a TextMeshPro text object
 
     [FormerlySerializedAs("ball")]
     [Header("Ball")]
@@ -289,6 +293,16 @@ public class GameManager : MonoBehaviour
 
     public void Add_Score(int addScore)
     {
+        Add_Score(addScore, Vector3.zero, false);
+    }
+
+    public void Add_Score(int addScore, Vector3 worldPosition)
+    {
+        Add_Score(addScore, worldPosition, true);
+    }
+
+    private void Add_Score(int addScore, Vector3 worldPosition, bool showPopup)
+    {
         _playerScore += addScore;
 
         if (_playerScore > 999999999)
@@ -299,6 +313,64 @@ public class GameManager : MonoBehaviour
             _uiManager.UpdateScore(_playerScore, _ballNum, _lcdWaitStartGame, _tmpLife);
             _uiManager.SetLCDWaitStartGame(_lcdWaitStartGame);
         }
+
+        // Show score text popup if position is provided and prefab is set
+        if (showPopup && worldPosition != Vector3.zero && scoreTextPrefab != null)
+        {
+            ShowScoreText(addScore, worldPosition);
+        }
+    }
+
+    private void ShowScoreText(int score, Vector3 worldPosition)
+    {
+        // Instantiate score text prefab at world position
+        if (scoreTextPrefab == null) return;
+
+        var scoreTextInstance = Instantiate(scoreTextPrefab, worldPosition, Quaternion.identity);
+
+        // Try to find TextMeshPro component (world space) in the prefab or its children
+        var tmpText = scoreTextInstance.GetComponent<TextMeshPro>();
+        if (tmpText == null)
+            tmpText = scoreTextInstance.GetComponentInChildren<TextMeshPro>();
+
+        // If not found, try TextMeshProUGUI (UI space) - needs to be on Canvas
+        if (tmpText == null)
+        {
+            var tmpTextUI = scoreTextInstance.GetComponent<TextMeshProUGUI>();
+            if (tmpTextUI == null)
+                tmpTextUI = scoreTextInstance.GetComponentInChildren<TextMeshProUGUI>();
+
+            if (tmpTextUI != null)
+            {
+                // If it's a UI text, find or create a Canvas parent
+                var canvas = FindObjectOfType<Canvas>();
+                if (canvas != null)
+                {
+                    scoreTextInstance.transform.SetParent(canvas.transform, false);
+                    // Convert world position to screen position for UI
+                    var mainCamera = Camera.main;
+                    if (mainCamera != null)
+                    {
+                        var screenPos = mainCamera.WorldToScreenPoint(worldPosition);
+                        var rectTransform = scoreTextInstance.GetComponent<RectTransform>();
+                        if (rectTransform != null)
+                        {
+                            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                                canvas.GetComponent<RectTransform>(),
+                                screenPos,
+                                canvas.worldCamera,
+                                out var localPoint);
+                            rectTransform.localPosition = localPoint;
+                        }
+                    }
+                }
+
+                tmpTextUI.text = score.ToString();
+                return;
+            }
+        }
+
+        if (tmpText != null) tmpText.text = score.ToString();
     }
 
     public bool Ball_Saver_State()

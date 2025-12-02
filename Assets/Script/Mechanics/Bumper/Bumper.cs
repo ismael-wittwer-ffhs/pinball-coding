@@ -90,7 +90,9 @@ public class Bumper : MonoBehaviour
         if (gameManager != null)
         {
             gameManager.F_Mode_BONUS_Counter(); // Send Message to the gameManager(ManagerGame.js) Add 1 to BONUS_Global_Hit_Counter
-            gameManager.Add_Score(Points); // Send Message to the gameManager(ManagerGame.js) Add Points to Add_Score
+            // Get position from collision contact point
+            var position = collision.contactCount > 0 ? collision.contacts[0].point : transform.position;
+            gameManager.Add_Score(Points, position); // Send Message to the gameManager(ManagerGame.js) Add Points to Add_Score
         }
 
         if (obj_Led) Led_Renderer.Led_On_With_Timer(.2f); // If Obj_Led. Switch On the Led during .2 seconds
