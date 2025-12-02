@@ -405,7 +405,7 @@ public class UiManager : MonoBehaviour
         SubscribeButton("btn_InsertCoin", () => gameManager.F_InsertCoin_GameStart());
         SubscribeButton("btn_Resume_Game", () => gameManager.F_Pause_Game());
         SubscribeButton("btn_Restart_Yes", () => gameManager.F_InsertCoin_GameStart());
-        SubscribeButton("btn_Restart_No", () => gameManager.F_Quit_No());
+        SubscribeButton("btn_Restart_No", ExitGame);
         SubscribeButton("btn_Quit_Yes", () => gameManager.QuitGame());
         SubscribeButton("btn_Quit_No", () => gameManager.F_Quit_No());
         SubscribeButton("btn_Exit_Game", ExitGame);
