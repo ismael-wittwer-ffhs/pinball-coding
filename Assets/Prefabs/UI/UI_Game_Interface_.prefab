@@ -155,11 +155,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1003157941940438}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
   obj_PauseMobile: {fileID: 0}
   obj_UI: {fileID: 0}
   obj_UI2: {fileID: 0}
@@ -306,11 +304,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1045100623372124}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
   obj_PauseMobile: {fileID: 0}
   obj_UI: {fileID: 0}
   obj_UI2: {fileID: 0}
@@ -536,11 +532,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1060332650612390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
   obj_PauseMobile: {fileID: 0}
   obj_UI: {fileID: 0}
   obj_UI2: {fileID: 0}
@@ -1088,11 +1082,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1282031370771336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
   obj_PauseMobile: {fileID: 0}
   obj_UI: {fileID: 0}
   obj_UI2: {fileID: 0}
@@ -1238,11 +1230,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1295547596249886}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
   obj_PauseMobile: {fileID: 0}
   obj_UI: {fileID: 0}
   obj_UI2: {fileID: 0}
@@ -1389,11 +1379,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1313709932830094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
   obj_PauseMobile: {fileID: 0}
   obj_UI: {fileID: 0}
   obj_UI2: {fileID: 0}
@@ -1675,11 +1663,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1341054690879160}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
   obj_PauseMobile: {fileID: 0}
   obj_UI: {fileID: 0}
   obj_UI2: {fileID: 0}
@@ -2447,11 +2433,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1869509237013704}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
   obj_PauseMobile: {fileID: 0}
   obj_UI: {fileID: 0}
   obj_UI2: {fileID: 0}

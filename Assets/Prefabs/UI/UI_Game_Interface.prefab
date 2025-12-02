@@ -931,11 +931,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1180618556371776}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
 --- !u!1 &1186763214275314
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,11 +1166,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1244660599397298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
 --- !u!1 &1248728904299814
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,11 +1761,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1364217907181366}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
 --- !u!1 &1431951430455592
 GameObject:
   m_ObjectHideFlags: 0
@@ -2631,11 +2625,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1559747747498098}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
 --- !u!1 &1564270002064428
 GameObject:
   m_ObjectHideFlags: 0
@@ -3132,11 +3124,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1610168167404082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
 --- !u!1 &1622167663713548
 GameObject:
   m_ObjectHideFlags: 0
@@ -3529,11 +3519,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1643765090056798}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
 --- !u!1 &1670924563606706
 GameObject:
   m_ObjectHideFlags: 0
@@ -4382,11 +4370,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1907833682886866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6ff7f9e61f045669a6d0377a31fd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bc5df0723dfc05428dc87f1a697178a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_Movement: {fileID: 0}
-  BlackScreen: {fileID: 0}
 --- !u!1 &1913904714587180
 GameObject:
   m_ObjectHideFlags: 0

@@ -145,9 +145,6 @@ public class GameManager : MonoBehaviour
     [FormerlySerializedAs("spring_Launcher")]
     public SpringLauncher[] SpringLauncher;
 
-    [Header("Score is saved with this name")]
-    public string BestScoreName = "BestScore";
-
 
     [FormerlySerializedAs("ball")]
     [Header("Ball")]
@@ -212,6 +209,12 @@ public class GameManager : MonoBehaviour
     private Pause_Mission[] _pauseMission;
     private PinballInputManager _inputManager;
     private UiManager _uiManager;
+
+    #endregion
+
+    #region --- Static and Constant Fields ---
+
+    private const string HIGHSCORE_NAME = "BestScore"; // Score is saved with this name
 
     #endregion
 
@@ -493,6 +496,11 @@ public class GameManager : MonoBehaviour
         ProcessBallLost();
     }
 
+    public int GetHighScore()
+    {
+        return PlayerPrefs.GetInt(HIGHSCORE_NAME);
+    }
+
     public int HowManyAnimation()
     {
         return LedsMulti.Length;
@@ -608,13 +616,12 @@ public class GameManager : MonoBehaviour
         var finalScore = _playerScore + _tmpBonusScore;
         PlayerPrefs.SetInt("CurrentScore", finalScore);
 
-        if (!PlayerPrefs.HasKey(BestScoreName) || PlayerPrefs.GetInt(BestScoreName) < finalScore)
-            PlayerPrefs.SetInt(BestScoreName, finalScore);
+        if (!PlayerPrefs.HasKey(HIGHSCORE_NAME) || PlayerPrefs.GetInt(HIGHSCORE_NAME) < finalScore) PlayerPrefs.SetInt(HIGHSCORE_NAME, finalScore);
 
         if (_uiManager != null)
         {
             _uiManager.UpdateCanvasScore(finalScore);
-            _uiManager.UpdateCanvasBestScore(PlayerPrefs.GetInt(BestScoreName));
+            _uiManager.UpdateCanvasBestScore(GetHighScore());
         }
     }
 
@@ -948,8 +955,6 @@ public class GameManager : MonoBehaviour
 
         if (_inputManager == null) Debug.LogWarning("ManagerGame: PinballInputManager not found.");
         if (_uiManager    == null) Debug.LogWarning("ManagerGame: UiManager not found.");
-
-        if (_uiManager != null) _uiManager.BestScoreName = BestScoreName;
     }
 
     private void InsertCoin_GameStart()
@@ -1274,7 +1279,7 @@ public class GameManager : MonoBehaviour
     private void UpdateDefaultDisplay()
     {
         if (_uiManager != null)
-            _uiManager.UpdateDefaultDisplay(_playerScore, _ballNum, _lcdWaitStartGame, _tmpLife, PlayerPrefs.GetInt(BestScoreName));
+            _uiManager.UpdateDefaultDisplay(_playerScore, _ballNum, _lcdWaitStartGame, _tmpLife, GetHighScore());
     }
 
     private IEnumerator WaitToInit()

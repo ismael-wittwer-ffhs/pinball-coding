@@ -1,9 +1,10 @@
 // UiManager : Manages all UI elements including LCD screen and canvas-based UI
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Localization;
-using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
@@ -16,19 +17,21 @@ public class UiManager : MonoBehaviour
 
     #region --- Exposed Fields ---
 
+    public GameObject BlackScreen; // Black screen used for scene transitions
+
     public GameObject Mobile_Cam_Txt; // Use to deactivate Mobile Change Camera text if you use the Mobile System of pause and change camera
     public GameObject Mobile_PauseAndCam; // Use to deactivate Mobile pause and Mobile Change Camera button if you use the Mobile System of pause and change camera
 
-    [FormerlySerializedAs("Game_UI")]
     [Header("UI GameObjects")]
     public GameObject UI_GameOverScreen; // Connect the parent UI
 
     public GameObject UI_PauseScreen; // Connect the pause screen UI
 
-    [FormerlySerializedAs("Game_UI2")]
     public GameObject UI_StartScreen; // Connect the parent UI Part2 Contain button Start and quit
 
+    [Header("Localized Strings")]
     public LocalizedString Txt_BallPrefix; // "Ball: " prefix for ball number
+
     public LocalizedString Txt_BallSaver; // Ball saver text (TxtGame[10])
     public LocalizedString Txt_BestScorePrefix; // "Best Score: " prefix for best score
     public LocalizedString Txt_BonusBase; // Bonus base part (TxtGame[6])
@@ -42,15 +45,12 @@ public class UiManager : MonoBehaviour
     public LocalizedString Txt_NewBall; // New ball text (TxtGame[12])
     public LocalizedString Txt_NextBall; // Next ball text (TxtGame[9])
 
-    [Header("Localized Strings")]
     public LocalizedString Txt_ScorePrefix; // "Score: " prefix for player score
 
     // GameManager localized strings
     public LocalizedString Txt_Tilt; // Tilt text (TxtGame[0])
     public LocalizedString Txt_TiltWarning; // Tilt warning text (TxtGame[1])
     public LocalizedString Txt_TotalScore; // Total score text (TxtGame[8])
-
-    public string BestScoreName = "BestScore"; // Score is saved with this name
 
     #endregion
 
@@ -59,6 +59,9 @@ public class UiManager : MonoBehaviour
     // UI State Management
     private bool b_Txt_Info = true; // Use to display text on LCD screen
     private bool LCD_Wait_Start_Game = true; // use to switch between best score and insert coin
+
+    // Cached references for UI function calls
+    private Camera_Movement camera_Movement;
 
     private EventSystem eventSystem;
     private float TimeBetweenTwoInfo; // Use to display text on LCD screen
@@ -134,6 +137,119 @@ public class UiManager : MonoBehaviour
     public void ClearBallInfo()
     {
         if (Gui_Txt_Info_Ball) Gui_Txt_Info_Ball.text = "";
+    }
+
+    public void DeactivateEventSystem()
+    {
+        // Deactivate UIs when you don't need them
+        //if (obj_PauseMobile) obj_PauseMobile.SetActive(true);
+        //if (obj_UI) obj_UI.SetActive(false);
+        //if (obj_UI2) obj_UI2.SetActive(false);
+    }
+
+    public void Debug_Ball_Saver_Off()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.F_Mode_Ball_Saver_Off();
+    }
+
+    public void Debug_Ball_Saver_On()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.F_Mode_Ball_Saver_On(-1);
+    }
+
+    public void Debug_ChangeCam()
+    {
+        if (camera_Movement != null)
+            camera_Movement.Selected_Cam();
+    }
+
+    public void Debug_ExtraBall()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.F_Mode_ExtraBall();
+    }
+
+    public void Debug_Init_All_Mission()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.Init_All_Mission();
+    }
+
+    public void Debug_InsertCoin_GameStart()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.F_InsertCoin_GameStart();
+    }
+
+    public void Debug_MultiBall()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.F_Mode_MultiBall();
+    }
+
+    public void Debug_NewBall()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.F_NewBall();
+    }
+
+    public void Debug_Pause_Game()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.F_Pause_Game();
+    }
+
+    public void Debug_PlayMultiLeds()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.PlayMultiLeds(0);
+    }
+
+    public void Debug_Start_Pause_Mode()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.Start_Pause_Mode(-1);
+    }
+
+    public void Debug_Stop_Pause_Mode()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.Stop_Pause_Mode();
+    }
+
+    public void Exit_Game()
+    {
+        StartCoroutine(I_Exit_Game());
+    }
+
+    public void F_Exit_Game()
+    {
+        Exit_Game();
+    }
+
+    public void F_GoToMAinMenu()
+    {
+        GoToMAinMenu();
+    }
+
+    public void F_Quit_No()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.F_Quit_No();
+    }
+
+    public void F_Quit_Yes()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.QuitGame();
+    }
+
+    public void GoToMAinMenu()
+    {
+        if (BlackScreen) BlackScreen.SetActive(true);
+        StartCoroutine(I_F_GoToMAinMenu());
     }
 
     public bool IsUIActive()
@@ -269,6 +385,18 @@ public class UiManager : MonoBehaviour
         }
     }
 
+    private IEnumerator I_Exit_Game()
+    {
+        yield return new WaitForEndOfFrame();
+        Application.Quit();
+    }
+
+    private IEnumerator I_F_GoToMAinMenu()
+    {
+        yield return new WaitForEndOfFrame();
+        SceneManager.LoadScene(0); // Load the Main Menu
+    }
+
     private void InitializeScreenStates()
     {
         // On game start, show StartScreen and hide others
@@ -286,6 +414,11 @@ public class UiManager : MonoBehaviour
             if (tmpEvent)
                 eventSystem = tmpEvent.GetComponent<EventSystem>();
         }
+
+        // Find Camera_Movement component
+        var tmpCamera = GameObject.Find("Main Camera");
+        if (tmpCamera != null)
+            camera_Movement = tmpCamera.GetComponent<Camera_Movement>();
 
         // Find LCD Screen Text Components
         var tmp_Gui = GameObject.Find("txt_Timer");
@@ -343,7 +476,7 @@ public class UiManager : MonoBehaviour
             if (tmp_Gui) Obj_UI_BestScore = tmp_Gui.GetComponent<Text>();
             tmp_Gui = GameObject.Find("Txt_Game_Score_1");
             if (tmp_Gui) Obj_UI_Score = tmp_Gui.GetComponent<Text>();
-            if (Obj_UI_BestScore) Obj_UI_BestScore.text = PlayerPrefs.GetInt(BestScoreName).ToString(); // Display Best score
+            if (Obj_UI_BestScore) Obj_UI_BestScore.text = GameManager.Instance.GetHighScore(); // Display Best score
         }
     }
 
