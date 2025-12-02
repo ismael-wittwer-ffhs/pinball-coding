@@ -1121,6 +1121,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 189.7
       objectReference: {fileID: 0}
+    - target: {fileID: 1493109191371936271, guid: fa22e71a27cd54e45b7a9cd700af12ee,
+        type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493109191371936271, guid: fa22e71a27cd54e45b7a9cd700af12ee,
+        type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493109191371936271, guid: fa22e71a27cd54e45b7a9cd700af12ee,
+        type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 2403088895979277955, guid: fa22e71a27cd54e45b7a9cd700af12ee,
         type: 3}
       propertyPath: m_Camera
@@ -30650,6 +30665,16 @@ PrefabInstance:
     - target: {fileID: 1851462614390208, guid: 5923ffd598693497abfdf9d2402debed, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114384072205939126, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 114384072205939126, guid: 5923ffd598693497abfdf9d2402debed,
+        type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 223154321697424132, guid: 5923ffd598693497abfdf9d2402debed,
         type: 3}
@@ -136930,7 +136955,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &1924580224
 MonoBehaviour:
   m_ObjectHideFlags: 0
