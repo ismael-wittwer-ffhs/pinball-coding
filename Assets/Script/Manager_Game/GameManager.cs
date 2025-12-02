@@ -163,9 +163,9 @@ public class GameManager : MonoBehaviour
     private bool _bBalloutPart2 = true;
     private bool _bBalloutPart3 = true;
     private bool _bGame;
-    private bool _bPause;
     private bool _bTimerBallSaver;
     private bool _debugGame;
+    private bool _gamePaused;
     private bool _lcdWaitStartGame = true;
     private bool _missionMultiBallEnded;
     private bool _multiBall;
@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
     {
         HandleUINavigation();
 
-        if (!_bPause)
+        if (!_gamePaused)
         {
             HandleGameStart();
             HandleTiltTimer();
@@ -330,7 +330,7 @@ public class GameManager : MonoBehaviour
 
     public void F_InsertCoin_GameStart()
     {
-        if (!_bPause) InsertCoin_GameStart();
+        if (!_gamePaused) InsertCoin_GameStart();
         if (_uiManager != null)
             _uiManager.ShowGameStartUI();
     }
@@ -427,7 +427,7 @@ public class GameManager : MonoBehaviour
         if (_uiManager != null && _bGame)
         {
             Pause_Game();
-            _uiManager.TogglePauseUI(_bPause, _bGame);
+            _uiManager.TogglePauseUI(_gamePaused, _bGame);
         }
         else
         {
@@ -440,13 +440,6 @@ public class GameManager : MonoBehaviour
         Pause_Game();
         if (_uiManager != null)
             _uiManager.ShowQuitNoUI();
-    }
-
-    public void F_Quit_Yes()
-    {
-        InitGame_GoToMainMenu();
-        if (_uiManager != null)
-            _uiManager.ShowQuitYesUI();
     }
 
     public int F_return_Mulitplier_SuperBonus()
@@ -563,7 +556,7 @@ public class GameManager : MonoBehaviour
     {
         _bGame = false;
         BInsertCoinGameStart = true;
-        if (_bPause) Pause_Game();
+        if (_gamePaused) Pause_Game();
 
         ResetGameState();
 
@@ -598,6 +591,16 @@ public class GameManager : MonoBehaviour
         _animInProgress = seqNum;
         for (var i = 0; i < LedsMulti[seqNum].Obj.Length; i++)
             LedsMulti[seqNum].ManagerLedAnimation[i].Play_New_Pattern(LedsMulti[seqNum].NumPattern[i]);
+    }
+
+    public void QuitGame()
+    {
+        InitGame_GoToMainMenu();
+
+        if (_uiManager != null)
+            _uiManager.ShowQuitYesUI();
+
+        Application.Quit();
     }
 
     public void Save_Best_Score()
@@ -696,11 +699,12 @@ public class GameManager : MonoBehaviour
                 _bBalloutPart2 = false;
                 if (_uiManager != null)
                 {
-                    var bonusText = _uiManager.Txt_BonusHits.GetLocalizedString() + "\n" + _tmpBonusGlobalHitCounter + 
-                                    _uiManager.Txt_BonusBase.GetLocalizedString() + BonusBase + " x " + "\n" + 
-                                    _tmpMultiplier + _uiManager.Txt_BonusMultiplier.GetLocalizedString();
+                    var bonusText = _uiManager.Txt_BonusHits.GetLocalizedString() + "\n"      + _tmpBonusGlobalHitCounter +
+                                    _uiManager.Txt_BonusBase.GetLocalizedString() + BonusBase + " x "                     + "\n" +
+                                    _tmpMultiplier                                + _uiManager.Txt_BonusMultiplier.GetLocalizedString();
                     Add_Info_To_Array(bonusText, TimeBalloutPart2Bonus);
                 }
+
                 Total_Ball_Score();
             }
         }
@@ -945,10 +949,7 @@ public class GameManager : MonoBehaviour
         if (_inputManager == null) Debug.LogWarning("ManagerGame: PinballInputManager not found.");
         if (_uiManager    == null) Debug.LogWarning("ManagerGame: UiManager not found.");
 
-        if (_uiManager != null)
-        {
-            _uiManager.BestScoreName = BestScoreName;
-        }
+        if (_uiManager != null) _uiManager.BestScoreName = BestScoreName;
     }
 
     private void InsertCoin_GameStart()
@@ -959,7 +960,7 @@ public class GameManager : MonoBehaviour
             Add_Info_To_Array(_uiManager.Txt_GameStart.GetLocalizedString(), 3);
         _bGame = true;
         BInsertCoinGameStart = true;
-        if (_bPause) Pause_Game();
+        if (_gamePaused) Pause_Game();
 
         ResetGameState();
 
@@ -989,7 +990,7 @@ public class GameManager : MonoBehaviour
 
     private void Pause_Game()
     {
-        _bPause = !_bPause;
+        _gamePaused = !_gamePaused;
 
         PauseCameras();
         PauseGameObjects();
@@ -997,7 +998,7 @@ public class GameManager : MonoBehaviour
 
         GetComponent<Blink>().Pause_Blinking();
 
-        if (_bPause && _sound.isPlaying)
+        if (_gamePaused && _sound.isPlaying)
             _sound.Pause();
         else
             _sound.UnPause();
@@ -1011,7 +1012,7 @@ public class GameManager : MonoBehaviour
             var camMovement = cam.GetComponent<Camera_Movement>();
             if (camMovement)
             {
-                if (_bPause)
+                if (_gamePaused)
                     camMovement.StartPauseMode();
                 else
                     camMovement.StopPauseMode();
@@ -1021,7 +1022,7 @@ public class GameManager : MonoBehaviour
         var pivotCams = GameObject.FindGameObjectsWithTag("PivotCam");
         foreach (var cam in pivotCams)
         {
-            if (_bPause)
+            if (_gamePaused)
                 cam.GetComponent<CameraSmoothFollow>().StartPauseMode();
             else
                 cam.GetComponent<CameraSmoothFollow>().StopPauseMode();
@@ -1062,7 +1063,7 @@ public class GameManager : MonoBehaviour
         foreach (var flipper in flippers)
         {
             var component = flipper.GetComponent<Flippers>();
-            if (_bPause)
+            if (_gamePaused)
                 component.F_Pause_Start();
             else
                 component.F_Pause_Stop();
@@ -1072,7 +1073,7 @@ public class GameManager : MonoBehaviour
         foreach (var plunger in plungers)
         {
             var component = plunger.GetComponent<SpringLauncher>();
-            if (_bPause)
+            if (_gamePaused)
                 component.F_Desactivate();
             else
                 component.F_Activate();
@@ -1090,7 +1091,7 @@ public class GameManager : MonoBehaviour
         foreach (var spinner in spinners)
         {
             var component = spinner.GetComponent<Spinner_Rotation>();
-            if (_bPause)
+            if (_gamePaused)
                 component.F_Pause_Start();
             else
                 component.F_Pause_Stop();
@@ -1157,6 +1158,7 @@ public class GameManager : MonoBehaviour
                 _uiManager.ClearBallInfo();
                 Add_Info_To_Array(_uiManager.Txt_GameOver.GetLocalizedString(), 3);
             }
+
             _bBalloutPart1 = false;
             PlayLoseBallSound();
             init_Param_After_Ball_Lost();

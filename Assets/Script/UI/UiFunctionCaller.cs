@@ -73,7 +73,7 @@ public class UiFunctionCaller : MonoBehaviour
 
     public void F_GoToMAinMenu() { GoToMAinMenu(); }
     public void F_Quit_No() { manager_Game.F_Quit_No(); }
-    public void F_Quit_Yes() { manager_Game.F_Quit_Yes(); }
+    public void F_Quit_Yes() { manager_Game.QuitGame(); }
 
     public void GoToMAinMenu()
     {
