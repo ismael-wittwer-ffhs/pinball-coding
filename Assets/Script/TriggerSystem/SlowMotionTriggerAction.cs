@@ -59,12 +59,12 @@ namespace TriggerSystem
 
         private void ApplySlowMotion()
         {
-            Time.timeScale = SlowMotionTimeScale;
+            //TODO: set Time.timeScale to SlowMotionTimeScale
         }
 
         private void ResetTimeScale()
         {
-            Time.timeScale = _originalTimeScale;
+            //TODO: reset Time.timeScale to original TimeScale cached at awake
         }
 
         #endregion

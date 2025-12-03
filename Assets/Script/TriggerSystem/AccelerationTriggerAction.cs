@@ -56,8 +56,9 @@ namespace TriggerSystem
             // Get the forward direction of the collider (this transform)
             Vector3 forwardDirection = transform.forward;
 
-            // Apply acceleration in the collider's forward direction
-            rb.AddForce(forwardDirection * accelerationForce, forceMode);
+            //TODO: Apply force to the Rigidbody in the collider's forward direction
+            // Use the AddForce method with the specified force mode
+            // Don't forget to multiply the forward direction by the accelerationForce
         }
     }
 }
