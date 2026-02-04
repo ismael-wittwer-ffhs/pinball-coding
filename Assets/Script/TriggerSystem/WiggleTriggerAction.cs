@@ -44,6 +44,25 @@ namespace TriggerSystem
             }
         }
 
+        private Vector3 GetImpactDirection(CollisionContext collisionContext)
+        {
+            Vector3 worldDir = Vector3.down; // Default fallback
+
+            if (collisionContext.CollisionData != null && collisionContext.CollisionData.contactCount > 0)
+            {
+                // Use contact normal (points away from this object)
+                worldDir = -collisionContext.CollisionData.GetContact(0).normal;
+            }
+            else if (collisionContext.TriggeringObject != null)
+            {
+                // Fallback: direction from triggering object to this object
+                worldDir = (transform.position - collisionContext.TriggeringObject.transform.position).normalized;
+            }
+
+            // Convert to local space
+            return transform.InverseTransformDirection(worldDir).normalized;
+        }
+
         public override void Execute(TriggerContext context)
         {
             if (context is not CollisionContext collisionContext) return;
@@ -56,16 +75,16 @@ namespace TriggerSystem
                 _ => false
             };
 
-            if (shouldPlay) StartWiggle();
+            if (shouldPlay) StartWiggle(collisionContext);
         }
 
-        private void StartWiggle()
+        private void StartWiggle(CollisionContext collisionContext)
         {
             if (wiggleCoroutine != null) StopCoroutine(wiggleCoroutine);
-            wiggleCoroutine = StartCoroutine(WiggleCoroutine());
+            wiggleCoroutine = StartCoroutine(WiggleCoroutine(collisionContext));
         }
 
-        private IEnumerator WiggleCoroutine()
+        private IEnumerator WiggleCoroutine(CollisionContext collisionContext)
         {
             if (!hasBaseValues)
             {
@@ -82,11 +101,30 @@ namespace TriggerSystem
             Vector3 rotDisp = Vector3.zero;
             Vector3 rotVel = Vector3.zero;
 
-            // Initial velocity kick (only on axes with non-zero amplitude)
+            // Get impact direction in local space
+            Vector3 impactDir = GetImpactDirection(collisionContext);
+
+            // Initial velocity kick based on impact direction
             if ((wiggleMode & WiggleMode.Scale) != 0)
-                scaleVel = new Vector3(scaleAmplitude.x != 0 ? velocityKick : 0, scaleAmplitude.y != 0 ? velocityKick : 0, scaleAmplitude.z != 0 ? velocityKick : 0);
+            {
+                // Scale: compress along impact direction, with magnitude based on alignment
+                scaleVel = new Vector3(
+                    scaleAmplitude.x != 0 ? -velocityKick * impactDir.x : 0,
+                    scaleAmplitude.y != 0 ? -velocityKick * impactDir.y : 0,
+                    scaleAmplitude.z != 0 ? -velocityKick * impactDir.z : 0
+                );
+            }
             if ((wiggleMode & WiggleMode.Rotation) != 0)
-                rotVel = new Vector3(rotationAmplitude.x != 0 ? velocityKick : 0, rotationAmplitude.y != 0 ? velocityKick : 0, rotationAmplitude.z != 0 ? velocityKick : 0);
+            {
+                // Rotation: tilt away from impact direction
+                // X rotation (pitch): from Z impacts, Z rotation (roll): from X impacts
+                // Y rotation (yaw): from tangential component of horizontal impacts
+                rotVel = new Vector3(
+                    rotationAmplitude.x != 0 ? velocityKick * impactDir.z : 0,
+                    rotationAmplitude.y != 0 ? velocityKick * (impactDir.x - impactDir.z) * 0.5f : 0,
+                    rotationAmplitude.z != 0 ? -velocityKick * impactDir.x : 0
+                );
+            }
 
             const float threshold = 0.001f;
 
