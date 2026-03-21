@@ -1,5 +1,6 @@
 // RiseAndFade.cs : Description : Moves element up and fades TextMeshPro text to 0 alpha
 
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -27,6 +28,7 @@ public class RiseAndFade : MonoBehaviour
     private Vector3 startPosition;
     private Color startColor;
     private bool isAnimating;
+    private Action _onComplete;
 
     private void Awake()
     {
@@ -57,10 +59,24 @@ public class RiseAndFade : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        _onComplete = null;
+        isAnimating = false;
+    }
+
+    /// <summary>Invoked once when the animation finishes (not called if interrupted by OnDisable).</summary>
+    public void SetOnComplete(Action callback)
+    {
+        _onComplete = callback;
+    }
+
     public void Play()
     {
-        if (isAnimating) return;
-        
+        StopAllCoroutines();
+        isAnimating = false;
+
         // Cache start position
         if (rectTransform != null)
             startPosition = rectTransform.anchoredPosition;
@@ -137,6 +153,10 @@ public class RiseAndFade : MonoBehaviour
             tmpTextUI.color = finalColor;
         
         isAnimating = false;
+
+        var cb = _onComplete;
+        _onComplete = null;
+        cb?.Invoke();
     }
 }
 

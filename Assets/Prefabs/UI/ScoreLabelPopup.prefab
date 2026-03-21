@@ -194,7 +194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RiseAndFade
   riseDistance: 0.2
   duration: 1
-  playOnStart: 1
+  playOnStart: 0
   easingCurve:
     serializedVersion: 2
     m_Curve:

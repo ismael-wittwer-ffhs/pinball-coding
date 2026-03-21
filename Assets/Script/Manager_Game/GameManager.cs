@@ -212,6 +212,8 @@ public class GameManager : MonoBehaviour
     private ManagerInputSetting _managerInputSetting;
     private Pause_Mission[] _pauseMission;
     private PinballInputManager _inputManager;
+    private ScorePopupPool _scorePopupPool;
+    private Canvas _cachedCanvas;
     private UiManager _uiManager;
 
     #endregion
@@ -323,17 +325,37 @@ public class GameManager : MonoBehaviour
 
     private void ShowScoreText(int score, Vector3 worldPosition)
     {
-        // Instantiate score text prefab at world position
         if (scoreTextPrefab == null) return;
 
-        var scoreTextInstance = Instantiate(scoreTextPrefab, worldPosition, Quaternion.identity);
+        var usePool = _scorePopupPool != null && _scorePopupPool.IsInitialized;
+        GameObject scoreTextInstance;
+        if (usePool)
+        {
+            scoreTextInstance = _scorePopupPool.Get();
+            scoreTextInstance.transform.SetParent(null, false);
+            scoreTextInstance.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+        }
+        else
+        {
+            scoreTextInstance = Instantiate(scoreTextPrefab, worldPosition, Quaternion.identity);
+        }
 
-        // Try to find TextMeshPro component (world space) in the prefab or its children
+        var rise = scoreTextInstance.GetComponent<RiseAndFade>();
+        if (rise == null)
+            rise = scoreTextInstance.GetComponentInChildren<RiseAndFade>();
+
+        void ScheduleRelease()
+        {
+            if (usePool)
+                _scorePopupPool.Release(scoreTextInstance);
+            else
+                Destroy(scoreTextInstance);
+        }
+
         var tmpText = scoreTextInstance.GetComponent<TextMeshPro>();
         if (tmpText == null)
             tmpText = scoreTextInstance.GetComponentInChildren<TextMeshPro>();
 
-        // If not found, try TextMeshProUGUI (UI space) - needs to be on Canvas
         if (tmpText == null)
         {
             var tmpTextUI = scoreTextInstance.GetComponent<TextMeshProUGUI>();
@@ -342,12 +364,12 @@ public class GameManager : MonoBehaviour
 
             if (tmpTextUI != null)
             {
-                // If it's a UI text, find or create a Canvas parent
-                var canvas = FindObjectOfType<Canvas>();
-                if (canvas != null)
+                if (_cachedCanvas == null)
+                    _cachedCanvas = FindObjectOfType<Canvas>();
+
+                if (_cachedCanvas != null)
                 {
-                    scoreTextInstance.transform.SetParent(canvas.transform, false);
-                    // Convert world position to screen position for UI
+                    scoreTextInstance.transform.SetParent(_cachedCanvas.transform, false);
                     var mainCamera = Camera.main;
                     if (mainCamera != null)
                     {
@@ -356,21 +378,53 @@ public class GameManager : MonoBehaviour
                         if (rectTransform != null)
                         {
                             RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                                canvas.GetComponent<RectTransform>(),
+                                _cachedCanvas.GetComponent<RectTransform>(),
                                 screenPos,
-                                canvas.worldCamera,
+                                _cachedCanvas.worldCamera,
                                 out var localPoint);
                             rectTransform.localPosition = localPoint;
                         }
                     }
                 }
 
+                var uiColor = tmpTextUI.color;
+                tmpTextUI.color = new Color(uiColor.r, uiColor.g, uiColor.b, 1f);
                 tmpTextUI.text = score.ToString();
+
+                if (rise != null)
+                {
+                    rise.SetOnComplete(ScheduleRelease);
+                    rise.Play();
+                }
+                else
+                {
+                    ScheduleRelease();
+                }
+
                 return;
             }
         }
 
-        if (tmpText != null) tmpText.text = score.ToString();
+        if (tmpText != null)
+        {
+            var wColor = tmpText.color;
+            tmpText.color = new Color(wColor.r, wColor.g, wColor.b, 1f);
+            tmpText.text = score.ToString();
+
+            if (rise != null)
+            {
+                rise.SetOnComplete(ScheduleRelease);
+                rise.Play();
+            }
+            else
+            {
+                ScheduleRelease();
+            }
+        }
+        else
+        {
+            ScheduleRelease();
+        }
     }
 
     public bool Ball_Saver_State()
@@ -959,6 +1013,10 @@ public class GameManager : MonoBehaviour
         _pauseMission = new Pause_Mission[_objManagers.Length];
         for (var i = 0; i < _objManagers.Length; i++)
             _pauseMission[i] = _objManagers[i].GetComponent<Pause_Mission>();
+
+        _scorePopupPool = GetComponent<ScorePopupPool>();
+        if (_scorePopupPool != null && scoreTextPrefab != null)
+            _scorePopupPool.Initialize(scoreTextPrefab);
     }
 
     private void InitializeLeds()
